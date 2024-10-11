@@ -1,3 +1,46 @@
 [submodule "src/ping360_sonar_msgs"]
 	path = src/ping360_sonar_msgs
 	url = https://github.com/timzarhansen/ping360_sonar_msgs
+[submodule "src/asvcommonmsg"]
+	path = src/asvcommonmsg
+	url = https://github.com/timzarhansen/asvcommonmsg
+[submodule "src/fsregistration"]
+	path = src/fsregistration
+	url = https://github.com/timzarhansen/fsregistration
+[submodule "src/Tritech-Micron-Driver"]
+	path = src/Tritech-Micron-Driver
+	url = https://github.com/timzarhansen/Tritech-Micron-Driver
+[submodule "src/BlueROV2Common"]
+	path = src/BlueROV2Common
+	url = https://github.com/timzarhansen/BlueROV2Common
+[submodule "src/gui_bluerov"]
+	path = src/gui_bluerov
+	url = https://github.com/timzarhansen/gui_bluerov
+[submodule "src/px4_msgs"]
+	path = src/px4_msgs
+	url = https://github.com/timzarhansen/px4_msgs
+[submodule "src/waterlinked_a50_dvl_ros2"]
+	path = src/waterlinked_a50_dvl_ros2
+	url = https://github.com/timzarhansen/waterlinked_a50_dvl_ros2
+[submodule "src/bluespace_ai_xsens_ros_mti_driver"]
+	path = src/bluespace_ai_xsens_ros_mti_driver
+	url = https://github.com/timzarhansen/bluespace_ai_xsens_ros_mti_driver
+[submodule "src/mocap_msgs"]
+	path = src/mocap_msgs
+	url = https://github.com/MOCAP4ROS2-Project/mocap_msgs.git
+[submodule "src/ros2_kitti_publishers"]
+	path = src/ros2_kitti_publishers
+	url = https://github.com/umtclskn/ros2_kitti_publishers
+[submodule "src/commonBlueROVMSG"]
+	path = src/commonBlueROVMSG
+	url = https://github.com/timzarhansen/commonBlueROVMSG
+[submodule "src/ping360_sonar"]
+	path = src/ping360_sonar
+	url = https://github.com/timzarhansen/ping360_sonar
+[submodule "src/soft20"]
+	path = src/soft20
+	url = https://github.com/timzarhansen/soft20
+
+
+
+
