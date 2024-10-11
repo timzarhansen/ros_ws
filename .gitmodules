@@ -1,6 +1,7 @@
 [submodule "src/ping360_sonar_msgs"]
 	path = src/ping360_sonar_msgs
 	url = https://github.com/timzarhansen/ping360_sonar_msgs
+
 [submodule "src/asvcommonmsg"]
 	path = src/asvcommonmsg
 	url = https://github.com/timzarhansen/asvcommonmsg
@@ -40,7 +41,3 @@
 [submodule "src/soft20"]
 	path = src/soft20
 	url = https://github.com/timzarhansen/soft20
-
-
-
-
