@@ -1,0 +1,3 @@
+[submodule "src/ping360_sonar_msgs"]
+	path = src/ping360_sonar_msgs
+	url = https://github.com/timzarhansen/ping360_sonar_msgs
