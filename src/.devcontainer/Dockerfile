@@ -45,14 +45,17 @@ RUN mkdir /install_ws/opencvInstall/build
 RUN cd /install_ws/opencvInstall/build && cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
 RUN cd /install_ws/opencvInstall/build && cmake --build . --config Release -- -j 10
 RUN cd /install_ws/opencvInstall/build && sudo make install
-#
-#
-#
-#
+
+
+
+
+
+
+
 #RUN #apt-get clean
 #RUN #rm -rf /var/lib/apt/lists/*
-#
-#
+
+
 ## PCL install
 #RUN cd /install_ws && git clone https://github.com/PointCloudLibrary/pcl
 #RUN cd /install_ws/pcl && git checkout pcl-1.14.1
