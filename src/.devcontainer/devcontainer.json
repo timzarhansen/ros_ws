@@ -32,7 +32,7 @@
     "source=${localWorkspaceFolder}/../cache/humble/install,target=/home/ws/install,type=bind",
     "source=${localWorkspaceFolder}/../cache/humble/log,target=/home/ws/log,type=bind",
     "source=${localWorkspaceFolder}/../configFiles,target=/home/ws/configFiles,type=bind",
-    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/ws/matlab,type=bind"
+//    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/ws/matlab,type=bind"
   ],
   "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R tim-external /home/ws/"
 }

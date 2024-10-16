@@ -13,7 +13,7 @@ RUN update-locale LC_ALL=de_DE.UTF-8 LANG=de_DE.UTF-8
 RUN export LANG=de_DE.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt install -y ninja-build cmake libopenblas-dev openssh-server wget vim nano
+RUN apt install -y ninja-build cmake libopenblas-dev openssh-server wget vim nano htop
 RUN apt install -y build-essential pkg-config unzip yasm git checkinstall  # generic tools
 RUN apt install -y git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev  # required
 RUN apt install -y python3-dev python3-numpy python3-pip
