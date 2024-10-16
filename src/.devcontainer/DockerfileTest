@@ -1,31 +1,27 @@
-#FROM osrf/ros:humble-desktop-full
-#FROM rospytorchcudnn
-#FROM osrf/ros:humble-desktop-full as ros_stuff
 
 FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-devel
-#COPY --from=ros_stuff / /
-#additional
+ENV TZ=Europe/Berlin
 
-ENV TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive
+ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+RUN apt update && apt upgrade -y
+RUN apt install -y python3-pip
 
+RUN apt update && apt install locales
+RUN locale-gen de_DE de_DE.UTF-8
+RUN update-locale LC_ALL=de_DE.UTF-8 LANG=de_DE.UTF-8
+RUN export LANG=de_DE.UTF-8
+ARG DEBIAN_FRONTEND=noninteractive
 
-
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y python3-pip
-
-
-
-
-RUN apt install -y build-essential cmake pkg-config unzip yasm git checkinstall  # generic tools
-RUN apt install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev  # required
+RUN apt install -y ninja-build cmake libopenblas-dev openssh-server wget vim nano
+RUN apt install -y build-essential pkg-config unzip yasm git checkinstall  # generic tools
+RUN apt install -y git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev  # required
 RUN apt install -y python3-dev python3-numpy python3-pip
 RUN apt install -y python3-testresources
 RUN apt install -y libjpeg-dev libpng-dev libtiff-dev
 RUN apt install -y libavcodec-dev
-RUN apt install -y  libavformat-dev
-RUN apt install -y  libswscale-dev
+RUN apt install -y libavformat-dev
+RUN apt install -y libswscale-dev
 RUN apt install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 RUN apt install -y libxvidcore-dev x264 libx264-dev libfaac-dev libmp3lame-dev libtheora-dev
 RUN apt install -y libfaac-dev libmp3lame-dev libvorbis-dev
@@ -43,14 +39,19 @@ RUN apt remove python3-opencv -y
 RUN apt install pkg-config -y
 RUN apt install fftw3 fftw3-dev -y
 RUN apt install nlohmann-json3-dev -y
-RUN apt install build-essential libgtk2.0-dev libgtk-3-dev -y
+RUN apt install libgtk2.0-dev libgtk-3-dev -y
 RUN apt install libqt5gamepad5-dev -y
 RUN apt install libtbb-dev -y
 RUN apt install libcgal-dev -y
+RUN apt install -y libboost-all-dev
+RUN apt install software-properties-common -y
+RUN add-apt-repository universe -y
+RUN apt update && apt install curl -y
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-
-ENV PATH=/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN apt update -y
+RUN apt upgrade -y
 
 
 RUN mkdir /install_ws
@@ -93,15 +94,20 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
                                                 -D WITH_OPENGL=ON \
                                                 -D WITH_GSTREAMER=ON \
                                                 -D WITH_TBB=ON -DOPENCV_ENABLE_NONFREE:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
-RUN  cmake --build . --config Release -- -j 10
+RUN  cmake --build . --config Release -- -j 16
 RUN  make install
+
+
+
+
+
 # PCL install
-#RUN cd /install_ws && git clone https://github.com/PointCloudLibrary/pcl
-#RUN cd /install_ws/pcl && git checkout pcl-1.14.1
-#RUN mkdir /install_ws/pcl/build
-#RUN cd /install_ws/pcl/build && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-#RUN cd /install_ws/pcl/build && make -j 10
-#RUN cd /install_ws/pcl/build && make -j 10 install
+RUN cd /install_ws && git clone https://github.com/PointCloudLibrary/pcl
+RUN cd /install_ws/pcl && git checkout pcl-1.14.1
+RUN mkdir /install_ws/pcl/build
+RUN cd /install_ws/pcl/build && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+RUN cd /install_ws/pcl/build && make -j 16
+RUN cd /install_ws/pcl/build && make -j 16 install
 # gtsam not tested
 #RUN cd /install_ws && git clone https://github.com/borglab/gtsam.git
 #RUN cd /install_ws/gtsam && git checkout 4.2a7
@@ -110,22 +116,21 @@ RUN  make install
 #RUN cd /install_ws/gtsam/build && make
 #RUN cd /install_ws/gtsam/build && make install
 
+
+
+
+
 #install ROS here:
-
-RUN apt install software-properties-common -y
-RUN add-apt-repository universe -y
-RUN apt update && sudo apt install curl -y
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-
-RUN apt update -y
-RUN apt upgrade -y
 
 RUN apt install ros-humble-desktop -y
 RUN apt install ros-dev-tools -y
 RUN apt install ros-humble-tf2-geometry-msgs ros-humble-tf2 -y
+RUN /bin/sh -c rosdep init
 
 
+
+COPY requirements.txt /install_ws/
+RUN pip install -r /install_ws/requirements.txt
 
 
 
@@ -138,15 +143,18 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     #
     # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
-    && apt-get update \
-    && apt-get install -y sudo \
+    && apt update \
+    && apt install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
-USER $USERNAME
+
 #ENV PATH /opt/conda/bin:$PATH
 
 
 ENV SHELL /bin/bash
+
+USER $USERNAME
+
 
 # ********************************************************
 # * Anything else you want to do like clean up goes here *
@@ -156,8 +164,9 @@ ENV SHELL /bin/bash
 
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
 RUN echo "source activate base">> ~/.bashrc
-
+RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
+RUN echo "source /home/ws/install/setup.bash">> ~/.bashrc
 
 
 #ENTRYPOINT ["/bin/bash","PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] '"]
-#CMD ["/bin/bash"]
+CMD ["/bin/bash"]

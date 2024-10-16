@@ -26,7 +26,6 @@ RUN apt install -y git-core freeglut3-dev pkg-config build-essential libxmu-dev 
 RUN apt install -y libflann-dev
 
 RUN apt install -y libflann1.9
-RUN apt install -y libboost-dev
 RUN apt install -y libeigen3-dev
 RUN apt install -y vtk9
 RUN apt install -y python3-vtk9
