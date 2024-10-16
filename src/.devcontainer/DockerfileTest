@@ -125,7 +125,7 @@ RUN cd /install_ws/pcl/build && make -j 16 install
 RUN apt install ros-humble-desktop -y
 RUN apt install ros-dev-tools -y
 RUN apt install ros-humble-tf2-geometry-msgs ros-humble-tf2 -y
-RUN /bin/sh -c rosdep init
+RUN rosdep init &&  rosdep update --rosdistro humble # buildkit
 
 
 
@@ -133,7 +133,7 @@ COPY requirements.txt /install_ws/
 RUN pip install -r /install_ws/requirements.txt
 
 
-
+WORKDIR /home/ws
 ARG USERNAME=tim-external
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -163,9 +163,10 @@ USER $USERNAME
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
-RUN echo "source activate base">> ~/.bashrc
-RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
-RUN echo "source /home/ws/install/setup.bash">> ~/.bashrc
+#RUN echo "source activate base">> ~/.bashrc
+#RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
+#RUN echo "source /home/ws/install/setup.bash">> ~/.bashrc
+#RUN echo "COLCON_DEFAULTS_FILE=/home/ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 
 
 #ENTRYPOINT ["/bin/bash","PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] '"]
