@@ -41,3 +41,6 @@
 [submodule "src/soft20"]
 	path = src/soft20
 	url = https://github.com/timzarhansen/soft20
+[submodule "src/vision_opencv"]
+	path = src/vision_opencv
+	url = https://github.com/ros-perception/vision_opencv.git

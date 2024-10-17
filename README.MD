@@ -45,3 +45,10 @@ done
 echo "$env_string"
 ```
 
+
+
+# local llama opn gpu server 
+```
+docker run --net=host --gpus=all --rm -v /home/deeprobotics/localDocuments/models/models--bartowski--Qwen2.5-Coder-7B-Instruct-GGUF:/models \
+ghcr.io/ggerganov/llama.cpp:server-cuda -m /models/snapshots/1f629da0c8bed16b9e50cee91c70693650e66c35/Qwen2.5-Coder-7B-Instruct-Q8_0.gguf --port 8000 --host 10.70.15.107 -n 512 --n-gpu-layers 1000
+```
