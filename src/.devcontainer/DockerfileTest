@@ -1,7 +1,22 @@
-FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-devel
-ENV TZ=Europe/Berlin
+FROM osrf/ros:humble-desktop-full
 
-ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+
+ARG USERNAME=tim-external
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && apt update \
+    && apt install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+ENV TZ=Europe/Berlin
 
 RUN apt update && apt upgrade -y
 RUN apt install -y python3-pip
@@ -46,11 +61,11 @@ RUN apt install -y libboost-all-dev
 RUN apt install software-properties-common -y
 RUN add-apt-repository universe -y
 RUN apt update && apt install curl -y
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
-
 RUN apt update -y
 RUN apt upgrade -y
+
+RUN apt remove libopencv-dev python3-opencv -y
+RUN apt purge libopencv-dev python3-opencv -y
 
 
 RUN mkdir /install_ws
@@ -64,37 +79,10 @@ RUN git clone https://github.com/opencv/opencv_contrib.git
 RUN cd opencv_contrib && git checkout 4.9.0
 RUN mkdir /install_ws/opencvInstall/build
 WORKDIR /install_ws/opencvInstall/build
-
-# conda_env_path=~/anaconda3/envs/opencv4
-
-ARG WITH_CUDA=ON
-#                                                 -D PYTHON3_INCLUDE_DIR2=/usr/include/x86_64-linux-gnu/python3.10/ \
-
-RUN cmake -D CMAKE_BUILD_TYPE=Release \
-                                                -D CMAKE_INSTALL_PREFIX=/usr/local \
-                                                -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules/ \
-                                                -D PYTHON3_EXECUTABLE=/opt/conda/bin/python3 \
-                                                -D PYTHON3_INCLUDE_DIR=/opt/conda/include/python3.10/ \
-                                                -D PYTHON3_LIBRARY=/opt/conda/lib/libpython3.10.so \
-                                                -D PYTHON3_NUMPY_INCLUDE_DIRS=/opt/conda/lib/python3.10/site-packages/numpy/core/include/ \
-                                                -D HDF5_ROOT=/opt/conda/bin/ \
-                                                -D OPENCV_GENERATE_PKGCONFIG=ON \
-                                                -D OPENCV_PC_FILE_NAME=opencv.pc \
-                                                -D WITH_CUDA=$WITH_CUDA \
-                                                -D WITH_CUDNN=$WITH_CUDA \
-                                                -D OPENCV_DNN_CUDA=$WITH_CUDA \
-                                                -D CUDA_ARCH_BIN=6.0,6.1,6.2,7.0,7.2,7.5,8.0,8.6,8.9 \
-                                                -D ENABLE_FAST_MATH=ON \
-                                                -D CUDA_FAST_MATH=$WITH_CUDA \
-                                                -D WITH_CUFFT=$WITH_CUDA \
-                                                -D WITH_CUBLAS=$WITH_CUDA \
-                                                -D WITH_V4L=ON \
-                                                -D WITH_OPENCL=ON \
-                                                -D WITH_OPENGL=ON \
-                                                -D WITH_GSTREAMER=ON \
-                                                -D WITH_TBB=ON -DOPENCV_ENABLE_NONFREE:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
-RUN  cmake --build . --config Release -- -j 16
-RUN  make install
+#building opencv
+RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
+RUN cmake --build . --config Release -- -j 16
+RUN make install
 
 
 
@@ -108,46 +96,22 @@ RUN cd /install_ws/pcl/build && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 RUN cd /install_ws/pcl/build && make -j 16
 RUN cd /install_ws/pcl/build && make -j 16 install
 # gtsam not tested
-#RUN cd /install_ws && git clone https://github.com/borglab/gtsam.git
-#RUN cd /install_ws/gtsam && git checkout 4.2a7
-#RUN mkdir /install_ws/gtsam/build
-#RUN cd /install_ws/gtsam/build && cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
-#RUN cd /install_ws/gtsam/build && make
-#RUN cd /install_ws/gtsam/build && make install
+RUN cd /install_ws && git clone https://github.com/borglab/gtsam.git
+RUN cd /install_ws/gtsam && git checkout 4.2a7
+RUN mkdir /install_ws/gtsam/build
+RUN cd /install_ws/gtsam/build && cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
+RUN cd /install_ws/gtsam/build && make
+RUN cd /install_ws/gtsam/build && make install
 
 
 
-
-
-#install ROS here:
-
-RUN apt install ros-humble-desktop -y
-RUN apt install ros-dev-tools -y
-RUN apt install ros-humble-tf2-geometry-msgs ros-humble-tf2 -y
-RUN rosdep init &&  rosdep update --rosdistro humble # buildkit
-
-
-RUN apt remove libopencv-dev python3-opencv -y
-RUN apt purge libopencv-dev python3-opencv -y
 
 COPY requirements.txt /install_ws/
 RUN pip install -r /install_ws/requirements.txt
 
 
 WORKDIR /home/ws
-ARG USERNAME=tim-external
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
-    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
-    && apt update \
-    && apt install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 #ENV PATH /opt/conda/bin:$PATH
 
