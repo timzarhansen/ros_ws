@@ -34,7 +34,7 @@
     "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind",
     "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind",
     "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind",
-//    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for tests
+//    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
   ],
   "postCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y && sudo chown -R tim-external /home/tim-external/"
 }
