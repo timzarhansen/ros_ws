@@ -44,3 +44,6 @@
 [submodule "src/vision_opencv"]
 	path = src/vision_opencv
 	url = https://github.com/ros-perception/vision_opencv.git
+[submodule "otherPackages/PX4-Autopilot"]
+	path = otherPackages/PX4-Autopilot
+	url = https://github.com/timzarhansen/PX4-Autopilot

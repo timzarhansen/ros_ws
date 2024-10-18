@@ -1,0 +1,40 @@
+{
+  "name": "ROS 2 Development Container",
+  "privileged": true,
+  "remoteUser": "tim-external",
+  "build": {
+    "dockerfile": "DockerfileBaseARM",
+    "args": {
+      "USERNAME": "tim-external"
+    },
+    "context": "../"
+  },
+  "workspaceFolder": "/home/tim-external/ros_ws",
+  "workspaceMount": "source=${localWorkspaceFolder}/src,target=/home/tim-external/ros_ws/src,type=bind",
+  "customizations": {
+    "jetbrains": {
+      "backend": "Clion"
+    }
+  },
+  "containerEnv": {
+    "DISPLAY": "unix:0",
+    "ROS_LOCALHOST_ONLY": "1",
+    "ROS_DOMAIN_ID": "161",
+    "COLCON_DEFAULTS_FILE": "/home/tim-external/ros_ws/configFiles/defaultColconSettings.yaml"
+  },
+  "runArgs": [
+    "--net=host",
+    "-e", "DISPLAY=${env:DISPLAY}"
+  ],
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+    "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/cache/humble/build,target=/home/tim-external/ros_ws/build,type=bind",
+    "source=${localWorkspaceFolder}/cache/humble/install,target=/home/tim-external/ros_ws/install,type=bind",
+    "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind",
+    "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind",
+    "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind",
+//    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind"
+  ],
+  "postCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y && sudo chown -R tim-external /home/tim-external/"
+}
