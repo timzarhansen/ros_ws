@@ -12,7 +12,7 @@ ENV ROS_DISTRO=humble
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     #
-    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    # [Optional] Add sudo support. Omit if you don't need to istall software after connecting.
     && apt update \
     && apt install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
@@ -90,14 +90,16 @@ RUN #sudo apt-get update && sudo apt-get -y install python3 python3-pip
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get -y install python3-pip
 RUN sudo apt install fftw3 fftw3-dev -y
 RUN sudo apt install nlohmann-json3-dev -y
+RUN sudo apt install libqt5gamepad5-dev -y
+RUN sudo apt install libcgal-dev -y
 
 
 COPY configFiles/requirements.txt /home/$USERNAME/install_ws
 RUN pip install -r /home/$USERNAME/install_ws/requirements.txt
 
-COPY otherPackages/PX4-Autopilot/Tools/setup/ubuntu.sh /home/$USERNAME/install_ws
+#COPY otherPackages/PX4-Autopilot/Tools/setup/ubuntu.sh /home/$USERNAME/install_ws
 WORKDIR /home/$USERNAME/install_ws
-RUN bash ubuntu.sh
+
 
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo rosdep init && sudo rosdep update --rosdistro $ROS_DISTRO # buildkit
 
@@ -110,6 +112,9 @@ RUN #echo "source activate base">> ~/.bashrc
 RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
 RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
+
+
+
 
 CMD ["/bin/bash"]
 
