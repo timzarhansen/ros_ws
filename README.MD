@@ -66,4 +66,9 @@ bash Tools/setup/ubuntu.sh
 make px4_fmu-v5_default
 ```
 
+# xhost for display:
+put in one random terminal
+```
+xhost local:root
+```
 

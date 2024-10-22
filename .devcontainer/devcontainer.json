@@ -39,14 +39,20 @@
   "mounts": [
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
     "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/cache/humble/build,target=/home/tim-external/ros_ws/build,type=bind",
-    "source=${localWorkspaceFolder}/cache/humble/install,target=/home/tim-external/ros_ws/install,type=bind",
-    "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind",
-    "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind",
-    "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind",
-//    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
+    "source=${localWorkspaceFolder}/cache/humble/build,target=/home/tim-external/ros_ws/build,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/cache/humble/install,target=/home/tim-external/ros_ws/install,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind,consistency=cached",
+    "source=/home/tim-external/dataFolder/3dmatch,target=/home/tim-external/dataFolder/3dmatch,type=bind,consistency=cached",
+//    "source=/home/tim-external/tensorboard,target=/workspace/tensorboard,type=bind,consistency=cached"
+
+
+    //    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
   ],
-  "onCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y",
+//  "onCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y",
+  "onCreateCommand": "sudo rosdep update",
+
   "postCreateCommand": "sudo chown -R tim-external /home/tim-external/",
 //  "postStartCommand": ". /opt/ros/humble/setup.sh && source /opt/ros/humble/setup.bash",
 //  "postAttachCommand": ". /opt/ros/humble/setup.sh && source /opt/ros/humble/setup.bash"

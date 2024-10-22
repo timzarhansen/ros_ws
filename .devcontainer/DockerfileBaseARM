@@ -81,8 +81,8 @@ WORKDIR /home/$USERNAME/install_ws/pcl
 RUN git checkout pcl-1.14.1
 WORKDIR /home/$USERNAME/install_ws/pcl/build
 RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-RUN make -j 5
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 5 install
+RUN make -j 16
+RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install
 
 
 # custom stuff
@@ -93,9 +93,9 @@ RUN sudo apt install nlohmann-json3-dev -y
 RUN sudo apt install libqt5gamepad5-dev -y
 RUN sudo apt install libcgal-dev -y
 
-
 COPY configFiles/requirements.txt /home/$USERNAME/install_ws
-RUN pip install -r /home/$USERNAME/install_ws/requirements.txt
+RUN sudo pip install -r /home/$USERNAME/install_ws/requirements.txt
+#RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 #COPY otherPackages/PX4-Autopilot/Tools/setup/ubuntu.sh /home/$USERNAME/install_ws
 WORKDIR /home/$USERNAME/install_ws
