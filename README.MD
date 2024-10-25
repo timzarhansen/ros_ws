@@ -72,3 +72,7 @@ put in one random terminal
 xhost local:root
 ```
 
+# file for predator Config
+```
+predator/configs/HPCComputations/predatorNothing.yaml
+```

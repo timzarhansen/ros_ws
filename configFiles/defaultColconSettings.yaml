@@ -1,5 +1,6 @@
 {
   "build": {
-    "symlink-install": true
+    "symlink-install": true,
+    "cmake-args": [ "-DCMAKE_BUILD_TYPE=Release" ]
   }
 }

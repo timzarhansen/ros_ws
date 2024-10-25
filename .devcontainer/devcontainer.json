@@ -46,9 +46,7 @@
     "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind,consistency=cached",
     "source=/home/tim-external/dataFolder/3dmatch,target=/home/tim-external/dataFolder/3dmatch,type=bind,consistency=cached",
 //    "source=/home/tim-external/tensorboard,target=/workspace/tensorboard,type=bind,consistency=cached"
-
-
-    //    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
+    "source=/home/tim-external/Documents/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
   ],
 //  "onCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y",
   "onCreateCommand": "sudo rosdep update",
