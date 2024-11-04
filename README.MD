@@ -74,14 +74,16 @@ xhost local:root
 
 # file for predator Config
 ```
-predator/configs/HPCComputations/predatorNothing.yaml
+predatorNothing.yaml
 ```
 
 
 
 
-
-
+rmin
+rmax 
+levelPotential Rotation 0.01
+levelPotential translation 0.1
 
 
 
