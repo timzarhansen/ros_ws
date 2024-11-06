@@ -116,14 +116,14 @@ RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconS
 COPY . /home/$USERNAME/ros_ws
 
 WORKDIR /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/
-RUN chmod a+x allRunScripts/input1.sh
-RUN chmod a+x allRunScripts/input2.sh
-RUN chmod a+x allRunScripts/input3.sh
-RUN chmod a+x allRunScripts/input4.sh
-RUN chmod a+x allRunScripts/input5.sh
-RUN chmod a+x allRunScripts/input6.sh
-RUN chmod a+x allRunScripts/input7.sh
-RUN chmod a+x allRunScripts/input8.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input2.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input3.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input4.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input5.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input6.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input7.sh
+RUN chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input8.sh
 
 
 WORKDIR /home/$USERNAME/
