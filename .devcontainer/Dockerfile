@@ -113,17 +113,17 @@ RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
 RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 
-COPY . /home/$USERNAME/ros_ws
+#COPY . /home/$USERNAME/ros_ws
 
-WORKDIR /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input2.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input3.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input4.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input5.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input6.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input7.sh
-RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input8.sh
+#WORKDIR /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input2.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input3.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input4.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input5.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input6.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input7.sh
+#RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input8.sh
 
 
 WORKDIR /home/$USERNAME/
@@ -136,15 +136,16 @@ ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchin
 # docker buildx build -t fs3d_benchmark --file .devcontainer/Dockerfile .
 # docker run fs3d_benchmark:latest
 # docker run --rm -t -i -d --ipc=host --name run1 \
-# docker run --rm -t -i --ipc=host --name run1 \
+# docker run --rm -t -i --user tim-external --ipc=host --name run1 \
 # --entrypoint /bin/bash \
 # --entrypoint "./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
 # -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch \
-# -v cache/humble/build:/home/tim-external/ros_ws/build \
-# -v cache/humble/install:/home/tim-external/ros_ws/install \
-# -v cache/humble/log:/home/tim-external/ros_ws/log \
-# -v configFiles:/home/tim-external/ros_ws/configFiles \
+# -v "$(pwd)"/cache/humble/build:/home/tim-external/ros_ws/build \
+# -v "$(pwd)"/cache/humble/install:/home/tim-external/ros_ws/install \
+# -v "$(pwd)"/cache/humble/log:/home/tim-external/ros_ws/log \
+# -v "$(pwd)"/configFiles:/home/tim-external/ros_ws/configFiles \
 # -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab \
+# -v "$(pwd)"/src:/home/tim-external/ros_ws/src
 # fs3d_benchmark:latest
 
 
