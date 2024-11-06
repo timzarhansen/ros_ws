@@ -74,7 +74,7 @@ xhost local:root
 
 # file for predator Config
 ```
-predatorNothing.yaml
+configFiles/predatorNothing.yaml
 ```
 
 
