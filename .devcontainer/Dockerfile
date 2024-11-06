@@ -7,6 +7,9 @@ ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 #ARG DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=humble
+ENV ROS_LOCALHOST_ONLY=1
+ENV ROS_DOMAIN_ID=161
+
 #ARG DEBIAN_FRONTEND=noninteractive
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -107,6 +110,9 @@ WORKDIR /home/$USERNAME/
 #ENV ROS_DISTRO=humble
 ENV SHELL=/bin/bash
 
+
+
+
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
 RUN #echo "source activate base">> ~/.bashrc
 RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
@@ -125,31 +131,31 @@ RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconS
 #RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input7.sh
 #RUN sudo chmod a+x /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input8.sh
 
+CMD ["/bin/bash"]
 
-WORKDIR /home/$USERNAME/
+#WORKDIR /home/$USERNAME/
 #ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/workstation_run.sh"]
-ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh"]
+#ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh"]
 
-
+# export ROS_LOCALHOST_ONLY=1
+# export ROS_DOMAIN_ID=161
 # docker run example comes Here:
 
 # docker buildx build -t fs3d_benchmark --file .devcontainer/Dockerfile .
 # docker run fs3d_benchmark:latest
-# docker run --rm -t -i -d --ipc=host --name run1 \
-# docker run --rm -t -i --user tim-external --ipc=host --name run1 \
-# --entrypoint /bin/bash \
 # --entrypoint "./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
+
+# docker run --rm -t -i -d --ipc=host --name run1 \
+#docker run --rm -t -i --user tim-external --ipc=host --name run1 \
+# --entrypoint /bin/bash \
 # -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch \
 # -v "$(pwd)"/cache/humble/build:/home/tim-external/ros_ws/build \
 # -v "$(pwd)"/cache/humble/install:/home/tim-external/ros_ws/install \
 # -v "$(pwd)"/cache/humble/log:/home/tim-external/ros_ws/log \
 # -v "$(pwd)"/configFiles:/home/tim-external/ros_ws/configFiles \
 # -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab \
-# -v "$(pwd)"/src:/home/tim-external/ros_ws/src
+# -v "$(pwd)"/src:/home/tim-external/ros_ws/src \
 # fs3d_benchmark:latest
-
-
-
 
 
 
