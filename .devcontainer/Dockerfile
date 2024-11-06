@@ -113,7 +113,7 @@ RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
 RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 
-
+COPY . /home/$USERNAME/ros_ws
 
 WORKDIR /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/
 RUN chmod a+x allRunScripts/input1.sh
