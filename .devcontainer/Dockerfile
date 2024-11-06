@@ -128,10 +128,28 @@ RUN chmod a+x allRunScripts/input8.sh
 
 WORKDIR /home/$USERNAME/
 #ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/workstation_run.sh"]
-ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/workstation_run.sh"]
+ENTRYPOINT ["./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh"]
 
 
 # docker run example comes Here:
+
+# docker buildx build -t fs3d_benchmark --file .devcontainer/Dockerfile .
+# docker run fs3d_benchmark:latest
+# docker run --rm -t -i -d --ipc=host --name run1 \
+# docker run --rm -t -i --ipc=host --name run1 \
+# --entrypoint /bin/bash \
+# --entrypoint "./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
+# -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch \
+# -v cache/humble/build:/home/tim-external/ros_ws/build \
+# -v cache/humble/install:/home/tim-external/ros_ws/install \
+# -v cache/humble/log:/home/tim-external/ros_ws/log \
+# -v configFiles:/home/tim-external/ros_ws/configFiles \
+# -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab \
+# fs3d_benchmark:latest
+
+
+
+
 
 
 
