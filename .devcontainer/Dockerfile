@@ -144,27 +144,27 @@ CMD ["/bin/bash"]
 # --entrypoint "./ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
 #docker run --rm -t -i --user tim-external --ipc=host --name run1 \
 #  --entrypoint /bin/bash \
-#docker run --rm -t -i -d --ipc=host --name run1 \
-#--entrypoint "./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
-# -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
-# -v "$(pwd)"/cache/humble/build:/home/tim-external/ros_ws/build:z \
-# -v "$(pwd)"/cache/humble/install:/home/tim-external/ros_ws/install:z \
-# -v "$(pwd)"/cache/humble/log:/home/tim-external/ros_ws/log:z \
-# -v "$(pwd)"/configFiles:/home/tim-external/ros_ws/configFiles:z \
-# -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
-# -v "$(pwd)"/src:/home/tim-external/ros_ws/src:z \
-# fs3d_benchmark:latest
+docker run --rm -t -i -d --ipc=host --name run1 \
+--entrypoint "./ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
+ -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log:z \
+ -v /home/deeprobotics/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles:z \
+ -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
+ -v /home/deeprobotics/ros_ws/src:/home/tim-external/ros_ws/src:z \
+ fs3d_benchmark:latest
 
 
-#docker run --rm -t -i --ipc=host --name run1 \
-#--entrypoint /bin/bash -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
-# -v /home/deeprobotics/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build:z \
-# -v /home/deeprobotics/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install:z \
-# -v /home/deeprobotics/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log:z \
-# -v /home/deeprobotics/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles:z \
-# -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
-# -v /home/deeprobotics/ros_ws/src:/home/tim-external/ros_ws/src:z \
-# fs3d_benchmark:latest
+docker run --rm -t -i --ipc=host --name run1 \
+--entrypoint /bin/bash -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install:z \
+ -v /home/deeprobotics/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log:z \
+ -v /home/deeprobotics/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles:z \
+ -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
+ -v /home/deeprobotics/ros_ws/src:/home/tim-external/ros_ws/src:z \
+ fs3d_benchmark:latest
 
 
 # colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
