@@ -109,9 +109,9 @@ ENV SHELL=/bin/bash
 
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
 RUN #echo "source activate base">> ~/.bashrc
+RUN #echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
-RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 
 
 

@@ -3,6 +3,7 @@
   "privileged": true,
   "remoteUser": "tim-external",
   "build": {
+//    "dockerfile": "Dockerfile",
     "dockerfile": "DockerfileBaseARM",
     "args": {
       "USERNAME": "tim-external"
@@ -20,7 +21,7 @@
     "DISPLAY": "unix:0",
     "ROS_LOCALHOST_ONLY": "1",
     "ROS_DOMAIN_ID": "161",
-    "COLCON_DEFAULTS_FILE": "/home/tim-external/ros_ws/configFiles/defaultColconSettings.yaml",
+//    "COLCON_DEFAULTS_FILE": "/home/tim-external/ros_ws/configFiles/defaultColconSettings.yaml",
     "AMENT_PREFIX_PATH": "/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/opencv_tests:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg:/opt/ros/humble",
     "CMAKE_PREFIX_PATH": "/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg",
     "COLCON_PREFIX_PATH": "/home/tim-external/ros_ws/install",

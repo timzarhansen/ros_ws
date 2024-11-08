@@ -111,14 +111,12 @@ WORKDIR /home/$USERNAME/
 ENV SHELL=/bin/bash
 
 
-
-
+COPY configFiles/defaults.yaml /home/$USERNAME/.colcon/defaults.yaml
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
 RUN #echo "source activate base">> ~/.bashrc
+RUN #echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
 RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
-RUN echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
-
 #COPY . /home/$USERNAME/ros_ws
 
 #WORKDIR /home/$USERNAME/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/
@@ -143,20 +141,22 @@ CMD ["/bin/bash"]
 
 # docker buildx build -t fs3d_benchmark --file .devcontainer/Dockerfile .
 # docker run fs3d_benchmark:latest
-# --entrypoint "./home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
+# --entrypoint "./ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input1.sh" \
 
 # docker run --rm -t -i -d --ipc=host --name run1 \
 #docker run --rm -t -i --user tim-external --ipc=host --name run1 \
 # --entrypoint /bin/bash \
-# -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch \
-# -v "$(pwd)"/cache/humble/build:/home/tim-external/ros_ws/build \
-# -v "$(pwd)"/cache/humble/install:/home/tim-external/ros_ws/install \
-# -v "$(pwd)"/cache/humble/log:/home/tim-external/ros_ws/log \
-# -v "$(pwd)"/configFiles:/home/tim-external/ros_ws/configFiles \
-# -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab \
-# -v "$(pwd)"/src:/home/tim-external/ros_ws/src \
+# -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
+# -v "$(pwd)"/cache/humble/build:/home/tim-external/ros_ws/build:z \
+# -v "$(pwd)"/cache/humble/install:/home/tim-external/ros_ws/install:z \
+# -v "$(pwd)"/cache/humble/log:/home/tim-external/ros_ws/log:z \
+# -v "$(pwd)"/configFiles:/home/tim-external/ros_ws/configFiles:z \
+# -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
+# -v "$(pwd)"/src:/home/tim-external/ros_ws/src:z \
 # fs3d_benchmark:latest
 
-
-
-
+# colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+# colcon build --packages-select fsregistration --event-handlers console_direct+ --cmake-args -DCMAKE_VERBOSE_MAKEFILE=ON
+#
+#
+# "./ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/allRunScripts/input2.sh"
