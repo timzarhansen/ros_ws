@@ -26,7 +26,7 @@ source /home/ws/install/setup.bash
 
 
 sudo rm -r install/* build/* log/*
-
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 
 #export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
@@ -80,10 +80,7 @@ configFiles/predatorNothing.yaml
 
 
 
-rmin
-rmax 
-levelPotential Rotation 0.01
-levelPotential translation 0.1
+
 
 
 
