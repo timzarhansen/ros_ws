@@ -80,11 +80,4 @@ configFiles/predatorNothing.yaml
 
 
 
-rmin
-rmax 
-levelPotential Rotation 0.01
-levelPotential translation 0.1
-
-
-
 
