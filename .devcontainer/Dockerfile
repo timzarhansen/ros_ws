@@ -7,7 +7,7 @@ ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 #ARG DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=humble
-ENV ROS_LOCALHOST_ONLY=1
+#ENV ROS_LOCALHOST_ONLY=1
 ENV ROS_DOMAIN_ID=161
 
 #ARG DEBIAN_FRONTEND=noninteractive
@@ -96,6 +96,7 @@ RUN sudo apt install nlohmann-json3-dev -y
 RUN sudo apt install libqt5gamepad5-dev -y
 RUN sudo apt install libcgal-dev -y
 
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 COPY configFiles/requirements.txt /home/$USERNAME/install_ws
 RUN sudo pip install -r /home/$USERNAME/install_ws/requirements.txt
 #RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
@@ -154,10 +155,8 @@ CMD ["/bin/bash"]
 # -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
 # -v /home/deeprobotics/ros_ws/src:/home/tim-external/ros_ws/src:z \
 # fs3d_benchmark:latest
-#
-#
-#
-#
+
+
 #docker run --rm -t -i --ipc=host --name run1 \
 #--entrypoint /bin/bash \
 # -v /home/deeprobotics/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
@@ -168,6 +167,23 @@ CMD ["/bin/bash"]
 # -v /home/deeprobotics/localDocuments/matlabMatchingFiles:/home/tim-external/matlab:z \
 # -v /home/deeprobotics/ros_ws/src:/home/tim-external/ros_ws/src:z \
 # fs3d_benchmark:latest
+
+
+
+#this is for mac running missing: 12+
+#docker run --rm -t -i -d --ipc=host --name run6 \
+#--entrypoint "./ros_ws/src/fsregistration/pythonScripts/matchingProfiling/runScripts/runNormalizationTest/input6.sh" \
+# -v /Users/timhansen/Documents/dataFolder/3dmatch:/home/tim-external/dataFolder/3dmatch:z \
+# -v /Users/timhansen/Documents/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build:z \
+# -v /Users/timhansen/Documents/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install:z \
+# -v /Users/timhansen/Documents/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log:z \
+# -v /Users/timhansen/Documents/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles:z \
+# -v /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:z \
+# -v /Users/timhansen/Documents/ros_ws/src:/home/tim-external/ros_ws/src:z \
+# fs3d_benchmark:latest
+
+
+
 
 
 # colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release

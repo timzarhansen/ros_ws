@@ -19,7 +19,7 @@
   },
   "containerEnv": {
     "DISPLAY": "docker.for.mac.host.internal:0",
-    "ROS_LOCALHOST_ONLY": "1",
+//    "ROS_LOCALHOST_ONLY": "1",
     "ROS_DOMAIN_ID": "161",
 //    "COLCON_DEFAULTS_FILE": "/home/tim-external/ros_ws/configFiles/defaultColconSettings.yaml",
     "AMENT_PREFIX_PATH": "/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/opencv_tests:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg:/opt/ros/humble",
@@ -34,9 +34,10 @@
     "ROS_VERSION": "2"
   },
   "runArgs": [
-    "--net=host",
-    "-e", "DISPLAY=docker.for.mac.host.internal:0",
-    "-p", "8888:8888"
+    "--net=host"
+//    "-e", "DISPLAY=docker.for.mac.host.internal:0",
+//    "-p", "8888:8888",
+//    "-p", "1234:1234"
   ],
   "mounts": [
 //    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
@@ -46,8 +47,8 @@
     "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind,consistency=cached",
-    "source=/Users/timhansen/Documents/dataFolder/3dmatch,target=/home/tim-external/dataFolder/3dmatch,type=bind,consistency=cached",
-//    "source=/home/tim-external/tensorboard,target=/workspace/tensorboard,type=bind,consistency=cached"
+    "source=/Users/timhansen/Documents/dataFolder,target=/home/tim-external/dataFolder,type=bind,consistency=cached",
+    //    "source=/home/tim-external/tensorboard,target=/workspace/tensorboard,type=bind,consistency=cached"
     "source=/Users/timhansen/Documents/MATLAB/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
   ],
 //  "onCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y",

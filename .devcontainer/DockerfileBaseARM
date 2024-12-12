@@ -44,6 +44,8 @@ RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-dev-tools -y
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-desktop -y
+RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-foxglove-bridge -y
+
 #RUN source /opt/ros/$ROS_DISTRO/setup.bash
 
 
@@ -99,7 +101,7 @@ RUN sudo apt install fftw3 fftw3-dev -y
 RUN sudo apt install nlohmann-json3-dev -y
 RUN sudo apt install libqt5gamepad5-dev -y
 RUN sudo apt install libcgal-dev -y
-RUN sudo apt install unzip nano -y
+RUN sudo apt install unzip nano net-tools nmap -y
 
 
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
