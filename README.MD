@@ -47,7 +47,11 @@ done
 echo "$env_string"
 ```
 
-
+```
+git clone https://github.com/PRBonn/kiss-icp.git
+cd kiss-icp
+make editable
+```
 
 # local llama opn gpu server 
 ```

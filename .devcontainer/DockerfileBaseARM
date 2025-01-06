@@ -1,5 +1,6 @@
 FROM ubuntu:22.04
 
+ENV ES_JAVA_OPTS="-XX:UseSSE=0"
 
 
 ARG USERNAME=tim-external

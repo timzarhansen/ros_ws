@@ -1,0 +1,45 @@
+services:
+  devcontainer:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:UseSVE=0
+      - CLI_JAVA_OPTS=-XX:UseSVE=0
+      - node.name=elasticsearch
+      - cluster.name=es-argilla-local
+      - discovery.type=single-node
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - xpack.security.enabled=false
+      - DISPLAY=docker.for.mac.host.internal:0
+      - ROS_DOMAIN_ID=161
+      - AMENT_PREFIX_PATH=/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/opencv_tests:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg:/opt/ros/humble
+      - CMAKE_PREFIX_PATH=/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg
+      - COLCON_PREFIX_PATH=/home/tim-external/ros_ws/install
+      - LD_LIBRARY_PATH=/home/tim-external/ros_ws/install/waterlinked_a50/lib:/home/tim-external/ros_ws/install/fsregistration/lib:/home/tim-external/ros_ws/install/soft20/lib:/home/tim-external/ros_ws/install/ros2_kitti_publishers/lib:/home/tim-external/ros_ws/install/px4_msgs/lib:/home/tim-external/ros_ws/install/ping360_sonar_msgs/lib:/home/tim-external/ros_ws/install/mocap4r2_msgs/lib:/home/tim-external/ros_ws/install/micron_driver_ros/lib:/home/tim-external/ros_ws/install/image_geometry/lib:/home/tim-external/ros_ws/install/cv_bridge/lib:/home/tim-external/ros_ws/install/commonbluerovmsg/lib:/home/tim-external/ros_ws/install/asvcommonmsg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib
+      - PKG_CONFIG_PATH=
+      - PYTHONPATH=/home/tim-external/ros_ws/install/bluerov2common/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/waterlinked_a50/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/fsregistration/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/px4_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/ping360_sonar/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/ping360_sonar_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/build/opencv_tests:/home/tim-external/ros_ws/install/opencv_tests/lib/python3.10/site-packages:/home/tim-external/ros_ws/install/mocap4r2_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/micron_driver_ros/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/image_geometry/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/cv_bridge/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/commonbluerovmsg/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/asvcommonmsg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages
+      - PYTHONUNBUFFERED=1
+      - ROS_DISTRO=humble
+      - ROS_PYTHON_VERSION=3
+      - ROS_VERSION=2
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+    volumes:
+#      - ../..:/workspaces:cached
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+
+    # Overrides default command so things don't shut down after the process ends.
+#    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: "host"

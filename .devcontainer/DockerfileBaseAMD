@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM --platform=linux/amd64 amd64/ubuntu:22.04
 
 
 
@@ -44,24 +44,26 @@ RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-dev-tools -y
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-desktop -y
+RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-foxglove-bridge -y
+
 #RUN source /opt/ros/$ROS_DISTRO/setup.bash
 
 
-RUN sudo apt remove libopencv-dev python3-opencv -y
-RUN sudo apt purge libopencv-dev python3-opencv -y
-#opencv
-WORKDIR /home/$USERNAME/install_ws/opencvInstall
-
-RUN git clone https://github.com/opencv/opencv.git
-RUN cd opencv && git checkout 4.9.0
-RUN git clone https://github.com/opencv/opencv_contrib.git
-RUN cd opencv_contrib && git checkout 4.9.0
-RUN #mkdir /install_ws/opencvInstall/build
-WORKDIR /home/$USERNAME/install_ws/opencvInstall/build
-
-RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
-RUN cmake --build . --config Release -- -j 16
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
+#RUN sudo apt remove libopencv-dev python3-opencv -y
+#RUN sudo apt purge libopencv-dev python3-opencv -y
+##opencv
+#WORKDIR /home/$USERNAME/install_ws/opencvInstall
+#
+#RUN git clone https://github.com/opencv/opencv.git
+#RUN cd opencv && git checkout 4.9.0
+#RUN git clone https://github.com/opencv/opencv_contrib.git
+#RUN cd opencv_contrib && git checkout 4.9.0
+#RUN #mkdir /install_ws/opencvInstall/build
+#WORKDIR /home/$USERNAME/install_ws/opencvInstall/build
+#
+#RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
+#RUN cmake --build . --config Release -- -j 16
+#RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
 
 
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install -y libboost-all-dev
@@ -83,6 +85,13 @@ WORKDIR /home/$USERNAME/install_ws/pcl/build
 RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 RUN make -j 16
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install
+#sudo apt install libpcl-dev -y
+
+
+
+
+
+
 
 
 # custom stuff
@@ -92,8 +101,10 @@ RUN sudo apt install fftw3 fftw3-dev -y
 RUN sudo apt install nlohmann-json3-dev -y
 RUN sudo apt install libqt5gamepad5-dev -y
 RUN sudo apt install libcgal-dev -y
-RUN sudo apt install unzip -y
+RUN sudo apt install unzip nano net-tools nmap -y
 
+
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 COPY configFiles/requirements.txt /home/$USERNAME/install_ws
 RUN sudo pip install -r /home/$USERNAME/install_ws/requirements.txt
 #RUN pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cpu
