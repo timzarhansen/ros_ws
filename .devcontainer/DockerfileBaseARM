@@ -105,6 +105,18 @@ RUN sudo apt install libcgal-dev -y
 RUN sudo apt install unzip nano net-tools nmap -y
 
 
+# current fix for M4 apple 15.2 system. uses amazon JDK instead of OPENJDK
+RUN wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
+echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
+RUN sudo apt update -y
+RUN sudo apt install  java-21-amazon-corretto-jdk -y
+
+
+
+
+
+
+
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 COPY configFiles/requirements.txt /home/$USERNAME/install_ws
 RUN sudo pip install -r /home/$USERNAME/install_ws/requirements.txt

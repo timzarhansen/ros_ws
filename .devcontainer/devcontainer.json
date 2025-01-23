@@ -4,67 +4,10 @@
 	"remoteUser": "tim-external",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
-//  "build": {
-////    "dockerfile": "Dockerfile",
-//    "dockerfile": "DockerfileBaseARM",
-//    "args": {
-//      "USERNAME": "tim-external"
-//    },
-//    "context": ".."
-//  },
-  "workspaceFolder": "/home/tim-external/ros_ws",
-//  "workspaceMount": "source=${localWorkspaceFolder}/src,target=/home/tim-external/ros_ws/src,type=bind",
+//  "workspaceFolder": "/home/tim-external/ros_ws",
   "customizations": {
     "jetbrains": {
       "backend": "Clion"
     },
   },
-//  "containerEnv": {
-//    "DISPLAY": "docker.for.mac.host.internal:0",
-////   "ROS_LOCALHOST_ONLY": "1",
-//    "ROS_DOMAIN_ID": "161",
-////    "COLCON_DEFAULTS_FILE": "/home/tim-external/ros_ws/configFiles/defaultColconSettings.yaml",
-//    "AMENT_PREFIX_PATH": "/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/opencv_tests:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg:/opt/ros/humble",
-//    "CMAKE_PREFIX_PATH": "/home/tim-external/ros_ws/install/gui_bluerov:/home/tim-external/ros_ws/install/bluerov2common:/home/tim-external/ros_ws/install/waterlinked_a50:/home/tim-external/ros_ws/install/vision_opencv:/home/tim-external/ros_ws/install/fsregistration:/home/tim-external/ros_ws/install/soft20:/home/tim-external/ros_ws/install/ros2_kitti_publishers:/home/tim-external/ros_ws/install/px4_msgs:/home/tim-external/ros_ws/install/ping360_sonar:/home/tim-external/ros_ws/install/ping360_sonar_msgs:/home/tim-external/ros_ws/install/mocap4r2_msgs:/home/tim-external/ros_ws/install/micron_driver_ros:/home/tim-external/ros_ws/install/image_geometry:/home/tim-external/ros_ws/install/cv_bridge:/home/tim-external/ros_ws/install/commonbluerovmsg:/home/tim-external/ros_ws/install/bluespace_ai_xsens_mti_driver:/home/tim-external/ros_ws/install/asvcommonmsg",
-//    "COLCON_PREFIX_PATH": "/home/tim-external/ros_ws/install",
-//    "LD_LIBRARY_PATH": "/home/tim-external/ros_ws/install/waterlinked_a50/lib:/home/tim-external/ros_ws/install/fsregistration/lib:/home/tim-external/ros_ws/install/soft20/lib:/home/tim-external/ros_ws/install/ros2_kitti_publishers/lib:/home/tim-external/ros_ws/install/px4_msgs/lib:/home/tim-external/ros_ws/install/ping360_sonar_msgs/lib:/home/tim-external/ros_ws/install/mocap4r2_msgs/lib:/home/tim-external/ros_ws/install/micron_driver_ros/lib:/home/tim-external/ros_ws/install/image_geometry/lib:/home/tim-external/ros_ws/install/cv_bridge/lib:/home/tim-external/ros_ws/install/commonbluerovmsg/lib:/home/tim-external/ros_ws/install/asvcommonmsg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
-//    "PKG_CONFIG_PATH": "",
-//    "PYTHONPATH": "/home/tim-external/ros_ws/install/bluerov2common/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/waterlinked_a50/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/fsregistration/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/px4_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/ping360_sonar/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/ping360_sonar_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/build/opencv_tests:/home/tim-external/ros_ws/install/opencv_tests/lib/python3.10/site-packages:/home/tim-external/ros_ws/install/mocap4r2_msgs/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/micron_driver_ros/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/image_geometry/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/cv_bridge/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/commonbluerovmsg/local/lib/python3.10/dist-packages:/home/tim-external/ros_ws/install/asvcommonmsg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages",
-//    "PYTHONUNBUFFERED": "1",
-//    "ROS_DISTRO": "humble",
-//    "ROS_PYTHON_VERSION": "3",
-//    "ROS_VERSION": "2",
-//    "ES_JAVA_OPTS": "-XX:UseSSE=0"
-//  },
-//  "remoteEnv": {
-//    "ES_JAVA_OPTS": "-Xms512m -Xmx512m -XX:UseSVE=0",
-//    "CLI_JAVA_OPTS": "-XX:UseSSE=0"
-//  },
-//  "runArgs": [
-//    "--net=host"
-////    "-e", "DISPLAY=docker.for.mac.host.internal:0",
-////    "-p", "8888:8888",
-////    "-p", "1234:1234"
-//  ],
-//  "mounts": [
-////    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
-////    "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached",
-//    "source=${localWorkspaceFolder}/cache/humble/build,target=/home/tim-external/ros_ws/build,type=bind,consistency=cached",
-//    "source=${localWorkspaceFolder}/cache/humble/install,target=/home/tim-external/ros_ws/install,type=bind,consistency=cached",
-//    "source=${localWorkspaceFolder}/cache/humble/log,target=/home/tim-external/ros_ws/log,type=bind,consistency=cached",
-//    "source=${localWorkspaceFolder}/configFiles,target=/home/tim-external/ros_ws/configFiles,type=bind,consistency=cached",
-//    "source=${localWorkspaceFolder}/otherPackages,target=/home/tim-external/otherPackages,type=bind,consistency=cached",
-//    "source=/Users/timhansen/Documents/dataFolder,target=/home/tim-external/dataFolder,type=bind,consistency=cached",
-//    // "source=${localWorkspaceFolder}/src,target=/home/tim-external/ros_ws/src,type=bind,consistency=cached",
-//    //    "source=/home/tim-external/tensorboard,target=/workspace/tensorboard,type=bind,consistency=cached"
-//    // "source=/Users/timhansen/Documents/MATLAB/matlabTestEnvironment,target=/home/tim-external/matlab,type=bind" // this is matlab path for
-//  ],
-////  "onCreateCommand": "sudo rosdep update && sudo rosdep install --rosdistro humble --from-paths /home/tim-external/ros_ws/src --ignore-src -y",
-//  "onCreateCommand": "sudo rosdep update",
-////  "onCreateCommand": "ES_JAVA_OPTS=\"-XX:UseSSE=0\"",
-//
-//  "postCreateCommand": "sudo chown -R tim-external /home/tim-external/",
-////  "postStartCommand": ". /opt/ros/humble/setup.sh && source /opt/ros/humble/setup.bash",
-////  "postAttachCommand": ". /opt/ros/humble/setup.sh && source /opt/ros/humble/setup.bash"
-//  //  "postCreateCommand": "./opt/ros/humble/setup.bash"
 }
