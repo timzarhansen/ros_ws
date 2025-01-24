@@ -36,6 +36,7 @@ services:
       - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
       - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
       - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
       - ../otherPackages:/home/tim-external/otherPackages:cached,
       - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
     ports:
