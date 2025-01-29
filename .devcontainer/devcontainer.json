@@ -4,7 +4,7 @@
 	"remoteUser": "tim-external",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
-//  "workspaceFolder": "/home/tim-external/ros_ws",
+  "workspaceFolder": "/home/tim-external/volumeROS",
   "customizations": {
     "jetbrains": {
       "backend": "Clion"
