@@ -50,7 +50,7 @@ for numberOfSkips_ in numberOfSkips:
                             "pose_topic_name": '/'+str(robot_)+'/poseArray',
                             "gt_topic_name": '/'+str(robot_)+'/gt_xyz',
                             "time_until_save": 15,  # after 5 minutes
-                            "which_registration": str(robot_),
+                            "which_registration": str(registration),
                             "scan_radius_max": scanRadiusMax_
                         }
                     }
