@@ -1,0 +1,257 @@
+services:
+  devcontainer1:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input1.sh"
+    networks:
+      - devcontainer1_net
+
+  devcontainer2:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input2.sh"
+    networks:
+      - devcontainer2_net
+
+  devcontainer3:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input3.sh"
+    networks:
+      - devcontainer3_net
+
+  devcontainer4:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input4.sh"
+    networks:
+      - devcontainer4_net
+
+  devcontainer5:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input5.sh"
+    networks:
+      - devcontainer5_net
+
+  devcontainer6:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input6.sh"
+    networks:
+      - devcontainer6_net
+
+  devcontainer7:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input7.sh"
+    networks:
+      - devcontainer7_net
+
+  devcontainer8:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input8.sh"
+    networks:
+      - devcontainer8_net
+
+  devcontainer9:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input9.sh"
+    networks:
+      - devcontainer9_net
+
+  devcontainer10:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input10.sh"
+    networks:
+      - devcontainer10_net
+
+  devcontainer11:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input11.sh"
+    networks:
+      - devcontainer11_net
+
+  devcontainer12:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input12.sh"
+    networks:
+      - devcontainer12_net
+
+  devcontainer13:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input13.sh"
+    networks:
+      - devcontainer13_net
+
+  devcontainer14:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input14.sh"
+    networks:
+      - devcontainer14_net
+
+  devcontainer15:
+    build:
+      context: ..
+      dockerfile: .devcontainer/DockerfileBaseARM
+    volumes:
+      - ../cache/humble/build:/home/tim-external/ros_ws/build:cached,
+      - ../cache/humble/install:/home/tim-external/ros_ws/install:cached,
+      - ../cache/humble/log:/home/tim-external/ros_ws/log:cached,
+      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
+      - ../src:/home/tim-external/ros_ws/src:cached,
+      - ../otherPackages:/home/tim-external/otherPackages:cached,
+      - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+    entrypoint: "/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/runningDockerBenchmarks/input15.sh"
+    networks:
+      - devcontainer15_net
+
+networks:
+  devcontainer1_net:
+  devcontainer2_net:
+  devcontainer3_net:
+  devcontainer4_net:
+  devcontainer5_net:
+  devcontainer6_net:
+  devcontainer7_net:
+  devcontainer8_net:
+  devcontainer9_net:
+  devcontainer10_net:
+  devcontainer11_net:
+  devcontainer12_net:
+  devcontainer13_net:
+  devcontainer14_net:
+  devcontainer15_net:

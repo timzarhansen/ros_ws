@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/DockerfileBaseARM
-
+    privileged: true    # <-- this one
     environment:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:UseSVE=0
       - CLI_JAVA_OPTS=-XX:UseSVE=0
@@ -39,8 +39,10 @@ services:
       - ../src:/home/tim-external/ros_ws/src:cached,
       - ../otherPackages:/home/tim-external/otherPackages:cached,
       - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
+      - /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:cached,
     ports:
       - 127.0.0.1:8765:8765
+      - 127.0.0.1:2000:2000
     # Overrides default command so things don't shut down after the process ends.
 #    command: sleep infinity
 
