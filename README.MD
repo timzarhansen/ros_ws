@@ -82,6 +82,12 @@ xhost local:root
 ```
 configFiles/predatorNothing.yaml
 ```
+# Running python file in background in ssh
+```
+nohup python your_script.py > output.log 2>&1 &
+```
+
+
 
 
 
