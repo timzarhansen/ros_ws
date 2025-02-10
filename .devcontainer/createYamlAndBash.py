@@ -5,7 +5,7 @@ import yaml
 import os
 import docker
 from prompt_toolkit.utils import to_str
-currentNumberScript = 0
+currentNumberScript = 1
 
 # docker run -t -i --rm --ipc=host -v /home/deeprobotics/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build \
 #                                  -v /home/deeprobotics/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install \
