@@ -23,7 +23,7 @@ currentNumberScript = 1
 registrationList = ["fs3d32","fs3d64"]
 numberOfSkips = [1,2,5,10,15,20,30]
 robot = ["Alpha","Bob","Carol"]
-scanRadiusMax = [15,25,35]
+scanRadiusMax = [15.0,25.0,35.0]
 
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
