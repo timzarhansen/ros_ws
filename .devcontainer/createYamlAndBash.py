@@ -94,7 +94,7 @@ for numberOfSkips_ in numberOfSkips:
                     if (total_memory_usage < 45):
                         print("running container number: ", currentNumberScript)
                         container = client.containers.run(
-                            image='computationimageodometry',
+                            image='computationimageodometryamd',
                             command=bashFileNameDocker,
                             volumes={
                                 computerPath+'/ros_ws/cache/humble/build': {
