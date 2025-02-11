@@ -1,0 +1,13 @@
+{
+	"name": "ROS 2 Development Container",
+	"privileged": true,
+	"remoteUser": "tim-external",
+	"dockerComposeFile": "docker-composeDeepRobotics.yml",
+	"service": "devcontainer",
+  "workspaceFolder": "/home/tim-external/volumeROS",
+  "customizations": {
+    "jetbrains": {
+      "backend": "Clion"
+    },
+  },
+}

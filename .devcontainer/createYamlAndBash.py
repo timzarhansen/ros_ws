@@ -17,6 +17,8 @@ currentNumberScript = 1
 
 
 
+# computerPath = '/home/deeprobotics'
+computerPath = '/Users/timhansen/Documents'
 
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
@@ -56,9 +58,9 @@ for numberOfSkips_ in numberOfSkips:
                     }
                 }
 
-                configFileNameHost = '/home/deeprobotics/ros_ws/src/UnderwaterSlam/params/pythonGeneratedParams/config'+str(currentNumberScript)+'.yaml'
+                configFileNameHost = computerPath+'/ros_ws/src/UnderwaterSlam/params/pythonGeneratedParams/config'+str(currentNumberScript)+'.yaml'
                 configFileNameDocker = '/home/tim-external/ros_ws/src/UnderwaterSlam/params/pythonGeneratedParams/config'+str(currentNumberScript)+'.yaml'
-                bashFileNameHost = '/home/deeprobotics/ros_ws/src/UnderwaterSlam/bashScript/bashScriptsPythonGenerated/myscript'+str(currentNumberScript)+'.sh'
+                bashFileNameHost = computerPath+'/ros_ws/src/UnderwaterSlam/bashScript/bashScriptsPythonGenerated/myscript'+str(currentNumberScript)+'.sh'
                 bashFileNameDocker = '/home/tim-external/ros_ws/src/UnderwaterSlam/bashScript/bashScriptsPythonGenerated/myscript'+str(currentNumberScript)+'.sh'
                 with open(configFileNameHost, 'w') as file:
                     yaml.dump(config, file, default_flow_style=False)
@@ -95,17 +97,17 @@ for numberOfSkips_ in numberOfSkips:
                             image='computationimageodometry',
                             command=bashFileNameDocker,
                             volumes={
-                                '/home/deeprobotics/ros_ws/cache/humble/build': {
+                                computerPath+'/ros_ws/cache/humble/build': {
                                     'bind': '/home/tim-external/ros_ws/build', 'mode': 'cached'},
-                                '/home/deeprobotics/ros_ws/cache/humble/install': {
+                                computerPath+'/ros_ws/cache/humble/install': {
                                     'bind': '/home/tim-external/ros_ws/install', 'mode': 'cached'},
-                                '/home/deeprobotics/ros_ws/cache/humble/log': {
+                                computerPath+'/ros_ws/cache/humble/log': {
                                     'bind': '/home/tim-external/ros_ws/log', 'mode': 'cached'},
-                                '/home/deeprobotics/ros_ws/configFiles': {
+                                computerPath+'/ros_ws/configFiles': {
                                     'bind': '/home/tim-external/ros_ws/configFiles', 'mode': 'cached'},
-                                '/home/deeprobotics/ros_ws/src': {
+                                computerPath+'/ros_ws/src': {
                                     'bind': '/home/tim-external/ros_ws/src','mode': 'cached'},
-                                '/home/deeprobotics/dataFolder': {
+                                computerPath+'/dataFolder': {
                                     'bind': '/home/tim-external/dataFolder','mode': 'cached'}
                             },
                             # network='devcontainer'+str(i)+'_net',
