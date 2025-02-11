@@ -2,7 +2,7 @@ services:
   devcontainer:
     build:
       context: ..
-      dockerfile: ../.devcontainerDeepRobotics/DockerfileBaseARM
+      dockerfile: .devcontainerDeepRobotics/DockerfileBaseARM
     privileged: true    # <-- this one
     environment:
 #      - ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:UseSVE=0
