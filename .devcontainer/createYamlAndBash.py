@@ -15,7 +15,13 @@ currentNumberScript = 1
 #                                 -v /home/deeprobotics/dataFolder:/home/tim-external/dataFolder \
 # computationimageodometry
 
-
+# docker run -t -i --rm --ipc=host -v /home/nuc01/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build \
+#                                  -v /home/nuc01/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install \
+#                                 -v /home/nuc01/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log \
+#                                 -v /home/nuc01/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles \
+#                                 -v /home/nuc01/ros_ws/src:/home/tim-external/ros_ws/src \
+#                                 -v /home/nuc01/dataFolder:/home/tim-external/dataFolder \
+# computationimageodometryarm
 
 # computerPath = '/home/deeprobotics'
 computerPath = '/Users/timhansen/Documents'
