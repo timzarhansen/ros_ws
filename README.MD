@@ -34,6 +34,8 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 #export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 #export `ROS_DOMAIN_ID`=161
 #export COLCON_DEFAULTS_FILE=~/defaultColconSettings.yaml
+
+sudo chown -R tim-external /home/tim-external/
 ```
 
 after the setup copy the output of this to the clion environmentVariables
