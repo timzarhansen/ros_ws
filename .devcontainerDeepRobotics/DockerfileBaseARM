@@ -74,7 +74,7 @@ RUN git clone https://github.com/borglab/gtsam.git
 WORKDIR /home/$USERNAME/install_ws/gtsam
 RUN git checkout 4.2a7
 WORKDIR /home/$USERNAME/install_ws/gtsam/build
-RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
+RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_MARCHNATIVE=OFF
 RUN make -j 10
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
 # PCL install
@@ -83,7 +83,7 @@ RUN git clone https://github.com/PointCloudLibrary/pcl
 WORKDIR /home/$USERNAME/install_ws/pcl
 RUN git checkout pcl-1.14.1
 WORKDIR /home/$USERNAME/install_ws/pcl/build
-RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGTSAM_USE_SYSTEM_EIGEN=ON -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_MARCHNATIVE=OFF ..
 RUN make -j 16
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install
 
