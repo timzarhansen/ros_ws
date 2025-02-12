@@ -23,8 +23,8 @@ currentNumberScript = 1
 #                                 -v /home/nuc01/dataFolder:/home/tim-external/dataFolder \
 # computationimageodometryarm
 
-# computerPath = '/home/deeprobotics'
-computerPath = '/Users/timhansen/Documents'
+computerPath = '/home/deeprobotics'
+# computerPath = '/Users/timhansen/Documents'
 
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
