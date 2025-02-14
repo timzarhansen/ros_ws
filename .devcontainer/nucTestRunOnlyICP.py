@@ -83,7 +83,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.2\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
