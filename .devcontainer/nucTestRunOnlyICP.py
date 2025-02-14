@@ -99,7 +99,7 @@ for numberOfSkips_ in numberOfSkips:
                         (stats := c.stats(stream=False)))
                     print("Memory usage is: ", total_memory_usage)
 
-                    if (total_memory_usage < 10):
+                    if (total_memory_usage < 15):
                         print("running container number: ", currentNumberScript)
                         container = client.containers.run(
                             image='computationimageodometryamd',
