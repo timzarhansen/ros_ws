@@ -46,11 +46,11 @@ client = docker.from_env()
 
 
 
-for numberOfSkips_ in numberOfSkips:
-    for robot_ in robot:
-        for scanRadiusMax_ in scanRadiusMax:
-            for registration in registrationList:
 
+for robot_ in robot:
+    for scanRadiusMax_ in scanRadiusMax:
+        for registration in registrationList:
+            for numberOfSkips_ in numberOfSkips:
                 print("Configuring everything")
                 config = {
                     "/odometrypublisher": {
