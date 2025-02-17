@@ -24,13 +24,13 @@ currentNumberScript = 1
 # computationimageodometryarm
 
 # computerPath = '/home/deeprobotics'
-# computerPath = '/Users/timhansen/Documents'
-computerPath = '/home/nuc01'
+computerPath = '/Users/timhansen/Documents'
+# computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["fs3d32ICP","fs3d32GICP","fs3d64ICP","fs3d64GICP"]
+registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [1,5,10,15]
+numberOfSkips = [1,2,5]
 
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
@@ -83,11 +83,10 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.2\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
-
 
                 os.chmod(bashFileNameHost, 0o755)
                 print("created scripts and config files")
@@ -99,10 +98,10 @@ for numberOfSkips_ in numberOfSkips:
                         (stats := c.stats(stream=False)))
                     print("Memory usage is: ", total_memory_usage)
 
-                    if (total_memory_usage < 15):
+                    if (total_memory_usage < 50):
                         print("running container number: ", currentNumberScript)
                         container = client.containers.run(
-                            image='computationimageodometryamd',
+                            image='computationimageodometry',
                             command=bashFileNameDocker,
                             volumes={
                                 computerPath+'/ros_ws/cache/humble/build': {
@@ -122,7 +121,7 @@ for numberOfSkips_ in numberOfSkips:
                             detach=True,
                             remove=True
                         )
-                        sleep(400)
+                        sleep(200)
                         print("breaking out of while loop")
                         break
                     sleep(400)

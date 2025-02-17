@@ -28,9 +28,9 @@ currentNumberScript = 1
 computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["ICP","GICP"]
+registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [1,5,10,15]
+numberOfSkips = [1,2,5,10,15]
 
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
@@ -125,7 +125,7 @@ for robot_ in robot:
                         sleep(1500)
                         print("breaking out of while loop")
                         break
-                    sleep(400)
+                    sleep(500)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1
 
