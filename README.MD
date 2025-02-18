@@ -36,6 +36,7 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 #export COLCON_DEFAULTS_FILE=~/defaultColconSettings.yaml
 
 sudo chown -R tim-external /home/tim-external/
+sudo chown -R tim-external /home/tim-external/ros_ws
 ```
 
 after the setup copy the output of this to the clion environmentVariables

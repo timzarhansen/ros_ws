@@ -75,6 +75,7 @@ for robot_ in robot:
 
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
+                    file.write("ROS_LOCALHOST_ONLY=1\n")
                     file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")

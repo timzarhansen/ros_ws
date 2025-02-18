@@ -34,7 +34,7 @@ computerPath = '/home/deeprobotics'
 # scanRadiusMax = [15.0,25.0,35.0]
 
 registrationList = ["ICP"]
-numberOfSkips = [1,2]
+numberOfSkips = [2,5]
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
 def quoted_presenter(dumper, data):
@@ -77,6 +77,7 @@ for numberOfSkips_ in numberOfSkips:
 
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
+                    file.write("ROS_LOCALHOST_ONLY=1\n")
                     file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")

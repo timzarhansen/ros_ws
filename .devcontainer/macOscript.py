@@ -30,7 +30,7 @@ computerPath = '/Users/timhansen/Documents'
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
 registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [1,2]
+numberOfSkips = [2,5]
 
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
@@ -75,6 +75,7 @@ for numberOfSkips_ in numberOfSkips:
 
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
+                    file.write("ROS_LOCALHOST_ONLY=1\n")
                     file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")
@@ -83,7 +84,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.5\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
