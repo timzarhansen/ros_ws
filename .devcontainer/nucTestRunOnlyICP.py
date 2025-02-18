@@ -121,7 +121,7 @@ for robot_ in robot:
                             detach=True,
                             remove=True
                         )
-                        sleep(1500)
+                        sleep(15)
                         print("breaking out of while loop")
                         break
                     sleep(500)
