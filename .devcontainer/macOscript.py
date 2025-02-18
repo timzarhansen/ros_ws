@@ -30,7 +30,7 @@ computerPath = '/Users/timhansen/Documents'
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
 registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [1,2,5]
+numberOfSkips = [1,2]
 
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
@@ -59,7 +59,7 @@ for numberOfSkips_ in numberOfSkips:
                             "pcl_topic_name": '/'+str(robot_)+'/velodyne_points',
                             "pose_topic_name": '/'+str(robot_)+'/poseArray',
                             "gt_topic_name": '/'+str(robot_)+'/gt_xyz',
-                            "time_until_save": 15,  # after 5 minutes
+                            "time_until_save": 5,  # after 5 minutes
                             "which_registration": str(registration),
                             "scan_radius_max": scanRadiusMax_
                         }
@@ -83,7 +83,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.5\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
@@ -121,7 +121,7 @@ for numberOfSkips_ in numberOfSkips:
                             detach=True,
                             remove=True
                         )
-                        sleep(200)
+                        sleep(5)
                         print("breaking out of while loop")
                         break
                     sleep(400)
