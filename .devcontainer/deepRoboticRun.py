@@ -34,8 +34,8 @@ computerPath = '/home/deeprobotics'
 # scanRadiusMax = [15.0,25.0,35.0]
 
 registrationList = ["ICP"]
-numberOfSkips = [2,5]
-robot = ["Alpha","Bob","Carol"]
+numberOfSkips = [5]
+robot = ["Alpha"]
 scanRadiusMax = [25.0]
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
