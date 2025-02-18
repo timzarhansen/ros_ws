@@ -76,7 +76,7 @@ for numberOfSkips_ in numberOfSkips:
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
                     file.write("ROS_LOCALHOST_ONLY=1\n")
-                    file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
+                    # file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")
                     file.write("ros2 run fsregistration ros2ServiceRegistrationFS3D & >/dev/null 2>&1\n")
@@ -84,7 +84,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 2.0\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
@@ -120,7 +120,7 @@ for numberOfSkips_ in numberOfSkips:
                             },
                             # network='devcontainer'+str(i)+'_net',
                             detach=True,
-                            remove=True
+                            # remove=True
                         )
                         sleep(5)
                         print("breaking out of while loop")
