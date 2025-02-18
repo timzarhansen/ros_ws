@@ -30,7 +30,7 @@ computerPath = '/Users/timhansen/Documents'
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
 registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [2,5]
+numberOfSkips = [5]
 
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
