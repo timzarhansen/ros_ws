@@ -28,7 +28,7 @@ currentNumberScript = 1
 computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["ICP"]
+registrationList = ["ICP","GICP"]
 numberOfSkips = [1,2,5,10,15]
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [25.0]
@@ -73,8 +73,8 @@ for robot_ in robot:
 
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
-                    file.write("ROS_LOCALHOST_ONLY=1\n")
-                    # file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
+                    file.write("export ROS_LOCALHOST_ONLY=1\n")
+                    file.write("export ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")
                     file.write("ros2 run fsregistration ros2ServiceRegistrationFS3D & >/dev/null 2>&1\n")
@@ -82,7 +82,7 @@ for robot_ in robot:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.01\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.2\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
@@ -98,7 +98,7 @@ for robot_ in robot:
                         (stats := c.stats(stream=False)))
                     print("Memory usage is: ", total_memory_usage)
 
-                    if (total_memory_usage < 10):
+                    if (total_memory_usage < 15):
                         print("running container number: ", currentNumberScript)
                         container = client.containers.run(
                             image='computationimageodometryamd',

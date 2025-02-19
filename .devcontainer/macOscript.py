@@ -30,9 +30,11 @@ computerPath = '/Users/timhansen/Documents'
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
 registrationList = ["ICP"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [5]
+numberOfSkips = [5,10]
 
 robot = ["Alpha","Bob","Carol"]
+# robot = ["Alpha"]
+
 scanRadiusMax = [25.0]
 
 def quoted_presenter(dumper, data):
@@ -59,7 +61,7 @@ for numberOfSkips_ in numberOfSkips:
                             "pcl_topic_name": '/'+str(robot_)+'/velodyne_points',
                             "pose_topic_name": '/'+str(robot_)+'/poseArray',
                             "gt_topic_name": '/'+str(robot_)+'/gt_xyz',
-                            "time_until_save": 5,  # after 5 minutes
+                            "time_until_save": 1,  # after 5 minutes
                             "which_registration": str(registration),
                             "scan_radius_max": scanRadiusMax_
                         }
@@ -75,8 +77,8 @@ for numberOfSkips_ in numberOfSkips:
 
                 with open(bashFileNameHost, "w") as file:
                     file.write("#!/bin/bash\n")
-                    file.write("ROS_LOCALHOST_ONLY=1\n")
-                    # file.write("ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
+                    file.write("export ROS_LOCALHOST_ONLY=1\n")
+                    file.write("export ROS_DOMAIN_ID="+str(currentNumberScript)+"\n")
                     file.write("source /opt/ros/humble/setup.bash\n")
                     file.write("source /home/tim-external/ros_ws/install/setup.bash\n")
                     file.write("ros2 run fsregistration ros2ServiceRegistrationFS3D & >/dev/null 2>&1\n")
@@ -84,7 +86,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 2.0\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 5.0\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
