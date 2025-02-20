@@ -96,38 +96,42 @@ for numberOfSkips_ in numberOfSkips:
                 print("created scripts and config files")
                 #run bash script in docker
                 while 1:
-                    containers = client.containers.list()
-                    total_memory_usage = sum(
-                        stats['memory_stats']['usage'] / (1024 ** 3) for c in containers if
-                        (stats := c.stats(stream=False)))
-                    print("Memory usage is: ", total_memory_usage)
+                    try:
+                        containers = client.containers.list()
+                        total_memory_usage = sum(
+                            stats['memory_stats']['usage'] / (1024 ** 3) for c in containers if
+                            (stats := c.stats(stream=False)))
+                        print("Memory usage is: ", total_memory_usage)
 
-                    if (total_memory_usage < 40):
-                        print("running container number: ", currentNumberScript)
-                        container = client.containers.run(
-                            image='computationimageodometryamd',
-                            command=bashFileNameDocker,
-                            volumes={
-                                computerPath+'/ros_ws/cache/humble/build': {
-                                    'bind': '/home/tim-external/ros_ws/build', 'mode': 'cached'},
-                                computerPath+'/ros_ws/cache/humble/install': {
-                                    'bind': '/home/tim-external/ros_ws/install', 'mode': 'cached'},
-                                computerPath+'/ros_ws/cache/humble/log': {
-                                    'bind': '/home/tim-external/ros_ws/log', 'mode': 'cached'},
-                                computerPath+'/ros_ws/configFiles': {
-                                    'bind': '/home/tim-external/ros_ws/configFiles', 'mode': 'cached'},
-                                computerPath+'/ros_ws/src': {
-                                    'bind': '/home/tim-external/ros_ws/src','mode': 'cached'},
-                                computerPath+'/dataFolder': {
-                                    'bind': '/home/tim-external/dataFolder','mode': 'cached'}
-                            },
-                            # network='devcontainer'+str(i)+'_net',
-                            detach=True,
-                            remove=True
-                        )
-                        sleep(1500)
-                        print("breaking out of while loop")
-                        break
+                        if (total_memory_usage < 40):
+                            print("running container number: ", currentNumberScript)
+                            container = client.containers.run(
+                                image='computationimageodometryamd',
+                                command=bashFileNameDocker,
+                                volumes={
+                                    computerPath+'/ros_ws/cache/humble/build': {
+                                        'bind': '/home/tim-external/ros_ws/build', 'mode': 'cached'},
+                                    computerPath+'/ros_ws/cache/humble/install': {
+                                        'bind': '/home/tim-external/ros_ws/install', 'mode': 'cached'},
+                                    computerPath+'/ros_ws/cache/humble/log': {
+                                        'bind': '/home/tim-external/ros_ws/log', 'mode': 'cached'},
+                                    computerPath+'/ros_ws/configFiles': {
+                                        'bind': '/home/tim-external/ros_ws/configFiles', 'mode': 'cached'},
+                                    computerPath+'/ros_ws/src': {
+                                        'bind': '/home/tim-external/ros_ws/src','mode': 'cached'},
+                                    computerPath+'/dataFolder': {
+                                        'bind': '/home/tim-external/dataFolder','mode': 'cached'}
+                                },
+                                # network='devcontainer'+str(i)+'_net',
+                                detach=True,
+                                remove=True
+                            )
+                            sleep(1500)
+                            print("breaking out of while loop")
+                            break
+                    except Exception as e:
+                        print(e)
+                        sleep(10)
                     sleep(500)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1
