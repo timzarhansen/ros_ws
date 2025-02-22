@@ -131,7 +131,7 @@ for numberOfSkips_ in numberOfSkips:
                             break
                     except Exception as e:
                         print(e)
-                        sleep(10)
+                        sleep(20)
                     sleep(500)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1

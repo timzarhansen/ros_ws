@@ -28,9 +28,9 @@ computerPath = '/Users/timhansen/Documents'
 # computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["ICP"]
+registrationList = ["fs3d32"]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [5,10]
+numberOfSkips = [5]
 
 robot = ["Alpha","Bob","Carol"]
 # robot = ["Alpha"]
@@ -86,7 +86,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 5.0\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.2\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
@@ -102,7 +102,7 @@ for numberOfSkips_ in numberOfSkips:
                             (stats := c.stats(stream=False)))
                         print("Memory usage is: ", total_memory_usage)
 
-                        if (total_memory_usage < 5):
+                        if (total_memory_usage < 20):
                             print("running container number: ", currentNumberScript)
                             container = client.containers.run(
                                 image='computationimageodometry',
@@ -125,7 +125,7 @@ for numberOfSkips_ in numberOfSkips:
                                 detach=True,
                                 # remove=True
                             )
-                            sleep(5)
+                            sleep(30)
                             print("breaking out of while loop")
                             break
                     except Exception as e:
