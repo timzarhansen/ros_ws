@@ -28,10 +28,10 @@ currentNumberScript = 1
 computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["ICP","GICP"]
+registrationList = ["fs3d32ICP","fs3d64ICP","fs3d32GICP","fs3d64GICP"]
 numberOfSkips = [1,2,5,10,15]
 robot = ["Alpha","Bob","Carol"]
-scanRadiusMax = [25.0]
+scanRadiusMax = [15.0,25.0,35.0]
 
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
