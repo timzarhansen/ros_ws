@@ -42,7 +42,7 @@ sudo chown -R tim-external /home/tim-external/ros_ws
 after the setup copy the output of this to the clion environmentVariables
 this has to be put in CMake and Run config variables. Else debug wont work
 ```
-d
+
 ```
 
 ```

@@ -131,7 +131,7 @@ for robot_ in robot:
                         print(e)
                         sleep(10)
 
-                sleep(500)
+                    sleep(500)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1
 

@@ -28,12 +28,14 @@ computerPath = '/Users/timhansen/Documents'
 # computerPath = '/home/nuc01'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["fs3d32"]
+# registrationList = ["fs3d32GICP","GICP","fs3d32ICP","ICP"]
+# registrationList = ["GICP"]
+registrationList = ["fs3d32GICP","GICP","ICP","fs3d32ICP","fs3d32"]
 # numberOfSkips = [1,2,5,10,15,20,30]
 numberOfSkips = [5]
 
-robot = ["Alpha","Bob","Carol"]
-# robot = ["Alpha"]
+# robot = ["Alpha","Bob","Carol"]
+robot = ["Alpha"]
 
 scanRadiusMax = [25.0]
 
@@ -61,7 +63,7 @@ for numberOfSkips_ in numberOfSkips:
                             "pcl_topic_name": '/'+str(robot_)+'/velodyne_points',
                             "pose_topic_name": '/'+str(robot_)+'/poseArray',
                             "gt_topic_name": '/'+str(robot_)+'/gt_xyz',
-                            "time_until_save": 1,  # after 5 minutes
+                            "time_until_save": 2,  # after 5 minutes
                             "which_registration": str(registration),
                             "scan_radius_max": scanRadiusMax_
                         }
@@ -86,7 +88,7 @@ for numberOfSkips_ in numberOfSkips:
                     file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                     file.write("pid1=$!\n")
                     file.write("\nsleep 60\n")
-                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.2\n")
+                    file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 3.0\n")
                     file.write("wait $pid1\n")
 
                 # Make the script executable
@@ -102,7 +104,7 @@ for numberOfSkips_ in numberOfSkips:
                             (stats := c.stats(stream=False)))
                         print("Memory usage is: ", total_memory_usage)
 
-                        if (total_memory_usage < 20):
+                        if (total_memory_usage < 40):
                             print("running container number: ", currentNumberScript)
                             container = client.containers.run(
                                 image='computationimageodometry',
@@ -125,13 +127,13 @@ for numberOfSkips_ in numberOfSkips:
                                 detach=True,
                                 # remove=True
                             )
-                            sleep(30)
+                            sleep(10)
                             print("breaking out of while loop")
                             break
                     except Exception as e:
                         print(e)
                         sleep(10)
-                    sleep(400)
+                    sleep(20)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1
 
