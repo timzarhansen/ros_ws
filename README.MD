@@ -42,6 +42,12 @@ sudo chown -R tim-external /home/tim-external/ros_ws
 after the setup copy the output of this to the clion environmentVariables
 this has to be put in CMake and Run config variables. Else debug wont work
 ```
+ros_env="AMENT_PREFIX_PATH CMAKE_PREFIX_PATH COLCON_PREFIX_PATH PKG_CONFIG_PATH PYTHONPATH LD_LIBRARY_PATH PATH ROS_DISTRO ROS_PYTHON_VERSION ROS_LOCALHOST_ONLY ROS_VERSION"
+env_string=""
+for e in ${ros_env}; do
+env_string+="$e=${!e};"
+done
+echo "$env_string"
 
 ```
 

@@ -28,7 +28,7 @@ computerPath = '/home/deeprobotics'
 
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
-registrationList = ["fs3d32","fs3d64"]
+registrationList = ["fs3d32","fs3d64","fs3d32IG","fs3d64IG","fs3d32IGICP","fs3d64IGICP","fs3d32IGGICP","fs3d64IGGICP"]
 numberOfSkips = [1,2,5,10,15,20,30]
 robot = ["Alpha","Bob","Carol"]
 scanRadiusMax = [15.0,25.0,35.0]
@@ -126,7 +126,7 @@ for numberOfSkips_ in numberOfSkips:
                                 detach=True,
                                 remove=True
                             )
-                            sleep(1500)
+                            sleep(500)
                             print("breaking out of while loop")
                             break
                     except Exception as e:
