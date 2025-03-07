@@ -104,7 +104,7 @@ for numberOfSkips_ in numberOfSkips:
                                 (stats := c.stats(stream=False)))
                             print("Memory usage is: ", total_memory_usage)
 
-                            if (total_memory_usage < 40):
+                            if (total_memory_usage < 30):
                                 print("running container number: ", currentNumberScript)
                                 container = client.containers.run(
                                     image='computationimageodometryamd',
@@ -127,13 +127,13 @@ for numberOfSkips_ in numberOfSkips:
                                     detach=True,
                                     remove=True
                                 )
-                                sleep(500)
+                                sleep(1000)
                                 print("breaking out of while loop")
                                 break
                         except Exception as e:
                             print(e)
                             sleep(20)
-                        sleep(500)
+                        sleep(1000)
                     print("currentNumberScript done: ", currentNumberScript)
                     currentNumberScript=currentNumberScript+1
 
