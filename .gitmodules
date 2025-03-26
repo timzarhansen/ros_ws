@@ -47,3 +47,6 @@
 [submodule "src/UnderwaterSlam"]
 	path = src/UnderwaterSlam
 	url = https://github.com/timzarhansen/UnderwaterSlam
+[submodule "src/3dmatchdiff"]
+	path = src/3dmatchdiff
+	url = https://github.com/timzarhansen/3dmatchdiff.git

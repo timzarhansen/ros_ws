@@ -1,151 +1,52 @@
-FROM ubuntu:24.04
-
-ENV ES_JAVA_OPTS="-XX:UseSSE=0"
-
-
 ARG USERNAME=tim-external
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
-#ARG DEBIAN_FRONTEND=noninteractive
-ENV ROS_DISTRO=rolling
-#ARG DEBIAN_FRONTEND=noninteractive
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
-    # [Optional] Add sudo support. Omit if you don't need to istall software after connecting.
-    && apt update \
-    && apt install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+FROM ubuntu:24.04
 
+# Update package list and install dependencies for ROS2
+RUN apt-get update && apt-get install -y curl
 
+# Add ROS2 repository key
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# Add ROS2 Lunar repository
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# Install ROS2 and Python dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    ros-lunar-desktop \
+    python3-rosdep \
+    python3-rosinstall \
+    python3-rosinstall-generator \
+    python3-wstool \
+    python3-colcon-common-extensions
+
+# Install Python pip and virtualenv
+RUN apt-get install -y python3-pip && pip3 install virtualenv
+
+# Set ROS2 environment variables
+ENV ROS_DISTRO=lunar
+ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/ros/${ROS_DISTRO}/lib:$LD_LIBRARY_PATH
+
+# Initialize and update rosdep
+RUN rosdep init && rosdep update
+
+# Create user with optional sudo support
+RUN groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
+    apt-get update && apt-get install -y sudo && \  # Optional sudo setup
+    echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && \  # Optional
+    chmod 0440 /etc/sudoers.d/$USERNAME && \  # Optional
+    mkdir -p /home/$USERNAME/ros2_ws/src && \
+    chown -R $USERNAME:$USERNAME /home/$USERNAME/ros2_ws && \
+    echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/$USERNAME/.bashrc
+
+# Set workspace and user
+WORKDIR /home/$USERNAME/ros2_ws
 USER $USERNAME
 
-
-
-WORKDIR /home/$USERNAME/install_ws
-
-#ROS
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install locales -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo locale-gen de_DE de_DE.UTF-8
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo update-locale LC_ALL=de_DE.UTF-8 LANG=de_DE.UTF-8
-RUN export LANG=de_DE.UTF-8
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt-get install -y tzdata
-
-
-
-
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install software-properties-common -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo add-apt-repository universe
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install curl -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-dev-tools -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-desktop -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-foxglove-bridge -y
-
-#RUN source /opt/ros/$ROS_DISTRO/setup.bash
-
-
-RUN sudo apt remove libopencv-dev python3-opencv -y
-RUN sudo apt purge libopencv-dev python3-opencv -y
-#opencv
-WORKDIR /home/$USERNAME/install_ws/opencvInstall
-
-RUN git clone https://github.com/opencv/opencv.git
-RUN cd opencv && git checkout 4.9.0
-RUN git clone https://github.com/opencv/opencv_contrib.git
-RUN cd opencv_contrib && git checkout 4.9.0
-RUN #mkdir /install_ws/opencvInstall/build
-WORKDIR /home/$USERNAME/install_ws/opencvInstall/build
-
-RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
-RUN cmake --build . --config Release -- -j 16
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
-
-
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install -y libboost-all-dev
-#gtsam
-WORKDIR /home/$USERNAME/install_ws
-RUN git clone https://github.com/borglab/gtsam.git
-WORKDIR /home/$USERNAME/install_ws/gtsam
-RUN git checkout 4.2a7
-WORKDIR /home/$USERNAME/install_ws/gtsam/build
-RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
-RUN make -j 10
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
-# PCL install
-WORKDIR /home/$USERNAME/install_ws
-RUN git clone https://github.com/PointCloudLibrary/pcl
-WORKDIR /home/$USERNAME/install_ws/pcl
-RUN git checkout pcl-1.14.1
-WORKDIR /home/$USERNAME/install_ws/pcl/build
-RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-RUN make -j 16
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install
-
-
-
-
-
-
-
-
-
-# custom stuff
-RUN #sudo apt-get update && sudo apt-get -y install python3 python3-pip
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get -y install python3-pip
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install libfftw3-dev -y
-RUN sudo apt install nlohmann-json3-dev -y
-RUN sudo apt install libqt5gamepad5-dev -y
-RUN sudo apt install libcgal-dev -y
-RUN sudo apt install unzip nano net-tools nmap -y
-RUN sudo apt install python3.12-venv -y
-
-## current fix for M4 apple 15.2 system. uses amazon JDK instead of OPENJDK
-#RUN wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
-#echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
-#RUN sudo apt update -y
-#RUN sudo apt install  java-21-amazon-corretto-jdk -y
-
-
-RUN #sudo apt install python3.10 -y
-RUN sudo apt install python3.10-venv -y
-
-
-WORKDIR /home/$USERNAME
-RUN python3 -m venv /home/$USERNAME/myvenv
-RUN #source /home/$USERNAME/myvenv/bin/activate
-
-RUN /home/$USERNAME/myvenv/bin/pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-COPY configFiles/requirements.txt /home/$USERNAME/install_ws
-RUN /home/$USERNAME/myvenv/bin/python -V
-RUN /home/$USERNAME/myvenv/bin/pip3 install -r /home/$USERNAME/install_ws/requirements.txt
-#RUN pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cpu
-
-#COPY otherPackages/PX4-Autopilot/Tools/setup/ubuntu.sh /home/$USERNAME/install_ws
-WORKDIR /home/$USERNAME/install_ws
-
-
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo rosdep init && sudo rosdep update --rosdistro $ROS_DISTRO # buildkit
-
-WORKDIR /home/$USERNAME/
-#ENV ROS_DISTRO=humble
-ENV SHELL=/bin/bash
-
-RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
-RUN #echo "source activate base">> ~/.bashrc
-RUN #echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
-RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
-RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
-
-
-
-
+# Default command to start bash
 CMD ["/bin/bash"]
-
