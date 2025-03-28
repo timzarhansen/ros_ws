@@ -47,6 +47,3 @@
 [submodule "src/UnderwaterSlam"]
 	path = src/UnderwaterSlam
 	url = https://github.com/timzarhansen/UnderwaterSlam
-[submodule "src/registrationml"]
-	path = src/registrationml
-	url = https://github.com/timzarhansen/registrationml.git
