@@ -5,7 +5,7 @@ import yaml
 import os
 import docker
 from prompt_toolkit.utils import to_str
-currentNumberScript = 1
+currentNumberScript = 3
 
 
 # computerPath = '/home/deeprobotics'
@@ -14,16 +14,16 @@ computerPath = '/Users/timhansen/Documents'
 
 # registrationList = ["fs3d32","fs3d64","fs3d128","fs3d32ICP","fs3d64ICP","fs3d128ICP","ICP"]
 # registrationList = ["fs3d32GICP","GICP","fs3d32ICP","ICP"]
-registrationList = ["fs3d64IG","fs3d64"]
+registrationList = ["predator"]
 # registrationList = ["fs3d32GICP","GICP","ICP","fs3d32ICP","fs3d32"]
+numberOfSkips = [2]
 # numberOfSkips = [1,2,5,10,15,20,30]
-numberOfSkips = [10,15,20,30]
-
+# numberOfSkips = [20]
 # robot = ["Alpha","Bob","Carol"]
-robot = ["Alpha"]
+robot = ["Carol"]
 
-scanRadiusMax = [15.0,25.0,35.0]
-levelPotentialTranslationList = [0.1,0.01,0.001,0.0001]
+scanRadiusMax = [15.0]
+levelPotentialTranslationList = [0.1]
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
 
@@ -71,11 +71,12 @@ for numberOfSkips_ in numberOfSkips:
                         file.write("source /opt/ros/humble/setup.bash\n")
                         file.write("source /home/tim-external/ros_ws/install/setup.bash\n")
                         file.write("ros2 run fsregistration ros2ServiceRegistrationFS3D & >/dev/null 2>&1\n")
+                        file.write("ros2 run registrationml rosNodeRegistration.py /home/tim-external/ros_ws/src/registrationml/registrationml/predator/configs/macLoadModelTest.yaml & >/dev/null 2>&1\n")
                         file.write("ros2 run underwaterslam conversionGPStoXYZ.py & >/dev/null 2>&1\n")
                         file.write("ros2 run underwaterslam odometryTest --ros-args --params-file "+configFileNameDocker+" & >/dev/null 2>&1\n")
                         file.write("pid1=$!\n")
                         file.write("\nsleep 60\n")
-                        file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 1.0\n")
+                        file.write("ros2 bag play /home/tim-external/dataFolder/S3E/S3Ev1/S3E_Campus_Road_1/ -r 0.1\n")
                         file.write("wait $pid1\n")
 
                     # Make the script executable
@@ -110,17 +111,18 @@ for numberOfSkips_ in numberOfSkips:
                                         computerPath+'/dataFolder': {
                                             'bind': '/home/tim-external/dataFolder','mode': 'cached'}
                                     },
+                                    shm_size="4g",
                                     # network='devcontainer'+str(i)+'_net',
                                     detach=True,
                                     # remove=True
                                 )
-                                sleep(150)
+                                sleep(450)
                                 print("breaking out of while loop")
                                 break
                         except Exception as e:
                             print(e)
                             sleep(10)
-                        sleep(150)
+                        sleep(450)
                     print("currentNumberScript done: ", currentNumberScript)
                     currentNumberScript=currentNumberScript+1
 
