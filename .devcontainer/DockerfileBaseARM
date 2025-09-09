@@ -105,6 +105,7 @@ RUN sudo apt install nlohmann-json3-dev -y
 RUN sudo apt install libqt5gamepad5-dev -y
 RUN sudo apt install libcgal-dev -y
 RUN sudo apt install unzip nano net-tools nmap -y
+RUN sudo apt install python3-virtualenv -y
 
 
 # current fix for M4 apple 15.2 system. uses amazon JDK instead of OPENJDK
@@ -140,7 +141,8 @@ RUN #echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColcon
 RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
 
-
+RUN echo "source /opt/ros/humble/setup.bash">> ~/.profile
+RUN echo "source /home/$USERNAME/ros_ws/install/setup.bash">> ~/.profile
 
 
 CMD ["/bin/bash"]
