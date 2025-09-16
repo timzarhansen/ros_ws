@@ -29,13 +29,15 @@ currentNumberScript = 1
 # computerPath = '/home/deeprobotics'
 computerPath = '/Users/timhansen/Documents'
 
-numberOfSkips = [1,2,3]
+# numberOfSkips = [1,2,5]# 1 2 5
+numberOfSkips = [5]# 1 2 5
+# sizePixel = [0.5,0.75]
+sizePixel = [1.5]
+# N = [256,128]
+N = [128]
+# sequence = list(range(0, 45))
 
-sizePixel = [0.25,0.5,0.75]
-N = [512,256,128]
-# N = [128]
-# sequence = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-sequence = [0]
+sequence = list(range(38, 45))
 # N = [64]
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
@@ -47,9 +49,9 @@ yaml.add_representer(str, quoted_presenter)
 client = docker.from_env()
 
 for sequence_ in sequence:
-    for N_ in N:
-        for numberOfSkips_ in numberOfSkips:
-            for sizePixel_ in sizePixel:
+    for numberOfSkips_ in numberOfSkips:
+        for sizePixel_ in sizePixel:
+            for N_ in N:
                 print("Configuring everything")
 
 
@@ -85,7 +87,7 @@ for sequence_ in sequence:
                             (stats := c.stats(stream=False)))
                         print("Memory usage is: ", total_memory_usage)
 
-                        if (total_memory_usage < 100):
+                        if (total_memory_usage < 50 and len(containers)<2):
                             print("running container number: ", currentNumberScript)
                             container = client.containers.run(
                                 image='computationimageodometry',
@@ -110,13 +112,13 @@ for sequence_ in sequence:
                                 detach=True,
                                 # remove=True
                             )
-                            sleep(30)
+                            sleep(50)
                             print("breaking out of while loop")
                             break
                     except Exception as e:
                         print(e)
-                        sleep(30)
-                    sleep(150)
+                        sleep(50)
+                    sleep(100)
                 print("currentNumberScript done: ", currentNumberScript)
                 currentNumberScript=currentNumberScript+1
 
