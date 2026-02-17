@@ -126,7 +126,8 @@ RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
 RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
 
 
-
+RUN echo "source /opt/ros/humble/setup.bash">> ~/.profile
+RUN echo "source /home/$USERNAME/ros_ws/install/setup.bash">> ~/.profile
 
 CMD ["/bin/bash"]
 

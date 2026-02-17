@@ -4,7 +4,7 @@ ENV ES_JAVA_OPTS="-XX:UseSSE=0"
 
 
 ARG USERNAME=tim-external
-ARG USER_UID=1001
+ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 #ARG DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=humble
@@ -23,7 +23,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 
 
-
+RUN mkdir -p /home/$USERNAME/install_ws
 WORKDIR /home/$USERNAME/install_ws
 
 #ROS
@@ -54,14 +54,18 @@ RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-foxglov
 RUN sudo apt remove libopencv-dev python3-opencv -y
 RUN sudo apt purge libopencv-dev python3-opencv -y
 #opencv
+RUN mkdir -p /home/$USERNAME/install_ws/opencvInstall
 WORKDIR /home/$USERNAME/install_ws/opencvInstall
+
 
 RUN git clone https://github.com/opencv/opencv.git
 RUN cd opencv && git checkout 4.9.0
 RUN git clone https://github.com/opencv/opencv_contrib.git
 RUN cd opencv_contrib && git checkout 4.9.0
 RUN #mkdir /install_ws/opencvInstall/build
+RUN mkdir -p /home/$USERNAME/install_ws/opencvInstall/build
 WORKDIR /home/$USERNAME/install_ws/opencvInstall/build
+
 
 RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
 RUN cmake --build . --config Release -- -j 16
@@ -74,7 +78,9 @@ WORKDIR /home/$USERNAME/install_ws
 RUN git clone https://github.com/borglab/gtsam.git
 WORKDIR /home/$USERNAME/install_ws/gtsam
 RUN git checkout 4.2a7
+RUN mkdir -p /home/$USERNAME/install_ws/gtsam/build
 WORKDIR /home/$USERNAME/install_ws/gtsam/build
+
 RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
 RUN make -j 10
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
@@ -83,7 +89,9 @@ WORKDIR /home/$USERNAME/install_ws
 RUN git clone https://github.com/PointCloudLibrary/pcl
 WORKDIR /home/$USERNAME/install_ws/pcl
 RUN git checkout pcl-1.14.1
+RUN mkdir -p /home/$USERNAME/install_ws/pcl/build
 WORKDIR /home/$USERNAME/install_ws/pcl/build
+
 RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 RUN make -j 16
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install

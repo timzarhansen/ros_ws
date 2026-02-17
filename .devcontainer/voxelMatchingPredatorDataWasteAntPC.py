@@ -4,20 +4,22 @@ import yaml
 # from numpy.f2py.crackfortran import endifs
 import os
 import docker
+from docker.types import LogConfig
 # from prompt_toolkit.utils import to_str
 
 
-# docker run -t -i --rm --ipc=host -v /Users/timhansen/Documents/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build \
-#                                  -v /Users/timhansen/Documents/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install \
-#                                 -v /Users/timhansen/Documents/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log \
-#                                 -v /Users/timhansen/Documents/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles \
-#                                 -v /Users/timhansen/Documents/ros_ws/src:/home/tim-external/ros_ws/src \
-#                                 -v /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder \
-#                                 -v /Users/timhansen/Documents/ros_ws/myenv:/home/tim-external/myenv \
-#     computationimageodometry
+# docker run -t -i --rm --ipc=host -v /home/wasteantadmin/Constructor-Robotics/Tim/ros_ws/cache/humble/build:/home/tim-external/ros_ws/build \
+#                                  -v /home/wasteantadmin/Constructor-Robotics/Tim/ros_ws/cache/humble/install:/home/tim-external/ros_ws/install \
+#                                 -v /home/wasteantadmin/Constructor-Robotics/Tim/ros_ws/cache/humble/log:/home/tim-external/ros_ws/log \
+#                                 -v /home/wasteantadmin/Constructor-Robotics/Tim/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles \
+#                                 -v /home/wasteantadmin/Constructor-Robotics/Tim/ros_ws/src:/home/tim-external/ros_ws/src \
+#                                 -v /home/wasteantadmin/Constructor-Robotics/Tim/dataFolder:/home/tim-external/dataFolder \
+# computationimageodometry
 
 
-
+# configFiles/predatorNothing.yaml 128 0 16 48 0.001 0.001 2 None train
+# configFiles/predatorNothing.yaml 64 1 8 24 0.01 0.01 2
+# configFiles/predatorNothing.yaml 32 1 4 12 0.01 0.001 2 None train
 
 
 
@@ -27,20 +29,20 @@ currentNumberScriptStartPoint = 0
 
 # docker build -t computationimageodometry -f DockerfileBaseARM .
 # computerPath = '/home/deeprobotics'
-computerPath = '/Users/timhansen/Documents'
+computerPath = '/home/wasteantadmin/Constructor-Robotics/Tim'
 
 
 clahe = [0]
 
 
 # N = [32,64]
-N = [32,64]
+N = [32,64,128]
 normalization_factor = [2]
 
 level_potential_rotation = [0.001]
 level_potential_translation = [0.001]
 noise = ["None","low","high"]
-dataType = ["val","train"]
+dataType = ["val"]
 # configFiles/predatorNothing.yaml 32 0 4 12 0.001 0.001 2 high train {str(noise_)} {str(dataType_)
 
 def quoted_presenter(dumper, data):
@@ -48,7 +50,10 @@ def quoted_presenter(dumper, data):
 
 yaml.add_representer(str, quoted_presenter)
 
-
+lc = LogConfig(type=LogConfig.types.JSON, config={
+    'max-size': '1g',
+    'labels': 'production_status,geo'
+})
 
 client = docker.from_env()
 currentNumberScript = 0
@@ -71,7 +76,9 @@ for clahe_ in clahe:
                             elif N_ == 64:
                                 r_min = 8
                                 r_max =24
-
+                            elif N_ == 128:
+                                r_min = 16
+                                r_max =48
 
 
                             print("Configuring everything")
@@ -89,7 +96,7 @@ for clahe_ in clahe:
                                 file.write("ros2 run fsregistration ros2ServiceRegistrationFS3D & >/dev/null 2>&1\n")
                                 file.write("\nsleep 10\n")
                                 file.write("cd /home/tim-external/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D \n")
-                                file.write(f"python3 testingSoftOnPredatorData.py configFiles/predatorNothing.yaml {str(N_)} {str(clahe_)} {str(r_min)} {str(r_max)} {str(level_potential_rotation_)} {str(level_potential_translation_)} {str(normalization_factor_)} {str(noise_)} {str(dataType_)} ")
+                                file.write(f"python3 testingSoftOnPredatorData.py configFiles/predatorNothing.yaml {str(N_)} {str(clahe_)} {str(r_min)} {str(r_max)} {str(level_potential_rotation_)} {str(level_potential_translation_)} {str(normalization_factor_)} {str(noise_)} {str(dataType_)} \n")
 
                             # Make the script executable
 
@@ -104,7 +111,7 @@ for clahe_ in clahe:
                                         (stats := c.stats(stream=False)))
                                     print("Memory usage is: ", total_memory_usage)
 
-                                    if (total_memory_usage < 40 and len(containers)<10):
+                                    if (total_memory_usage < 100 and len(containers)<10):
                                         print("running container number: ", currentNumberScript)
                                         container = client.containers.run(
                                             image='computationimageodometry',
@@ -127,7 +134,8 @@ for clahe_ in clahe:
                                             },
                                             # network='devcontainer'+str(i)+'_net',
                                             detach=True,
-                                            remove=True
+                                            remove=True,
+                                            log_config=lc
                                         )
                                         sleep(50)
                                         print("breaking out of while loop")
@@ -141,3 +149,4 @@ for clahe_ in clahe:
 
 
 
+print("Everything Done")
