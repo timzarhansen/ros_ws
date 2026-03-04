@@ -104,7 +104,7 @@ for clahe_ in clahe:
                                         (stats := c.stats(stream=False)))
                                     print("Memory usage is: ", total_memory_usage)
 
-                                    if (total_memory_usage < 40 and len(containers)<10):
+                                    if (total_memory_usage < 40 and len(containers)<5):
                                         print("running container number: ", currentNumberScript)
                                         container = client.containers.run(
                                             image='computationimageodometry',
@@ -129,13 +129,13 @@ for clahe_ in clahe:
                                             detach=True,
                                             remove=True
                                         )
-                                        sleep(50)
+                                        sleep(200)
                                         print("breaking out of while loop")
                                         break
                                 except Exception as e:
                                     print(e)
-                                    sleep(50)
-                                sleep(100)
+                                    sleep(200)
+                                sleep(500)
                             print("currentNumberScript done: ", currentNumberScript)
                             currentNumberScript=currentNumberScript+1
 
