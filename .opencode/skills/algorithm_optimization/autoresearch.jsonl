@@ -1,0 +1,2 @@
+{"type":"config","name":"optimize-2d-registration-new-method","metricName":"total_time_new","metricUnit":"ms","bestDirection":"lower"}
+{"run":1,"commit":"472f84b","metric":585.946,"metrics":{"total_time_old":2254.73,"speedup":3.84801,"test_status":1},"status":"keep","description":"baseline - NEW method 585.9ms (3.8x faster than OLD)","timestamp":1776867892,"segment":0}
