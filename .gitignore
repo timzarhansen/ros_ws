@@ -1,0 +1,20 @@
+# Build artifacts
+build/
+install/
+log/
+cache/
+kernels/
+
+# Virtual environment
+venv/
+
+# IDE
+.idea/
+
+# macOS
+.DS_Store
+src/.DS_Store
+
+# ROS2 colcon
+src/**/build/
+src/**/install/

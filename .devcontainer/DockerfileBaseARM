@@ -139,6 +139,12 @@ WORKDIR /home/$USERNAME/install_ws
 RUN sudo DEBIAN_FRONTEND=noninteractive sudo rosdep init && sudo rosdep update --rosdistro $ROS_DISTRO # buildkit
 
 WORKDIR /home/$USERNAME/
+RUN mkdir -p /home/$USERNAME/.ssh
+RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
+
+RUN sudo curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+RUN sudo apt install -y nodejs npm
+
 #ENV ROS_DISTRO=humble
 ENV SHELL=/bin/bash
 

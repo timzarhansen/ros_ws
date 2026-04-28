@@ -5,6 +5,8 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
   "workspaceFolder": "/home/tim-external/volumeROS",
+  "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
+  "postStartCommand": "bash .devcontainer/ssh-setup.sh",
   "customizations": {
     "jetbrains": {
       "backend": "Clion"
