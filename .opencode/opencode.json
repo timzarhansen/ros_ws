@@ -1,0 +1,128 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+      "llama.cpp": {
+        "npm": "@ai-sdk/openai-compatible",
+        "name": "llama-server (local)",
+        "options": {
+          "baseURL": "http://host.docker.internal:1235",
+          "timeout": false
+        },
+        "models": {
+          "localModel": {
+            "name": "localModel"
+          }
+        }
+      },
+      "home_pc": {
+        "npm": "@ai-sdk/openai-compatible",
+        "name": "home_gpu (local)",
+        "options": {
+          "baseURL": "http://161.13.12.22:1312",
+          "timeout": false
+        },
+        "models": {
+          "gpuModel": {
+            "name": "gpuModel"
+          }
+        }
+      },
+    "work_pc": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "work_gpu (local)",
+      "options": {
+        "baseURL": "http://10.60.41.51:1312",
+        "timeout": false
+      },
+      "models": {
+        "workGpuModel": {
+          "name": "workGpuModel"
+        }
+      }
+    }
+  },
+  "lsp": {
+    "pyright": {
+      "disabled": true
+    },
+    "ty": {
+      "command": [
+        "uv run --with ty ty server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    }
+  },
+  "mcp": {
+    "codebase-memory-mcp": {
+      "type": "local",
+      "command": [
+        "/home/zarbokk_opencode/.local/bin/codebase-memory-mcp"
+      ],
+      "enabled": false
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-35d91d28-3e91-4d0f-9f9e-50741cbda527"
+      },
+      "enabled": true
+    }
+  },
+  "permission": {
+    "write": "ask",
+    "edit": "ask",
+    "bash": "ask",
+    "task": "ask",
+    "skill": "ask",
+    "doom_loop": "ask",
+    "webfetch": "ask",
+    "codesearch": "ask",
+    "websearch": "ask",
+    "external_directory": "ask",
+    "lsp": "ask",
+    "todoread": "allow",
+    "todowrite": "allow",
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "list": "allow"
+  },
+  "mode": {
+    "build": {
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "grep": true,
+        "glob": true
+      }
+    },
+    "plan": {
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "webfetch": true
+      }
+    },
+    "ask": {
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "webfetch": false
+      }
+    }
+  }
+}
