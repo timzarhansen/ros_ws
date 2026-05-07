@@ -4,7 +4,7 @@
 
 - Always create a plan before making changes
 - Use the explorer agent to inspect unfamiliar codebases
-- Don't let subagent fix something for you. Let build handle that later
+- Don't let subagent fix something for you. Let build handle that later, that is important.
 - Break tasks into steps before execution
 
 ## Build Behavior

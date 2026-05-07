@@ -1,162 +1,179 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
-ENV ES_JAVA_OPTS="-XX:UseSSE=0"
-
+ENV ROS_DISTRO=jazzy
 
 ARG USERNAME=tim-external
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
-#ARG DEBIAN_FRONTEND=noninteractive
-ENV ROS_DISTRO=humble
-#ARG DEBIAN_FRONTEND=noninteractive
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
+# --- Root operations: user creation ---
+RUN groupadd --gid $USER_GID $USERNAME 2>/dev/null || true \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    # [Optional] Add sudo support. Omit if you don't need to istall software after connecting.
     && apt update \
     && apt install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
+# --- Root operations: all system packages (combined) ---
+RUN apt update \
+    && apt install -y software-properties-common \
+    && add-apt-repository universe \
+    && apt update \
+    && apt install -y \
+    locales \
+    build-essential \
+    cmake \
+    git \
+    wget \
+    ca-certificates \
+    gnupg \
+    curl \
+    python3-pip \
+    python3-venv \
+    python3-dev \
+    python3-numpy \
+    python3-setuptools \
+    libboost-all-dev \
+    libeigen3-dev \
+    libfftw3-dev \
+    nlohmann-json3-dev \
+    libqt5gamepad5-dev \
+    libcgal-dev \
+    unzip \
+    nano \
+    net-tools \
+    nmap \
+    tzdata \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libflann-dev \
+    libpng-dev \
+    libopenmpi-dev \
+    libsdl2-dev \
+    libtbb-dev \
+    libomp-dev \
+    libsystemd-dev
 
-USER $USERNAME
+# --- Locale setup ---
+RUN locale-gen de_DE de_DE.UTF-8 \
+    && update-locale LC_ALL=de_DE.UTF-8 LANG=de_DE.UTF-8
 
+# --- ROS 2 Jazzy setup ---
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+    && apt update \
+    && apt install -y \
+        ros-dev-tools \
+        ros-$ROS_DISTRO-desktop \
+        ros-$ROS_DISTRO-foxglove-bridge \
+        ros-$ROS_DISTRO-rosidl-default-generators \
+        ros-$ROS_DISTRO-pcl-conversions \
+        ros-$ROS_DISTRO-eigen3-cmake-module \
+        ros-$ROS_DISTRO-rosbag2 \
+        ros-$ROS_DISTRO-pluginlib \
+        ros-$ROS_DISTRO-shape-msgs \
+        ros-$ROS_DISTRO-class-loader
 
-RUN mkdir -p /home/$USERNAME/install_ws
-WORKDIR /home/$USERNAME/install_ws
+# --- Remove system OpenCV ---
+RUN apt remove -y libopencv-dev python3-opencv || true \
+    && apt purge -y libopencv-dev python3-opencv || true \
+    && apt autoremove -y
 
-#ROS
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install locales
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo locale-gen de_DE de_DE.UTF-8
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo update-locale LC_ALL=de_DE.UTF-8 LANG=de_DE.UTF-8
-RUN export LANG=de_DE.UTF-8
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt-get install -y tzdata
-
-
-
-
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install software-properties-common -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo add-apt-repository universe
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install curl -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt update
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-dev-tools -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-desktop -y
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-foxglove-bridge -y
-#RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install ros-$ROS_DISTRO-open3d-conversions -y
-
-#RUN source /opt/ros/$ROS_DISTRO/setup.bash
-
-
-RUN sudo apt remove libopencv-dev python3-opencv -y
-RUN sudo apt purge libopencv-dev python3-opencv -y
-#opencv
-RUN mkdir -p /home/$USERNAME/install_ws/opencvInstall
+# --- OpenCV 4.9.0 from source ---
 WORKDIR /home/$USERNAME/install_ws/opencvInstall
-
-
-RUN git clone https://github.com/opencv/opencv.git
-RUN cd opencv && git checkout 4.9.0
-RUN git clone https://github.com/opencv/opencv_contrib.git
-RUN cd opencv_contrib && git checkout 4.9.0
-RUN #mkdir /install_ws/opencvInstall/build
-RUN mkdir -p /home/$USERNAME/install_ws/opencvInstall/build
+RUN git clone --branch 4.9.0 https://github.com/opencv/opencv.git \
+    && git clone --branch 4.9.0 https://github.com/opencv/opencv_contrib.git
 WORKDIR /home/$USERNAME/install_ws/opencvInstall/build
+RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON \
+    -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
+    -DBUILD_opencv_hdf=OFF \
+    -DBUILD_opencv_wechat_qrcode=OFF \
+    -DBUILD_opencv_dnn_superres=OFF \
+    -DBUILD_opencv_sfm=OFF \
+    -DBUILD_opencv_face=OFF \
+    -DBUILD_TESTS=OFF \
+    -DBUILD_PERF_TESTS=OFF \
+    -DBUILD_EXAMPLES=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    ../opencv \
+    && cmake --build . --parallel $(nproc) \
+    && make install
 
-
-RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
-RUN cmake --build . --config Release -- -j 16
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
-
-
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt install -y libboost-all-dev
-#gtsam
+# --- GTSAM 4.2a7 from source ---
 WORKDIR /home/$USERNAME/install_ws
-RUN git clone https://github.com/borglab/gtsam.git
-WORKDIR /home/$USERNAME/install_ws/gtsam
-RUN git checkout 4.2a7
-RUN mkdir -p /home/$USERNAME/install_ws/gtsam/build
+RUN git clone --branch 4.2a7 https://github.com/borglab/gtsam.git
 WORKDIR /home/$USERNAME/install_ws/gtsam/build
+RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON \
+    && make -j $(nproc) \
+    && make install
 
-RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON
-RUN make -j 10
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make install
-# PCL install
+# --- PCL 1.14.1 from source ---
 WORKDIR /home/$USERNAME/install_ws
-RUN git clone https://github.com/PointCloudLibrary/pcl
-WORKDIR /home/$USERNAME/install_ws/pcl
-RUN git checkout pcl-1.14.1
-RUN mkdir -p /home/$USERNAME/install_ws/pcl/build
+RUN git clone --branch pcl-1.14.1 https://github.com/PointCloudLibrary/pcl
 WORKDIR /home/$USERNAME/install_ws/pcl/build
+RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DBUILD_visualization=OFF \
+    -DBUILD_apps=OFF \
+    -DBUILD_examples=OFF \
+    .. \
+    && make -j $(nproc) \
+    && make install
 
-RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-RUN make -j 16
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo make -j 16 install
+# --- Amazon Corretto JDK 21 ---
+RUN wget -O - https://apt.corretto.aws/corretto.key | gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | tee /etc/apt/sources.list.d/corretto.list \
+    && apt update \
+    && apt install -y java-21-amazon-corretto-jdk
 
+# --- Node.js ---
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt install -y nodejs
 
+# --- Miniforge3 (conda) installation ---
+RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh -O /tmp/miniforge.sh \
+    && bash /tmp/miniforge.sh -b -p /opt/miniforge3 \
+    && rm /tmp/miniforge.sh
 
+# --- rosdep init (as root) ---
+RUN rosdep init && rosdep update --rosdistro $ROS_DISTRO
 
+# --- Set ownership of workspace ---
+RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/install_ws
 
-
-
-
-
-# custom stuff
-RUN #sudo apt-get update && sudo apt-get -y install python3 python3-pip
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get -y install python3-pip
-RUN sudo apt install fftw3 fftw3-dev -y
-RUN sudo apt install nlohmann-json3-dev -y
-RUN sudo apt install libqt5gamepad5-dev -y
-RUN sudo apt install libcgal-dev -y
-RUN sudo apt install unzip nano net-tools nmap -y
-RUN sudo apt install python3-virtualenv -y
-
-
-# current fix for M4 apple 15.2 system. uses amazon JDK instead of OPENJDK
-RUN wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
-echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
-RUN sudo apt update -y
-RUN sudo apt install  java-21-amazon-corretto-jdk -y
-
-
-
-
-
-
-
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-COPY configFiles/requirements.txt /home/$USERNAME/install_ws
-RUN sudo pip install -r /home/$USERNAME/install_ws/requirements.txt
-#RUN pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cpu
-
-#COPY otherPackages/PX4-Autopilot/Tools/setup/ubuntu.sh /home/$USERNAME/install_ws
+# --- Switch to non-root user ---
+USER $USERNAME
 WORKDIR /home/$USERNAME/install_ws
 
+# --- User-space setup ---
+RUN /opt/miniforge3/bin/conda init bash
 
-RUN sudo DEBIAN_FRONTEND=noninteractive sudo rosdep init && sudo rosdep update --rosdistro $ROS_DISTRO # buildkit
-
+# --- SSH directory setup ---
 WORKDIR /home/$USERNAME/
 RUN mkdir -p /home/$USERNAME/.ssh
-RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
 
-RUN sudo curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-RUN sudo apt install -y nodejs npm
-
-#ENV ROS_DISTRO=humble
 ENV SHELL=/bin/bash
+ENV PATH=/opt/ros/$ROS_DISTRO/bin:$PATH
 
-RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' "  >> ~/.bashrc
-RUN #echo "source activate base">> ~/.bashrc
-RUN #echo "COLCON_DEFAULTS_FILE=/home/$USERNAME/ros_ws/configFiles/defaultColconSettings.yaml">> ~/.bashrc
-RUN echo "source /opt/ros/humble/setup.bash">> ~/.bashrc
-RUN echo "source /home/tim-external/ros_ws/install/setup.bash">> ~/.bashrc
+# --- Shell configuration ---
+RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' " >> ~/.bashrc \
+    && echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc \
+    && echo "source /home/tim-external/ros_ws/install/setup.bash" >> ~/.bashrc \
+    && echo "alias ml='conda activate ml'" >> ~/.bashrc \
+    && echo "alias mlr='conda run -n ml'" >> ~/.bashrc \
+    && echo "source /opt/ros/jazzy/setup.bash" >> ~/.profile \
+    && echo "source /home/$USERNAME/ros_ws/install/setup.bash" >> ~/.profile
 
-RUN echo "source /opt/ros/humble/setup.bash">> ~/.profile
-RUN echo "source /home/$USERNAME/ros_ws/install/setup.bash">> ~/.profile
+# --- Switch back to root for system-level setup ---
+USER root
 
+# --- Entrypoint: sources ROS2 + workspace, dynamically computes PYTHONPATH ---
+COPY .devcontainer/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# --- Profile.d fallback: ensures new shells also source setup files ---
+RUN echo 'source /opt/ros/jazzy/setup.bash' > /etc/profile.d/ros2-setup.sh \
+    && echo 'source /home/tim-external/ros_ws/install/setup.bash' >> /etc/profile.d/ros2-setup.sh \
+    && chmod +x /etc/profile.d/ros2-setup.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
-

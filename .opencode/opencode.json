@@ -99,7 +99,9 @@
         "bash": true,
         "read": true,
         "grep": true,
-        "glob": true
+        "glob": true,
+        "websearch": true,
+        "codesearch": true
       }
     },
     "plan": {
@@ -110,7 +112,8 @@
         "read": true,
         "grep": true,
         "glob": true,
-        "webfetch": true
+        "websearch": true,
+        "codesearch": true
       }
     },
     "ask": {
@@ -121,7 +124,8 @@
         "read": true,
         "grep": true,
         "glob": true,
-        "webfetch": false
+        "websearch": true,
+        "codesearch": true
       }
     }
   }
