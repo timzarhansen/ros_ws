@@ -34,4 +34,4 @@ services:
       - ../src:/home/tim-external/ros_ws/src:cached,
       - ../otherPackages:/home/tim-external/otherPackages:cached,
       - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
-      - /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:cached,
+#      - /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:cached,

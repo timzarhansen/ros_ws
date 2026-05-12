@@ -24,4 +24,7 @@ compute_pythonpath() {
 
 export PYTHONPATH="$(compute_pythonpath /opt/ros/jazzy /home/tim-external/ros_ws/install)"
 
+# Force CMake to use system Python 3.12 (ignore miniforge's Python 3.13)
+export Python3_ROOT_DIR=/usr
+
 exec "$@"

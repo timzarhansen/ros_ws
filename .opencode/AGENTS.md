@@ -3,8 +3,9 @@
 ## Planning Behavior
 
 - Always create a plan before making changes
-- Use the explorer agent to inspect unfamiliar codebases
 - Don't let subagent fix something for you. Let build handle that later, that is important.
+- Don't let subagents in general do things for you. Try to find out the information you need by yourself.
+- Don't let subagents explore the environments. You should do that by yourself.
 - Break tasks into steps before execution
 
 ## Build Behavior
@@ -13,6 +14,7 @@
 - Prefer minimal diffs
 - Validate changes with tests if available
 - Create a commit after implementing a change
+- After implementation, give the user a few commands, how to test, what you implemented, to see if it actually worked.
 
 ## Ask Behavior
 

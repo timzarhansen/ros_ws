@@ -79,7 +79,7 @@
     "task": "ask",
     "skill": "ask",
     "doom_loop": "ask",
-    "webfetch": "ask",
+    "webfetch": "deny",
     "codesearch": "ask",
     "websearch": "ask",
     "external_directory": "ask",
@@ -108,7 +108,7 @@
       "tools": {
         "write": false,
         "edit": false,
-        "bash": true,
+        "bash": false,
         "read": true,
         "grep": true,
         "glob": true,
