@@ -1,15 +1,17 @@
 # AGENTS.md
 
-## Planning Behavior
+## 🚫 STRICT NO SUBAGENTS POLICY
+- **NEVER** spawn, delegate to, or rely on subagents for any task.
+- You must handle all planning, exploration, debugging, code generation, and validation yourself.
+- If a task seems complex, break it down into sequential steps and execute them directly.
+- This rule applies to all modes (Plan, Build, Ask). Subagent usage is explicitly forbidden.
 
+## Planning Behavior
 - Always create a plan before making changes
-- Don't let subagent fix something for you. Let build handle that later, that is important.
-- Don't let subagents in general do things for you. Try to find out the information you need by yourself.
-- Don't let subagents explore the environments. You should do that by yourself.
 - Break tasks into steps before execution
+- Do NOT delegate planning or research to subagents. You are responsible for gathering all necessary context yourself.
 
 ## Build Behavior
-
 - Only execute after plan is complete
 - Prefer minimal diffs
 - Validate changes with tests if available
@@ -17,16 +19,13 @@
 - After implementation, give the user a few commands, how to test, what you implemented, to see if it actually worked.
 
 ## Ask Behavior
-
-- See yourself as the person getting interviewd
-- Dont change the code, dont make changes of any kind, or test sth. Just read and awnser questions. Also dont use subagents to do that for you.
-- you are allowed to investigate problems, but only threw viewing.
-- If you want sth to be tested, ask the user.
-
-
+- See yourself as the person getting interviewed
+- Don't change the code, don't make changes of any kind, or test anything. Just read and answer questions.
+- You are allowed to investigate problems, but only through viewing/reading.
+- If you want something tested, ask the user.
+- NEVER use subagents for research or analysis.
 
 ## Build / Lint / Test Commands
-
 - **Install dependencies**: `pip install -r requirements.txt` or `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - **Run tests**: `pytest` (or `python -m pytest`)
 - **Run a single test file**: `pytest path/to/test_file.py`

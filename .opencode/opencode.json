@@ -1,32 +1,32 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "provider": {
-      "llama.cpp": {
-        "npm": "@ai-sdk/openai-compatible",
-        "name": "llama-server (local)",
-        "options": {
-          "baseURL": "http://host.docker.internal:1235",
-          "timeout": false
-        },
-        "models": {
-          "localModel": {
-            "name": "localModel"
-          }
-        }
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama-server (local)",
+      "options": {
+        "baseURL": "http://host.docker.internal:1235",
+        "timeout": false
       },
-      "home_pc": {
-        "npm": "@ai-sdk/openai-compatible",
-        "name": "home_gpu (local)",
-        "options": {
-          "baseURL": "http://161.13.12.22:1312",
-          "timeout": false
-        },
-        "models": {
-          "gpuModel": {
-            "name": "gpuModel"
-          }
+      "models": {
+        "localModel": {
+          "name": "localModel"
         }
+      }
+    },
+    "home_pc": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "home_gpu (local)",
+      "options": {
+        "baseURL": "http://161.13.12.22:1312",
+        "timeout": false
       },
+      "models": {
+        "gpuModel": {
+          "name": "gpuModel"
+        }
+      }
+    },
     "work_pc": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "work_gpu (local)",
@@ -76,7 +76,8 @@
     "write": "ask",
     "edit": "ask",
     "bash": "ask",
-    "task": "ask",
+    "task": "deny",
+    "subagent": "deny",
     "skill": "ask",
     "doom_loop": "ask",
     "webfetch": "deny",

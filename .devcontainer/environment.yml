@@ -1,0 +1,37 @@
+# ML Conda Environment
+# CPU-only version for testing on Predator dataset
+# Usage: conda env create -f environment_ml.yml
+# NOTE: After creating environment, compile C++ wrappers:
+#   1. cd predator/cpp_wrappers && bash compile_wrappers.sh
+
+name: ml
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy<2
+  - scipy
+  - tqdm
+  - matplotlib
+  - ipython
+  - pyyaml
+  - h5py
+  - scikit-learn
+  - open3d>=0.16.0
+  - pip
+  - pip:
+      - numpy<2
+      - torch>=2.0
+      - torchvision>=0.15
+      - torchaudio>=2.0
+      - transforms3d
+      - easydict
+      - opencv-python
+      - ipdb
+      - einops
+      - nibabel
+      - h5py
+      - tensorboard
+      - tensorboardX
+      - coloredlogs
