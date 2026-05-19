@@ -84,7 +84,7 @@ RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     && make install \
     && ldconfig
 
-# === ROS2 Humble desktop (includes all deps needed for soft20 build) ===
+# === ROS2 Humble desktop ===
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
     && apt-get update \
@@ -93,78 +93,17 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
         ros-$(. /etc/os-release && echo $ROS_DISTRO)-desktop \
     && rm -rf /var/lib/apt/lists/*
 
-# === soft20 (built via colcon ROS2 workspace) ===
-RUN mkdir -p /tmp/soft20_ws/src \
-    && git clone https://github.com/Zarbokk/soft20.git /tmp/soft20_ws/src/soft20 \
-    && bash -c ". /opt/ros/$ROS_DISTRO/setup.bash && colcon build --packages-select soft20 --install-base /opt/soft20_install" \
-    && rm -rf /tmp/soft20_ws
-
 # === Miniforge3 ===
 RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh -O /tmp/miniforge.sh \
     && bash /tmp/miniforge.sh -b -p /opt/miniforge3 \
     && rm /tmp/miniforge.sh
 
-# === Copy fsregistration source ===
-COPY src/fsregistration /app/fsregistration
-COPY .devcontainer/environment.yml /tmp/environment_ml.yml
-COPY src/fsregistration/pythonScripts/configFiles/environment_geo.yml /tmp/environment_geo.yml
-COPY src/fsregistration/pythonScripts/configFiles/environment_hybridpoint.yml /tmp/environment_hybridpoint.yml
-COPY src/fsregistration/pythonScripts/configFiles/environment_pointreggpt.yml /tmp/environment_pointreggpt.yml
-COPY src/fsregistration/pythonScripts/configFiles/environment_regtr.yml /tmp/environment_regtr.yml
-
-# === Create conda environments ===
-RUN /opt/miniforge3/bin/conda env create -f /tmp/environment_ml.yml \
-    && /opt/miniforge3/bin/conda env create -f /tmp/environment_geo.yml \
-    && /opt/miniforge3/bin/conda env create -f /tmp/environment_hybridpoint.yml \
-    && /opt/miniforge3/bin/conda env create -f /tmp/environment_pointreggpt.yml \
-    && /opt/miniforge3/bin/conda env create -f /tmp/environment_regtr.yml
-
-# === Build pybind11 module for SOFT (ml env, Python 3.12) ===
-RUN /opt/miniforge3/envs/ml/bin/pip install pybind11 \
-    && PYBIND_INC=$(/opt/miniforge3/envs/ml/bin/python -c "import pybind11; print(pybind11.get_include())") \
-    && NUMPY_INC=$(/opt/miniforge3/envs/ml/bin/python -c "import numpy; print(numpy.get_include())") \
-    && PY_INCFLAGS=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_paths()['include'])") \
-    && PY_SUFFIX=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))") \
-    && g++ -O3 -shared -fPIC -std=c++20 \
-        -I"${PYBIND_INC}" \
-        -I"${NUMPY_INC}" \
-        -I"${PY_INCFLAGS}" \
-        -I/app/fsregistration/include \
-        -I/app/fsregistration/find-peaks/include \
-        -I/opt/soft20_install/include \
-        -I/usr/include/eigen3 \
-        -I/usr/local/include/opencv4 \
-        -I/opt/ros/humble/include \
-        /app/fsregistration/src/pybind_registration_3d.cpp \
-        /app/fsregistration/src/softRegistrationClass3D.cpp \
-        /app/fsregistration/src/softCorrelationClass3D.cpp \
-        /app/fsregistration/src/generalHelpfulTools.cpp \
-        /app/fsregistration/find-peaks/src/union_find.cpp \
-        /opt/soft20_install/lib/libsoft20.a \
-        -lfftw3 \
-        -L/usr/local/lib -lopencv_imgproc -lopencv_highgui -lopencv_core \
-        -o "/app/fsregistration/src/pybind_registration_3d${PY_SUFFIX}"
-
-# === Compile C++ wrappers for regtr_env ===
-RUN /opt/miniforge3/envs/regtr_env/bin/bash -c '\
-    cd /app/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers \
-    && bash compile_wrappers.sh' \
-    && /opt/miniforge3/envs/regtr_env/bin/bash -c '\
-    cd /app/fsregistration/ml_registration/regtr/src/models/backbone_kpconv/cpp_wrappers \
-    && bash compile_wrappers.sh'
-
-# === Cleanup build artifacts ===
-RUN rm -rf /home/$USERNAME/install_ws \
-    && rm -rf /tmp/environment_*.yml \
-    && rm -rf /app/fsregistration/debug_results \
-    && chown -R $USERNAME:$USERNAME /app/fsregistration
-
 # === Switch to non-root user ===
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
-# === Entrypoint ===
-COPY .benchmark_docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# === Entrypoints ===
+COPY .benchmark_docker/docker-entrypoint-build.sh /usr/local/bin/docker-entrypoint-build.sh
+COPY .benchmark_docker/docker-entrypoint-benchmark.sh /usr/local/bin/docker-entrypoint-benchmark.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-build.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint-benchmark.sh

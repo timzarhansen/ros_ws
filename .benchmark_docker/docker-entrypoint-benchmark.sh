@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# === Parse arguments ===
 METHOD="${1:-}"
 NUM_WORKERS="${2:-8}"
 
@@ -11,7 +10,17 @@ if [ -z "$METHOD" ]; then
   exit 1
 fi
 
-# === Activate correct conda environment ===
+# === Verify build artifacts exist ===
+if [ ! -d /home/benchmark/ros_ws/install/soft20 ]; then
+  echo "ERROR: soft20 not built. Run 'docker-entrypoint-build.sh' first."
+  exit 1
+fi
+
+# === 1. Source ROS2 + workspace ===
+. /opt/ros/humble/setup.bash
+. /home/benchmark/ros_ws/install/setup.bash
+
+# === 2. Activate correct conda env ===
 source /opt/miniforge3/etc/profile.d/conda.sh
 case "$METHOD" in
   soft)            conda activate ml ;;
@@ -22,24 +31,24 @@ case "$METHOD" in
   *) echo "Unknown method: $METHOD"; exit 1 ;;
 esac
 
-cd /app/fsregistration/pythonScripts/matchingProfiling3D
+cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
-# === Fix config file paths ===
+# === 3. Fix config paths ===
 sed -i 's|/home/tim-external/dataFolder/3dmatch|/data|g' configFiles/predatorNothing.yaml
 sed -i 's|/Users/timhansen/Documents/dataFolder/3dmatch|/data|g' configFiles/predatorNothing.yaml
 
-# === Copy model weights from /volume/weights to expected locations ===
+# === 4. Copy weights from /volume/weights ===
 if [ -f /volume/weights/regtr-3dmatch-model-best.pth ]; then
-  mkdir -p /app/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/
+  mkdir -p /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/
   cp /volume/weights/regtr-3dmatch-model-best.pth \
-    /app/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/model-best.pth
+    /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/model-best.pth
   echo "Copied RegTR weights"
 fi
 
 if [ -f /volume/weights/hybridpoint-3dmatch.tar ]; then
-  mkdir -p /app/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/
+  mkdir -p /home/benchmark/ros_ws/src/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/
   cp /volume/weights/hybridpoint-3dmatch.tar \
-    /app/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/3dmatch.tar
+    /home/benchmark/ros_ws/src/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/3dmatch.tar
   echo "Copied HybridPoint weights"
 fi
 
@@ -49,7 +58,7 @@ if [ -f /volume/weights/predator-indoor.pth ]; then
   echo "Copied Predator weights"
 fi
 
-# === Run benchmark ===
+# === 5. Run benchmark ===
 case "$METHOD" in
   soft)
     # No runSoft_batch.sh exists, call run_parallel_batches.py directly
@@ -84,7 +93,7 @@ case "$METHOD" in
     ;;
 
   fpfh|icp|geotransformer|regtr|hybridpoint|pointreggpt)
-    # Map method to batch script name (script names don't follow simple capitalization)
+    # Use existing batch scripts
     case "$METHOD" in
       fpfh)            SCRIPT="bashScripts/runFPFH_batch.sh" ;;
       icp)             SCRIPT="bashScripts/runICP_batch.sh" ;;
@@ -101,7 +110,7 @@ case "$METHOD" in
     ;;
 esac
 
-# === Copy results to volume mount ===
+# === 6. Copy results to volume mount ===
 if [ -d "outputFiles/$METHOD" ]; then
   mkdir -p /volume/results/"$METHOD"
   cp -r outputFiles/"$METHOD"/* /volume/results/"$METHOD"/ 2>/dev/null || true

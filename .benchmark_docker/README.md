@@ -1,25 +1,28 @@
 # fsregistration Benchmark Docker
 
-Docker-based benchmarking for 3D registration methods. Each container runs one complete benchmark (all samples, all noise levels, all splits) and produces final CSV output files.
+Docker-based benchmarking for 3D registration methods. Two-phase design: build the workspace once, then run benchmarks on each machine.
 
 ## Quick Start
 
 ```bash
-# Build (~35 min)
+# 1. Build image (~15 min)
 cd /path/to/volumeROS
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
-# Run a benchmark
+# 2. Build workspace (first time only, ~10 min)
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+
+# 3. Run a benchmark
 docker run --rm \
-  -v /shared/data:/data:ro \
-  -v /shared/weights:/volume/weights:ro \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
   -v ./benchmark_results:/volume/results \
-  fsbench:latest soft 8
+  fsbench:latest benchmark soft 8
 ```
 
 ## Setup on Each Server
 
-### 1. Clone fsregistration repo
+### 1. Clone the repo
 ```bash
 git clone <fsregistration-repo-url>
 cd volumeROS
@@ -29,25 +32,34 @@ cd volumeROS
 ```bash
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 ```
-**Build time:** ~35 minutes (OpenCV 15min, PCL 10min, rest 10min)
+**Build time:** ~15 minutes (OpenCV 10min, PCL 5min)
 
-### 3. Prepare data directory
+### 3. Build the workspace (first time only)
+```bash
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
 ```
-/shared/data/models/predator/data/indoor/  ← 3DMatch .pth point cloud files
+This compiles soft20 + fsregistration with colcon, creates conda environments, builds pybind11, and compiles C++ wrappers. Build artifacts persist in `ros_ws/build/` and `ros_ws/install/`.
+
+**Build time:** ~10 minutes first run, ~2 minutes on subsequent runs (cached).
+
+### 4. Prepare data directory
+```
+/path/to/volumeROS/dataFolder/models/predator/data/indoor/  ← 3DMatch .pth point cloud files
 ```
 
-### 4. Prepare weights directory
+### 5. Prepare weights directory
+Create a `weights/` directory alongside `dataFolder/`:
 ```
-/shared/weights/
+/path/to/volumeROS/weights/
 ├── regtr-3dmatch-model-best.pth      ← RegTR model weights
 ├── hybridpoint-3dmatch.tar           ← HybridPoint model weights
 └── predator-indoor.pth               ← Predator model weights
 ```
-GeoTransformer weights (`geotransformer-3dmatch.pth.tar`) are already included in the repo.
+GeoTransformer weights (`geotransformer-3dmatch.pth.tar`) are already in the repo.
 
 **Weight download links:**
 - **RegTR:** https://github.com/yewzijian/RegTR/releases
-- **HybridPoint:** From HybridPoint repo (contact author or check their releases)
+- **HybridPoint:** From HybridPoint repo
 - **Predator:** From Predator repo (https://github.com/zhanwenchen/Predator)
 
 ## Running Benchmarks
@@ -55,31 +67,71 @@ GeoTransformer weights (`geotransformer-3dmatch.pth.tar`) are already included i
 ### Command format
 ```bash
 docker run --rm \
-  -v /path/to/data:/data:ro \
-  -v /path/to/weights:/volume/weights:ro \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./benchmark_results:/volume/results \
-  fsbench:latest <method> [num_workers]
+  fsbench:latest benchmark <method> [num_workers]
 ```
 
 ### Method assignment (3 machines, 7 methods)
 
 **Machine 1:**
 ```bash
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest soft
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark soft
 ```
 
 **Machine 2:**
 ```bash
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest fpfh
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest icp
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark fpfh
+
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark icp
 ```
 
 **Machine 3:**
 ```bash
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest geotransformer
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest regtr
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest hybridpoint
-docker run --rm -v /data:/data:ro -v /weights:/volume/weights:ro -v ./results:/volume/results fsbench:latest pointreggpt
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark geotransformer
+
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark regtr
+
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark hybridpoint
+
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v ./results:/volume/results \
+  fsbench:latest benchmark pointreggpt
 ```
 
 ## Output Files
@@ -90,11 +142,40 @@ Each method produces CSV files in `./benchmark_results/<method>/`:
 |--------|------------|
 | soft | `outfile_soft_None_val.csv`, `outfile_soft_None_train.csv`, `outfile_soft_low_val.csv`, `outfile_soft_low_train.csv`, `outfile_soft_high_val.csv`, `outfile_soft_high_train.csv` |
 | fpfh | `outfile_fpfh_low_train.csv`, `outfile_fpfh_high_train.csv` |
-| icp | `outfile_icp_None_val.csv`, `outfile_icp_None_train.csv`, `outfile_icp_low_val.csv`, `outfile_icp_low_train.csv`, `outfile_icp_high_val.csv`, `outfile_icp_high_train.csv` |
+| icp | 6 CSVs (all noise/split combos) |
 | geotransformer | 6 CSVs (all noise/split combos) |
 | regtr | 6 CSVs (all noise/split combos) |
 | hybridpoint | `outfile_hybridpoint_high_train.csv` |
 | pointreggpt | `outfile_pointreggpt_high_train.csv` |
+
+## Two-Phase Design
+
+### Phase 1: Build
+```bash
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+```
+Does:
+1. Colcon build soft20 + fsregistration → `ros_ws/build/`, `ros_ws/install/`
+2. Create 5 conda environments (ml, geo_env, hybridpoint_env, pointreggpt_env, regtr_env)
+3. Build pybind11 module for SOFT
+4. Compile C++ wrappers for RegTR
+
+Build artifacts persist on the host. Subsequent builds are fast (cached).
+
+### Phase 2: Benchmark
+```bash
+docker run --rm -v ... fsbench:latest benchmark soft
+```
+Does:
+1. Source pre-built workspace
+2. Activate correct conda environment
+3. Fix config paths (→ `/data`)
+4. Copy model weights from `/volume/weights`
+5. Run benchmark (all noise levels × splits)
+6. Auto-merge results
+7. Copy results to `/volume/results`
+
+No compilation needed — uses pre-built artifacts from Phase 1.
 
 ## Multi-Architecture Support
 
@@ -106,11 +187,9 @@ docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 # On ARM64 machine (e.g., Mac M-series, ARM server)
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 ```
-No `--platform` flag needed — each build targets the host architecture automatically.
+No `--platform` flag needed — each build targets the host architecture.
 
 ## Conda Environments
-
-Each method uses a dedicated conda environment:
 
 | Method | Env | Python | PyTorch |
 |--------|-----|--------|---------|
@@ -122,14 +201,20 @@ Each method uses a dedicated conda environment:
 
 ## Troubleshooting
 
+### "soft20 not built" error
+Run the build phase first:
+```bash
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+```
+
 ### "Pretrained weights not found" warning
-Some ML methods will run without weights (using random initialization). For meaningful results, ensure weights are in `/shared/weights/` and mounted to `/volume/weights`.
+Some ML methods will run without weights (using random initialization). For meaningful results, ensure weights are in the mounted `/volume/weights/` directory.
 
 ### Out of memory
 Reduce `num_workers` (default 8):
 ```bash
-docker run ... fsbench:latest soft 2
+docker run ... fsbench:latest benchmark soft 2
 ```
 
 ### Build fails on ARM64
-Ensure you're using a modern Docker version that supports multi-arch builds. The Dockerfile uses `$(uname -m)` for Miniforge download, which handles both architectures.
+Ensure you're using a modern Docker version. The Dockerfile uses `$(uname -m)` for Miniforge download, which handles both architectures.
