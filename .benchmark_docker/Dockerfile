@@ -125,7 +125,7 @@ RUN /opt/miniforge3/envs/ml/bin/pip install pybind11 \
     && NUMPY_INC=$(/opt/miniforge3/envs/ml/bin/python -c "import numpy; print(numpy.get_include())") \
     && PY_INCFLAGS=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_paths()['include'])") \
     && PY_SUFFIX=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))") \
-    && /opt/miniforge3/envs/ml/bin/g++ -O3 -shared -fPIC -std=c++20 \
+    && g++ -O3 -shared -fPIC -std=c++20 \
         -I"${PYBIND_INC}" \
         -I"${NUMPY_INC}" \
         -I"${PY_INCFLAGS}" \
