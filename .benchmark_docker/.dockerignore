@@ -1,0 +1,16 @@
+.git
+.gitignore
+*.pyc
+__pycache__/
+cmake-build-debug/
+debug_results/
+*.csv
+outputFiles/
+*.ply
+build/
+install/
+log/
+*.log
+.cache/
+*.pth
+*.tar
