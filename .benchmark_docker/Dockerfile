@@ -84,14 +84,13 @@ RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     && make install \
     && ldconfig
 
-# === ROS2 minimal deps for soft20 build ===
+# === ROS2 Jazzy desktop (includes all deps needed for soft20 build) ===
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         ros-dev-tools \
-        ros-$(. /etc/os-release && echo $ROS_DISTRO)-rosidl-default-generators \
-        ros-$(. /etc/os-release && echo $ROS_DISTRO)-builtin-interfaces \
+        ros-$(. /etc/os-release && echo $ROS_DISTRO)-desktop \
     && rm -rf /var/lib/apt/lists/*
 
 # === soft20 (built via colcon ROS2 workspace) ===
