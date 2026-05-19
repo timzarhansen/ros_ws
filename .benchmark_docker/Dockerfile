@@ -96,7 +96,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 # === soft20 (built via colcon ROS2 workspace) ===
 RUN mkdir -p /tmp/soft20_ws/src \
     && git clone https://github.com/Zarbokk/soft20.git /tmp/soft20_ws/src/soft20 \
-    && bash -c ". /opt/ros/$ROS_DISTRO/setup.bash && colcon build --packages-select soft20 --cmake-args -DCMAKE_INSTALL_PREFIX=/opt/soft20_install" \
+    && bash -c ". /opt/ros/$ROS_DISTRO/setup.bash && colcon build --packages-select soft20 --install-base /opt/soft20_install" \
     && rm -rf /tmp/soft20_ws
 
 # === Miniforge3 ===
