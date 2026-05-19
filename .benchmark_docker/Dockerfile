@@ -132,9 +132,10 @@ RUN /opt/miniforge3/envs/ml/bin/pip install pybind11 \
         -I/app/fsregistration/include \
         -I/app/fsregistration/find-peaks/include \
         -I/opt/soft20_install/include \
-        -I/opt/soft20_install/include/soft20 \
+        -I/opt/soft20_install/include \
         -I/usr/include/eigen3 \
         -I/usr/local/include/opencv4 \
+        -I/opt/ros/humble/include \
         /app/fsregistration/src/pybind_registration_3d.cpp \
         /app/fsregistration/src/softRegistrationClass3D.cpp \
         /app/fsregistration/src/softCorrelationClass3D.cpp \
