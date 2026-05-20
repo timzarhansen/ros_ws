@@ -10,8 +10,9 @@ ARG USER_GID=$USER_UID
 # === System packages ===
 RUN groupadd --gid $USER_GID $USERNAME 2>/dev/null || true \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
     && apt-get update \
+    && apt-get install -y --no-install-recommends sudo \
+    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
     && apt-get install -y --no-install-recommends \
         software-properties-common \
         build-essential \
