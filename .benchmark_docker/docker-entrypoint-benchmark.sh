@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 METHOD="${1:-}"
 NUM_WORKERS="${2:-8}"

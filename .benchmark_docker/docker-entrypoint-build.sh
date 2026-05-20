@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
-export AMENT_TRACE_SETUP_FILES=0
+set -eo pipefail
 
 echo "=============================================="
 echo "  fsregistration Benchmark — Build Phase"
