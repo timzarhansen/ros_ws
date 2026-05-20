@@ -10,7 +10,7 @@ cd /path/to/volumeROS
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 # 2. Build workspace (first time only, ~10 min)
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 
 # 3. Run a benchmark
 docker run --rm \
