@@ -10,14 +10,14 @@ cd /path/to/volumeROS
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 # 2. Build workspace (first time only, ~10 min)
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 
 # 3. Run a benchmark
 docker run --rm \
   -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v ./benchmark_results:/volume/results \
-  fsbench:latest benchmark soft 8
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 8
 ```
 
 ## Setup on Each Server
@@ -36,7 +36,7 @@ docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 ### 3. Build the workspace (first time only)
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 This compiles soft20 + fsregistration with colcon, creates conda environments, builds pybind11, and compiles C++ wrappers. Build artifacts persist in `ros_ws/build/` and `ros_ws/install/`.
 
@@ -71,7 +71,7 @@ docker run --rm \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./benchmark_results:/volume/results \
-  fsbench:latest benchmark <method> [num_workers]
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh <method> [num_workers]
 ```
 
 ### Method assignment (3 machines, 7 methods)
@@ -83,7 +83,7 @@ docker run --rm \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark soft
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft
 ```
 
 **Machine 2:**
@@ -93,14 +93,14 @@ docker run --rm \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark fpfh
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh fpfh
 
 docker run --rm \
   -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark icp
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh icp
 ```
 
 **Machine 3:**
@@ -110,28 +110,28 @@ docker run --rm \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark geotransformer
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh geotransformer
 
 docker run --rm \
   -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark regtr
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh regtr
 
 docker run --rm \
   -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark hybridpoint
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh hybridpoint
 
 docker run --rm \
   -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
   -v /path/to/volumeROS/dataFolder:/data:ro \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
-  fsbench:latest benchmark pointreggpt
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh pointreggpt
 ```
 
 ## Output Files
@@ -152,7 +152,7 @@ Each method produces CSV files in `./benchmark_results/<method>/`:
 
 ### Phase 1: Build
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 Does:
 1. Colcon build soft20 + fsregistration → `ros_ws/build/`, `ros_ws/install/`
@@ -164,7 +164,7 @@ Build artifacts persist on the host. Subsequent builds are fast (cached).
 
 ### Phase 2: Benchmark
 ```bash
-docker run --rm -v ... fsbench:latest benchmark soft
+docker run --rm -v ... fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft
 ```
 Does:
 1. Source pre-built workspace
@@ -204,7 +204,7 @@ No `--platform` flag needed — each build targets the host architecture.
 ### "soft20 not built" error
 Run the build phase first:
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest build
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 
 ### "Pretrained weights not found" warning
@@ -213,7 +213,7 @@ Some ML methods will run without weights (using random initialization). For mean
 ### Out of memory
 Reduce `num_workers` (default 8):
 ```bash
-docker run ... fsbench:latest benchmark soft 2
+docker run ... fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 2
 ```
 
 ### Build fails on ARM64

@@ -103,7 +103,5 @@ USER $USERNAME
 WORKDIR /home/$USERNAME
 
 # === Entrypoints ===
-COPY .benchmark_docker/docker-entrypoint-build.sh /usr/local/bin/docker-entrypoint-build.sh
-COPY .benchmark_docker/docker-entrypoint-benchmark.sh /usr/local/bin/docker-entrypoint-benchmark.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint-build.sh \
-    && chmod +x /usr/local/bin/docker-entrypoint-benchmark.sh
+COPY --chmod=755 .benchmark_docker/docker-entrypoint-build.sh /usr/local/bin/docker-entrypoint-build.sh
+COPY --chmod=755 .benchmark_docker/docker-entrypoint-benchmark.sh /usr/local/bin/docker-entrypoint-benchmark.sh

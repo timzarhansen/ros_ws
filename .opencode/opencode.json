@@ -5,7 +5,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "llama-server (local)",
       "options": {
-        "baseURL": "http://host.docker.internal:1235",
+        "baseURL": "http://100.64.0.1:1235",
         "timeout": false
       },
       "models": {
@@ -31,7 +31,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "work_gpu (local)",
       "options": {
-        "baseURL": "http://10.60.41.51:1312",
+        "baseURL": "http://100.64.0.2:1312",
         "timeout": false
       },
       "models": {
