@@ -59,12 +59,12 @@ conda activate "$ENV_NAME"
 # === 2.5 Build pybind11 module for SOFT (ml env) ===
 if [ "$METHOD" = "soft" ]; then
   echo ">>> Building pybind11 module for SOFT..."
-  /opt/miniforge3/envs/ml/bin/pip install pybind11
+  pip install pybind11
 
-  PYBIND_INC=$(/opt/miniforge3/envs/ml/bin/python -c "import pybind11; print(pybind11.get_include())")
-  NUMPY_INC=$(/opt/miniforge3/envs/ml/bin/python -c "import numpy; print(numpy.get_include())")
-  PY_INCFLAGS=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_paths()['include'])")
-  PY_SUFFIX=$(/opt/miniforge3/envs/ml/bin/python -c "import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))")
+  PYBIND_INC=$(python -c "import pybind11; print(pybind11.get_include())")
+  NUMPY_INC=$(python -c "import numpy; print(numpy.get_include())")
+  PY_INCFLAGS=$(python -c "import sysconfig; print(sysconfig.get_paths()['include'])")
+  PY_SUFFIX=$(python -c "import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))")
 
   g++ -O3 -shared -fPIC -std=c++20 \
     -I"${PYBIND_INC}" \
@@ -91,10 +91,10 @@ fi
 # === 2.6 Compile C++ wrappers for regtr_env ===
 if [ "$METHOD" = "regtr" ]; then
   echo ">>> Compiling C++ wrappers..."
-  /opt/miniforge3/envs/regtr_env/bin/bash -c '\
+  bash -c '\
     cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers \
     && bash compile_wrappers.sh' \
-    && /opt/miniforge3/envs/regtr_env/bin/bash -c '\
+    && bash -c '\
     cd /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/src/models/backbone_kpconv/cpp_wrappers \
     && bash compile_wrappers.sh'
   echo ">>> C++ wrappers compiled."
