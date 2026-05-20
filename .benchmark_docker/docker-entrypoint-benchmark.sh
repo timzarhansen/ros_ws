@@ -3,9 +3,10 @@ set -eo pipefail
 
 METHOD="${1:-}"
 NUM_WORKERS="${2:-8}"
+TEST_MODE="${3:-}"
 
 if [ -z "$METHOD" ]; then
-  echo "Usage: $0 <method> [num_workers]"
+  echo "Usage: $0 <method> [num_workers] [--test]"
   echo "Methods: soft fpfh icp geotransformer regtr hybridpoint pointreggpt"
   exit 1
 fi
@@ -128,39 +129,7 @@ fi
 
 # === 5. Run benchmark ===
 case "$METHOD" in
-  soft)
-    # No runSoft_batch.sh exists, call run_parallel_batches.py directly
-    for noise in None low high; do
-      for split in val train; do
-        TOTAL_SAMPLES=$( [ "$split" = "val" ] && echo 1331 || echo 20642 )
-        echo ""
-        echo "=============================================="
-        echo "SOFT: $noise / $split"
-        echo "=============================================="
-        python3 bashScripts/run_parallel_batches.py \
-          --config configFiles/predatorNothing.yaml \
-          --noise-level "$noise" \
-          --data-type "$split" \
-          --total-samples "$TOTAL_SAMPLES" \
-          --batch-size 100 \
-          --num-workers "$NUM_WORKERS" \
-          --model-type soft \
-          --soft-N 128 \
-          --soft-use-clahe 0 \
-          --soft-r-min 16 \
-          --soft-r-max 48 \
-          --soft-level-rotation 0.001 \
-          --soft-level-translation 0.001 \
-          --soft-normalization 2
-        python3 bashScripts/merge_and_deduplicate.py \
-          --noise-level "$noise" \
-          --data-type "$split" \
-          --model-type soft
-      done
-    done
-    ;;
-
-  fpfh|icp|geotransformer|regtr|hybridpoint|pointreggpt)
+  fpfh|icp|geotransformer|regtr|hybridpoint|pointreggpt|soft)
     # Use existing batch scripts
     case "$METHOD" in
       fpfh)            SCRIPT="bashScripts/runFPFH_batch.sh" ;;
@@ -169,11 +138,18 @@ case "$METHOD" in
       regtr)           SCRIPT="bashScripts/runRegTR_batch.sh" ;;
       hybridpoint)     SCRIPT="bashScripts/runHybridPoint_batch.sh" ;;
       pointreggpt)     SCRIPT="bashScripts/runPointRegGPT_batch.sh" ;;
+      soft)            SCRIPT="bashScripts/runSoft_batch.sh" ;;
     esac
     # Fix config filename to use our fixed config
     sed -i 's|predatorNothingMac.yaml|predatorNothing.yaml|g' "$SCRIPT"
     # Fix worker count
     sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" "$SCRIPT"
+    # Fix total samples for test mode
+    if [ "$TEST_MODE" = "--test" ]; then
+      sed -i 's|TOTAL_SAMPLES_VAL=.*|TOTAL_SAMPLES_VAL=10|g' "$SCRIPT"
+      sed -i 's|TOTAL_SAMPLES_TRAIN=.*|TOTAL_SAMPLES_TRAIN=10|g' "$SCRIPT"
+      echo ">>> Test mode: 10 samples per noise/split combo"
+    fi
     bash "$SCRIPT"
     ;;
 esac

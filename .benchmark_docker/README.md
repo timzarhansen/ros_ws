@@ -10,14 +10,17 @@ cd /path/to/volumeROS
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 # 2. Build workspace (first time only, ~10 min)
-docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 
 # 3. Run a benchmark
 docker run --rm \
-  -v $(pwd):/home/benchmark/ros_ws \
-  -v $(pwd)/dataFolder:/data:ro \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
   -v ./benchmark_results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 8
+
+# 4. Quick test (10 samples per method, validates config)
+bash .benchmark_docker/run_test.sh
 ```
 
 ## Setup on Each Server
@@ -132,6 +135,31 @@ docker run --rm \
   -v /path/to/volumeROS/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh pointreggpt
+```
+
+## Test Mode
+
+Run a quick validation with 10 samples per method to ensure everything is configured correctly:
+
+```bash
+bash .benchmark_docker/run_test.sh
+```
+
+This script:
+1. `git pull --recurse-submodules`
+2. Builds the Docker image
+3. Builds the workspace
+4. Runs each of the 7 methods with `--test` flag (10 samples per noise/split)
+
+Results saved to `./test_results/<method>/`.
+
+You can also run test mode for a single method:
+```bash
+docker run --rm \
+  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v ./test_results:/volume/results \
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 2 --test
 ```
 
 ## Output Files
