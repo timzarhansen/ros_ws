@@ -31,7 +31,7 @@ for METHOD in $METHODS; do
   echo "  Testing: $METHOD"
   echo "=============================================="
   docker run --rm \
-    -v $(pwd)/ros_ws:/home/benchmark/ros_ws \
+    -v $(pwd):/home/benchmark/ros_ws \
     -v $(pwd)/dataFolder:/data:ro \
     -v $(pwd)/weights:/volume/weights:ro \
     -v ./test_results/$METHOD:/volume/results \
