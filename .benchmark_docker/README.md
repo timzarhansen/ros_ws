@@ -156,11 +156,8 @@ docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:late
 ```
 Does:
 1. Colcon build soft20 + fsregistration → `ros_ws/build/`, `ros_ws/install/`
-2. Create 5 conda environments (ml, geo_env, hybridpoint_env, pointreggpt_env, regtr_env)
-3. Build pybind11 module for SOFT
-4. Compile C++ wrappers for RegTR
 
-Build artifacts persist on the host. Subsequent builds are fast (cached).
+Build artifacts persist on the host. Subsequent builds are fast (cached, ~2 min).
 
 ### Phase 2: Benchmark
 ```bash
@@ -168,14 +165,15 @@ docker run --rm -v ... fsbench:latest /usr/local/bin/docker-entrypoint-benchmark
 ```
 Does:
 1. Source pre-built workspace
-2. Activate correct conda environment
-3. Fix config paths (→ `/data`)
-4. Copy model weights from `/volume/weights`
-5. Run benchmark (all noise levels × splits)
-6. Auto-merge results
-7. Copy results to `/volume/results`
+2. Create conda environment (if not already created)
+3. Build pybind11 module (soft only) or C++ wrappers (regtr only)
+4. Fix config paths (→ `/data`)
+5. Copy model weights from `/volume/weights`
+6. Run benchmark (all noise levels × splits)
+7. Auto-merge results
+8. Copy results to `/volume/results`
 
-No compilation needed — uses pre-built artifacts from Phase 1.
+Each method creates only its own conda env on first run.
 
 ## Multi-Architecture Support
 
