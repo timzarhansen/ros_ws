@@ -14,8 +14,8 @@ docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/d
 
 # 3. Run a benchmark
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v $(pwd):/home/benchmark/ros_ws \
+  -v $(pwd)/dataFolder:/data:ro \
   -v ./benchmark_results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 8
 ```

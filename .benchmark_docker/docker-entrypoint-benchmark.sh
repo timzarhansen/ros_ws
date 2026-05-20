@@ -25,7 +25,7 @@ source /opt/miniforge3/etc/profile.d/conda.sh
 case "$METHOD" in
   soft)
     ENV_NAME=ml
-    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_ml.yml
+    ENV_FILE=/home/benchmark/ros_ws/.devcontainer/environment.yml
     ;;
   fpfh|icp|geotransformer)
     ENV_NAME=geo_env
