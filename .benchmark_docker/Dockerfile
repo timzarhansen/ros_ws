@@ -93,7 +93,6 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     && apt-get install -y --no-install-recommends \
         ros-dev-tools \
         ros-$(. /etc/os-release && echo $ROS_DISTRO)-desktop \
-        libtf2-dev \
         ros-$(. /etc/os-release && echo $ROS_DISTRO)-tf2 \
         ros-$(. /etc/os-release && echo $ROS_DISTRO)-tf2-geometry-msgs \
         ros-$(. /etc/os-release && echo $ROS_DISTRO)-tf2-eigen \
