@@ -21,3 +21,6 @@ src/**/install/
 
 # Backup archive
 .backup/
+
+# Conda environment cache
+condaenv.*.requirements.txt

@@ -8,7 +8,10 @@ echo "=============================================="
 # === 1. Source ROS2 ===
 . /opt/ros/humble/setup.bash
 
-# === 2. Colcon build soft20 + fsregistration ===
+# === 2. Install pybind11 for CMake ===
+pip install pybind11 pybind11[global]
+
+# === 3. Colcon build soft20 + fsregistration ===
 echo ">>> Building with colcon..."
 cd /home/benchmark/ros_ws
 sudo rm -r install/* build/* log/*

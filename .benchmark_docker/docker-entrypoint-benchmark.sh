@@ -56,36 +56,11 @@ fi
 
 conda activate "$ENV_NAME"
 
-# === 2.5 Build pybind11 module for SOFT (ml env) ===
+# === 2.5 Set PYTHONPATH for pybind11 module ===
 if [ "$METHOD" = "soft" ]; then
-  echo ">>> Building pybind11 module for SOFT..."
-  pip install pybind11
-
-  PYBIND_INC=$(python -c "import pybind11; print(pybind11.get_include())")
-  NUMPY_INC=$(python -c "import numpy; print(numpy.get_include())")
-  PY_INCFLAGS=$(python -c "import sysconfig; print(sysconfig.get_paths()['include'])")
-  PY_SUFFIX=$(python -c "import sysconfig; print(sysconfig.get_config_var('EXT_SUFFIX'))")
-
-  g++ -O3 -shared -fPIC -std=c++20 \
-    -I"${PYBIND_INC}" \
-    -I"${NUMPY_INC}" \
-    -I"${PY_INCFLAGS}" \
-    -I/home/benchmark/ros_ws/src/fsregistration/include \
-    -I/home/benchmark/ros_ws/src/fsregistration/find-peaks/include \
-    -I/home/benchmark/ros_ws/install/soft20/include \
-    -I/usr/include/eigen3 \
-    -I/usr/local/include/opencv4 \
-    -I/opt/ros/humble/include \
-    /home/benchmark/ros_ws/src/fsregistration/src/pybind_registration_3d.cpp \
-    /home/benchmark/ros_ws/src/fsregistration/src/softRegistrationClass3D.cpp \
-    /home/benchmark/ros_ws/src/fsregistration/src/softCorrelationClass3D.cpp \
-    /home/benchmark/ros_ws/src/fsregistration/src/generalHelpfulTools.cpp \
-    /home/benchmark/ros_ws/src/fsregistration/find-peaks/src/union_find.cpp \
-    /home/benchmark/ros_ws/install/soft20/lib/libsoft20.a \
-    -lfftw3 \
-    -L/usr/local/lib -lopencv_imgproc -lopencv_highgui -lopencv_core \
-    -o "/home/benchmark/ros_ws/src/fsregistration/src/pybind_registration_3d${PY_SUFFIX}"
-  echo ">>> pybind11 module built."
+  echo ">>> Setting up pybind11 module path..."
+  export PYTHONPATH="/home/benchmark/ros_ws/install/fsregistration/lib/fsregistration:${PYTHONPATH}"
+  echo ">>> PYTHONPATH=$PYTHONPATH"
 fi
 
 # === 2.6 Compile C++ wrappers for regtr_env ===

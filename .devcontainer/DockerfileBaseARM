@@ -54,7 +54,8 @@ RUN apt update \
     libsdl2-dev \
     libtbb-dev \
     libomp-dev \
-    libsystemd-dev
+    libsystemd-dev \
+    libpcl-dev
 
 # --- Locale setup ---
 RUN locale-gen de_DE de_DE.UTF-8 \
@@ -122,17 +123,11 @@ RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON \
     && make -j $(nproc) \
     && make install
 
-# --- PCL 1.14.1 from source ---
-WORKDIR /home/$USERNAME/install_ws
-RUN git clone --branch pcl-1.14.1 https://github.com/PointCloudLibrary/pcl
-WORKDIR /home/$USERNAME/install_ws/pcl/build
-RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DBUILD_visualization=ON \
-    -DBUILD_apps=OFF \
-    -DBUILD_examples=OFF \
-    .. \
-    && make -j $(nproc) \
-    && make install
+# --- Clean up build artifacts to reduce image size ---
+RUN rm -rf /home/$USERNAME/install_ws/gtsam/build \
+    && rm -rf /home/$USERNAME/install_ws/opencvInstall/opencv \
+    && rm -rf /home/$USERNAME/install_ws/opencvInstall/opencv_contrib \
+   && rm -rf /home/$USERNAME/install_ws/opencvInstall/build
 
 # --- Amazon Corretto JDK 21 ---
 RUN wget -O - https://apt.corretto.aws/corretto.key | gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg \
@@ -170,18 +165,7 @@ ENV SHELL=/bin/bash
 ENV PATH=/opt/ros/$ROS_DISTRO/bin:$PATH
 
 # --- Shell configuration ---
-RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' " >> ~/.bashrc \
-    && echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc \
-    && echo "source /home/tim-external/ros_ws/install/setup.bash" >> ~/.bashrc \
-    && echo "alias ml='conda activate ml'" >> ~/.bashrc \
-    && echo "alias mlr='conda run -n ml'" >> ~/.bashrc \
-    && echo '# Conda initialization (for conda activate ml)' >> ~/.bashrc \
-    && echo 'if [ -f /opt/miniforge3/etc/profile.d/conda.sh ]; then' >> ~/.bashrc \
-    && echo '    . /opt/miniforge3/etc/profile.d/conda.sh' >> ~/.bashrc \
-    && echo 'fi' >> ~/.bashrc \
-    && echo 'source /usr/local/bin/entrypoint.sh' >> ~/.bashrc \
-    && echo "source /opt/ros/jazzy/setup.bash" >> ~/.profile \
-    && echo "source /home/$USERNAME/ros_ws/install/setup.bash" >> ~/.profile
+RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' " >> ~/.bashrc
 
 # --- Switch back to root for system-level setup ---
 USER root
