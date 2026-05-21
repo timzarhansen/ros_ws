@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
+# --- Deactivate conda base so it doesn't shadow system Python ---
+conda deactivate 2>/dev/null || true
+
+# --- Remove conda from PATH so CMake finds system Python ---
+# (keeps conda binary accessible at /opt/miniforge3/bin/conda for on-demand use)
+export PATH="$(echo "$PATH" | tr ':' '\n' | grep -v miniforge | tr '\n' ':' | sed 's/:$//')"
+
 # Source ROS 2 and workspace setup (sets AMENT_PREFIX_PATH, COLCON_PREFIX_PATH, LD_LIBRARY_PATH, PATH)
 source /opt/ros/jazzy/setup.bash
 [ -f /home/tim-external/ros_ws/install/setup.bash ] && source /home/tim-external/ros_ws/install/setup.bash
@@ -24,7 +31,8 @@ compute_pythonpath() {
 
 export PYTHONPATH="$(compute_pythonpath /opt/ros/jazzy /home/tim-external/ros_ws/install)"
 
-# Force CMake to use system Python 3.12 (ignore miniforge's Python 3.13)
+# Force CMake to use system Python 3.12 with NumPy
 export Python3_ROOT_DIR=/usr
+export Python3_NumPy_INCLUDE_DIRS=/usr/lib/python3/dist-packages/numpy/core/include
 
 exec "$@"

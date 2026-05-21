@@ -157,8 +157,7 @@ USER $USERNAME
 WORKDIR /home/$USERNAME/install_ws
 
 # --- User-space setup ---
-RUN /opt/miniforge3/bin/conda init bash \
-    && /opt/miniforge3/bin/conda config --set auto_activate_base false
+RUN /opt/miniforge3/bin/conda config --set auto_activate_base false
 
 # --- SSH directory setup ---
 WORKDIR /home/$USERNAME/
@@ -178,8 +177,7 @@ RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\
     && echo "# Conda initialization" >> ~/.profile \
     && echo 'if [ -f /opt/miniforge3/etc/profile.d/conda.sh ]; then' >> ~/.profile \
     && echo '    . /opt/miniforge3/etc/profile.d/conda.sh' >> ~/.profile \
-    && echo 'fi' >> ~/.profile \
-    && echo 'export PATH="/opt/miniforge3/bin:$PATH"' >> ~/.profile
+    && echo 'fi' >> ~/.profile
 
 # --- Switch back to root for system-level setup ---
 USER root
