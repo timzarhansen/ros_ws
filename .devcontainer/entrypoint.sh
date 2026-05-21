@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 set -e
 
-# --- Deactivate conda base so it doesn't shadow system Python ---
-conda deactivate 2>/dev/null || true
+# Source conda so 'conda activate ml' works (but conda is not on PATH)
+if [ -f /opt/miniforge3/etc/profile.d/conda.sh ]; then
+    . /opt/miniforge3/etc/profile.d/conda.sh
+fi
 
-# --- Remove conda from PATH so CMake finds system Python ---
-# (keeps conda binary accessible at /opt/miniforge3/bin/conda for on-demand use)
-export PATH="$(echo "$PATH" | tr ':' '\n' | grep -v -E 'miniforge|conda' | tr '\n' ':' | sed 's/:$//')"
-
-# Source ROS 2 and workspace setup (sets AMENT_PREFIX_PATH, COLCON_PREFIX_PATH, LD_LIBRARY_PATH, PATH)
+# Source ROS 2 and workspace setup
 source /opt/ros/jazzy/setup.bash
 [ -f /home/tim-external/ros_ws/install/setup.bash ] && source /home/tim-external/ros_ws/install/setup.bash
 
 # Dynamically compute PYTHONPATH from installed packages
-# This replaces the hardcoded PYTHONPATH which breaks when packages are added/removed
 compute_pythonpath() {
     local pythonpath=""
     local sep=""
@@ -30,14 +27,5 @@ compute_pythonpath() {
 }
 
 export PYTHONPATH="$(compute_pythonpath /opt/ros/jazzy /home/tim-external/ros_ws/install)"
-
-# Force CMake to use system Python 3.12 with NumPy
-export Python3_ROOT_DIR=/usr
-
-# Dynamically find NumPy include dirs for the system Python
-PYTHON_NUMPY_INCLUDE=$(python3 -c "import numpy; print(numpy.get_include())" 2>/dev/null || echo "")
-if [ -n "$PYTHON_NUMPY_INCLUDE" ]; then
-    export Python3_NumPy_INCLUDE_DIRS="$PYTHON_NUMPY_INCLUDE"
-fi
 
 exec "$@"
