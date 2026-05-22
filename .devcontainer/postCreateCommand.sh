@@ -24,6 +24,12 @@ echo "=== Creating conda ML environment ==="
 /opt/miniforge3/bin/conda env create -f /home/tim-external/volumeROS/.devcontainer/environment.yml
 echo "✓ conda 'ml' environment created"
 
+# Compile predator C++ wrappers (needed for testingSoftOnPredatorData.py)
+echo "=== Compiling predator C++ wrappers ==="
+cd /home/tim-external/volumeROS/src/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers
+bash compile_wrappers.sh
+echo "✓ Predator C++ wrappers compiled"
+
 echo "=== Setup Complete ==="
 echo "User: tim-external"
 echo "Workspace: /home/tim-external/volumeROS"

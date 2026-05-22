@@ -1,8 +1,8 @@
 # ML Conda Environment
 # CPU-only version for testing on Predator dataset
 # Usage: conda env create -f environment_ml.yml
-# NOTE: After creating environment, compile C++ wrappers:
-#   1. cd predator/cpp_wrappers && bash compile_wrappers.sh
+# NOTE: opencv-python is pinned to 4.9.0.80 to match the pybind modules
+#       which were compiled against OpenCV 4.9.0 from source
 
 name: ml
 channels:
@@ -27,7 +27,7 @@ dependencies:
       - torchaudio>=2.0
       - transforms3d
       - easydict
-      - opencv-python
+      - opencv-python==4.9.0.80
       - ipdb
       - einops
       - nibabel

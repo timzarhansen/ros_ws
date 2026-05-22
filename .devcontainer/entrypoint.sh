@@ -23,4 +23,7 @@ compute_pythonpath() {
 
 export PYTHONPATH="$(compute_pythonpath /opt/ros/jazzy /home/tim-external/ros_ws/install)"
 
+# Add OpenCV 4.9 libraries to library path (needed for pybind modules)
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
 exec "$@"
