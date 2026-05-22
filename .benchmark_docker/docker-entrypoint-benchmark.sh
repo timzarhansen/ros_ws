@@ -30,19 +30,19 @@ case "$METHOD" in
     ;;
   fpfh|icp|geotransformer)
     ENV_NAME=geo_env
-    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_geo_env.yml
+    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_geo.yml
     ;;
   hybridpoint)
     ENV_NAME=hybridpoint_env
-    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_hybridpoint_env.yml
+    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_hybridpoint.yml
     ;;
   pointreggpt)
     ENV_NAME=pointreggpt_env
-    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_pointreggpt_env.yml
+    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_pointreggpt.yml
     ;;
   regtr)
     ENV_NAME=regtr_env
-    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_regtr_env.yml
+    ENV_FILE=/home/benchmark/ros_ws/src/fsregistration/pythonScripts/configFiles/environment_regtr.yml
     ;;
   *) echo "Unknown method: $METHOD"; exit 1 ;;
 esac
