@@ -100,6 +100,9 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Mi
     && bash /tmp/miniforge.sh -b -p /opt/miniforge3 \
     && rm /tmp/miniforge.sh
 
+# === Copy environment files for conda env creation ===
+COPY --chown=$USERNAME:$USER_GID .devcontainer/environment.yml /home/$USERNAME/ros_ws/.devcontainer/environment.yml
+
 # === Switch to non-root user ===
 USER $USERNAME
 WORKDIR /home/$USERNAME

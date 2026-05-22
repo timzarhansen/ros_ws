@@ -63,15 +63,24 @@ if [ "$METHOD" = "soft" ]; then
   echo ">>> PYTHONPATH=$PYTHONPATH"
 fi
 
-# === 2.6 Compile C++ wrappers for regtr_env ===
-if [ "$METHOD" = "regtr" ]; then
-  echo ">>> Compiling C++ wrappers..."
+# === 2.5.1 Set LD_LIBRARY_PATH for OpenCV 4.9 ===
+if [ "$METHOD" = "soft" ]; then
+  echo ">>> Setting LD_LIBRARY_PATH for OpenCV 4.9..."
+  export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+  echo ">>> LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+fi
+
+# === 2.6 Compile C++ wrappers for regtr_env and soft ===
+if [ "$METHOD" = "soft" ] || [ "$METHOD" = "regtr" ]; then
+  echo ">>> Compiling predator C++ wrappers..."
   bash -c '\
     cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers \
-    && bash compile_wrappers.sh' \
-    && bash -c '\
+    && bash compile_wrappers.sh'
+  if [ "$METHOD" = "regtr" ]; then
+    bash -c '\
     cd /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/src/models/backbone_kpconv/cpp_wrappers \
     && bash compile_wrappers.sh'
+  fi
   echo ">>> C++ wrappers compiled."
 fi
 
