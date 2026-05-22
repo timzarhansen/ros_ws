@@ -56,7 +56,19 @@ fi
 
 conda activate "$ENV_NAME"
 
-# === 2.5 Compile C++ wrappers for regtr_env and soft ===
+# === 2.5 Set LD_LIBRARY_PATH for OpenCV 4.9 (soft method only) ===
+if [ "$METHOD" = "soft" ]; then
+  export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+  echo ">>> LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+fi
+
+# === 2.6 Set PYTHONPATH for pybind11 module (soft method only) ===
+if [ "$METHOD" = "soft" ]; then
+  export PYTHONPATH="/home/benchmark/ros_ws/install/fsregistration/lib/fsregistration:$PYTHONPATH"
+  echo ">>> PYTHONPATH=$PYTHONPATH"
+fi
+
+# === 2.7 Compile C++ wrappers for regtr_env and soft ===
 if [ "$METHOD" = "soft" ] || [ "$METHOD" = "regtr" ]; then
   echo ">>> Compiling predator C++ wrappers..."
   bash -c '\
@@ -72,11 +84,17 @@ fi
 
 cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
-# === 3. Fix config paths ===
-sed -i 's|/home/tim-external/dataFolder/3dmatch|/data|g' configFiles/predatorNothing.yaml
-sed -i 's|/Users/timhansen/Documents/dataFolder/3dmatch|/data|g' configFiles/predatorNothing.yaml
+# === 3. Fix worker count ===
+sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
 
-# === 4. Copy weights from /volume/weights ===
+# === 4. Fix total samples for test mode ===
+if [ "$TEST_MODE" = "--test" ]; then
+  sed -i 's|TOTAL_SAMPLES_VAL=.*|TOTAL_SAMPLES_VAL=10|g' bashScripts/run*.sh
+  sed -i 's|TOTAL_SAMPLES_TRAIN=.*|TOTAL_SAMPLES_TRAIN=10|g' bashScripts/run*.sh
+  echo ">>> Test mode: 10 samples per noise/split combo"
+fi
+
+# === 5. Copy weights from /volume/weights ===
 if [ -f /volume/weights/regtr-3dmatch-model-best.pth ]; then
   mkdir -p /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/
   cp /volume/weights/regtr-3dmatch-model-best.pth \
@@ -97,10 +115,9 @@ if [ -f /volume/weights/predator-indoor.pth ]; then
   echo "Copied Predator weights"
 fi
 
-# === 5. Run benchmark ===
+# === 6. Run benchmark ===
 case "$METHOD" in
   fpfh|icp|geotransformer|regtr|hybridpoint|pointreggpt|soft)
-    # Use existing batch scripts
     case "$METHOD" in
       fpfh)            SCRIPT="bashScripts/runFPFH_batch.sh" ;;
       icp)             SCRIPT="bashScripts/runICP_batch.sh" ;;
@@ -110,21 +127,11 @@ case "$METHOD" in
       pointreggpt)     SCRIPT="bashScripts/runPointRegGPT_batch.sh" ;;
       soft)            SCRIPT="bashScripts/runSoft_batch.sh" ;;
     esac
-    # Fix config filename to use our fixed config
-    sed -i 's|predatorNothingMac.yaml|predatorNothing.yaml|g' "$SCRIPT"
-    # Fix worker count
-    sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" "$SCRIPT"
-    # Fix total samples for test mode
-    if [ "$TEST_MODE" = "--test" ]; then
-      sed -i 's|TOTAL_SAMPLES_VAL=.*|TOTAL_SAMPLES_VAL=10|g' "$SCRIPT"
-      sed -i 's|TOTAL_SAMPLES_TRAIN=.*|TOTAL_SAMPLES_TRAIN=10|g' "$SCRIPT"
-      echo ">>> Test mode: 10 samples per noise/split combo"
-    fi
     bash "$SCRIPT"
     ;;
 esac
 
-# === 6. Copy results to volume mount ===
+# === 7. Copy results to volume mount ===
 if [ -d "outputFiles/$METHOD" ]; then
   mkdir -p /volume/results/"$METHOD"
   cp -r outputFiles/"$METHOD"/* /volume/results/"$METHOD"/ 2>/dev/null || true
