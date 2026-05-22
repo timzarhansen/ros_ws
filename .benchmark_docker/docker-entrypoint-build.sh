@@ -12,7 +12,7 @@ echo "=============================================="
 echo ">>> Building with colcon..."
 cd /home/benchmark/ros_ws
 sudo rm -r install/* build/* log/*
-colcon build --packages-select soft20 fsregistration
+colcon build --packages-select soft20 fsregistration cv_bridge
 echo ">>> Colcon build complete."
 
 echo ""
