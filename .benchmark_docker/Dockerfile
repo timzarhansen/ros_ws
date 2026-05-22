@@ -1,7 +1,7 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV ROS_DISTRO=humble
+ENV ROS_DISTRO=jazzy
 
 ARG USERNAME=benchmark
 ARG USER_UID=1001
@@ -73,26 +73,23 @@ RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON \
     && make install \
     && ldconfig
 
-# === PCL 1.14.1 from source ===
-WORKDIR /home/$USERNAME/install_ws
-RUN git clone --branch pcl-1.14.1 https://github.com/PointCloudLibrary/pcl
-WORKDIR /home/$USERNAME/install_ws/pcl/build
-RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DBUILD_visualization=ON \
-    -DBUILD_apps=OFF \
-    -DBUILD_examples=OFF \
-    .. \
-    && make -j $(nproc) \
-    && make install \
-    && ldconfig
+# === Remove system OpenCV ===
+RUN apt-get remove -y libopencv-dev python3-opencv || true \
+    && apt-get purge -y libopencv-dev python3-opencv || true \
+    && apt-get autoremove -y
 
-# === ROS2 Humble desktop ===
+# === ROS2 Jazzy desktop ===
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         ros-dev-tools \
-        ros-$(. /etc/os-release && echo $ROS_DISTRO)-desktop \
+        ros-$ROS_DISTRO-desktop \
+    && rm -rf /var/lib/apt/lists/*
+
+# === PCL via apt ===
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libpcl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # === Miniforge3 ===
@@ -107,6 +104,35 @@ COPY --chown=$USERNAME:$USER_GID .devcontainer/environment.yml /home/$USERNAME/r
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
+# === Colcon defaults ===
+RUN mkdir -p /home/$USERNAME/.colcon \
+    && cat > /home/$USERNAME/.colcon_defaults.yaml << 'EOF'
+build:
+  cmake-args:
+    - -DCMAKE_BUILD_TYPE=Release
+    - -DPython3_EXECUTABLE=/usr/bin/python3
+  symlink-install: true
+EOF
+
+# === Shell configuration ===
+RUN echo 'PS1="\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] " ' >> ~/.bashrc
+
+# === Switch back to root for system-level setup ===
+USER root
+
+# === Entrypoint: sources ROS2 + workspace, dynamically computes PYTHONPATH ===
+COPY .benchmark_docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# === Profile.d fallback: ensures new shells also source setup files ===
+RUN echo 'source /opt/ros/jazzy/setup.bash' > /etc/profile.d/ros2-setup.sh \
+    && echo 'source /home/benchmark/ros_ws/install/setup.bash' >> /etc/profile.d/ros2-setup.sh \
+    && chmod +x /etc/profile.d/ros2-setup.sh
+
 # === Entrypoints ===
 COPY --chmod=755 .benchmark_docker/docker-entrypoint-build.sh /usr/local/bin/docker-entrypoint-build.sh
 COPY --chmod=755 .benchmark_docker/docker-entrypoint-benchmark.sh /usr/local/bin/docker-entrypoint-benchmark.sh
+COPY --chmod=755 .benchmark_docker/activate_ml.sh /usr/local/bin/activate_ml.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash"]

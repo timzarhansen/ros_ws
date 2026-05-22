@@ -18,7 +18,7 @@ if [ ! -d /home/benchmark/ros_ws/install/soft20 ]; then
 fi
 
 # === 1. Source ROS2 + workspace ===
-. /opt/ros/humble/setup.bash
+. /opt/ros/jazzy/setup.bash
 . /home/benchmark/ros_ws/install/setup.bash
 
 # === 2. Create and activate correct conda env ===
@@ -56,21 +56,7 @@ fi
 
 conda activate "$ENV_NAME"
 
-# === 2.5 Set PYTHONPATH for pybind11 module ===
-if [ "$METHOD" = "soft" ]; then
-  echo ">>> Setting up pybind11 module path..."
-  export PYTHONPATH="/home/benchmark/ros_ws/install/fsregistration/lib/fsregistration:${PYTHONPATH}"
-  echo ">>> PYTHONPATH=$PYTHONPATH"
-fi
-
-# === 2.5.1 Set LD_LIBRARY_PATH for OpenCV 4.9 ===
-if [ "$METHOD" = "soft" ]; then
-  echo ">>> Setting LD_LIBRARY_PATH for OpenCV 4.9..."
-  export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-  echo ">>> LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-fi
-
-# === 2.6 Compile C++ wrappers for regtr_env and soft ===
+# === 2.5 Compile C++ wrappers for regtr_env and soft ===
 if [ "$METHOD" = "soft" ] || [ "$METHOD" = "regtr" ]; then
   echo ">>> Compiling predator C++ wrappers..."
   bash -c '\
