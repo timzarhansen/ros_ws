@@ -117,7 +117,9 @@ RUN cmake -DOPENCV_ENABLE_NONFREE:BOOL=ON \
 
 # --- GTSAM 4.2a7 from source ---
 WORKDIR /home/$USERNAME/install_ws
-RUN git clone --branch 4.2a7 https://github.com/borglab/gtsam.git
+RUN git config --global http.version HTTP/1.1 \
+    && git config --global http.postBuffer 524288000 \
+    && git clone --branch 4.2a7 --depth 1 https://github.com/borglab/gtsam.git
 WORKDIR /home/$USERNAME/install_ws/gtsam/build
 RUN cmake .. -DGTSAM_USE_SYSTEM_EIGEN=ON \
     && make -j $(nproc) \
@@ -163,6 +165,15 @@ RUN mkdir -p /home/$USERNAME/.ssh
 
 ENV SHELL=/bin/bash
 ENV PATH=/opt/ros/$ROS_DISTRO/bin:$PATH
+
+# --- Colcon defaults ---
+RUN  cat > /home/$USERNAME/.colcon_defaults.yaml << 'EOF'
+build:
+  cmake-args:
+    - -DCMAKE_BUILD_TYPE=Release
+    - -DPython3_EXECUTABLE=/usr/bin/python3
+  symlink-install: true
+EOF
 
 # --- Shell configuration ---
 RUN echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] ' " >> ~/.bashrc
