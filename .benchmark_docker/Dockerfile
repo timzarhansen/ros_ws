@@ -27,6 +27,7 @@ RUN groupadd --gid $USER_GID $USERNAME 2>/dev/null || true \
         python3-dev \
         python3-numpy \
         python3-setuptools \
+        python3-pybind11 \
         libboost-all-dev \
         libeigen3-dev \
         libfftw3-dev \
@@ -117,22 +118,6 @@ EOF
 # === Shell configuration ===
 RUN echo 'PS1="\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]$\[\033[0m\] " ' >> ~/.bashrc
 
-# === Switch back to root for system-level setup ===
-USER root
-
-# === Entrypoint: sources ROS2 + workspace, dynamically computes PYTHONPATH ===
-COPY .benchmark_docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# === Profile.d fallback: ensures new shells also source setup files ===
-RUN echo 'source /opt/ros/jazzy/setup.bash' > /etc/profile.d/ros2-setup.sh \
-    && echo 'source /home/benchmark/ros_ws/install/setup.bash' >> /etc/profile.d/ros2-setup.sh \
-    && chmod +x /etc/profile.d/ros2-setup.sh
-
 # === Entrypoints ===
 COPY --chmod=755 .benchmark_docker/docker-entrypoint-build.sh /usr/local/bin/docker-entrypoint-build.sh
 COPY --chmod=755 .benchmark_docker/docker-entrypoint-benchmark.sh /usr/local/bin/docker-entrypoint-benchmark.sh
-COPY --chmod=755 .benchmark_docker/activate_ml.sh /usr/local/bin/activate_ml.sh
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/bin/bash"]
