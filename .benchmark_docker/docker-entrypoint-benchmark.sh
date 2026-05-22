@@ -94,28 +94,7 @@ if [ "$TEST_MODE" = "--test" ]; then
   echo ">>> Test mode: 10 samples per noise/split combo"
 fi
 
-# === 5. Copy weights from /volume/weights ===
-if [ -f /volume/weights/regtr-3dmatch-model-best.pth ]; then
-  mkdir -p /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/
-  cp /volume/weights/regtr-3dmatch-model-best.pth \
-    /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/trained_models/3dmatch/ckpt/model-best.pth
-  echo "Copied RegTR weights"
-fi
-
-if [ -f /volume/weights/hybridpoint-3dmatch.tar ]; then
-  mkdir -p /home/benchmark/ros_ws/src/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/
-  cp /volume/weights/hybridpoint-3dmatch.tar \
-    /home/benchmark/ros_ws/src/fsregistration/ml_registration/hybridpoint/weights_for_hybrid/3dmatch.tar
-  echo "Copied HybridPoint weights"
-fi
-
-if [ -f /volume/weights/predator-indoor.pth ]; then
-  mkdir -p /data/models/predator/data/weights/
-  cp /volume/weights/predator-indoor.pth /data/models/predator/data/weights/indoor.pth
-  echo "Copied Predator weights"
-fi
-
-# === 6. Run benchmark ===
+# === 5. Run benchmark ===
 case "$METHOD" in
   fpfh|icp|geotransformer|regtr|hybridpoint|pointreggpt|soft)
     case "$METHOD" in
@@ -131,7 +110,7 @@ case "$METHOD" in
     ;;
 esac
 
-# === 7. Copy results to volume mount ===
+# === 6. Copy results to volume mount ===
 if [ -d "outputFiles/$METHOD" ]; then
   mkdir -p /volume/results/"$METHOD"
   cp -r outputFiles/"$METHOD"/* /volume/results/"$METHOD"/ 2>/dev/null || true
