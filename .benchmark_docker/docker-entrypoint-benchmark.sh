@@ -84,8 +84,11 @@ fi
 
 cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
-# === 3. Fix worker count ===
-sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
+   # === 3. Fix worker count ===
+    sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
+    
+    # === 3.5 Always show verbose output for debugging ===
+    sed -i 's|python3 bashScripts/run_parallel_batches.py|python3 bashScripts/run_parallel_batches.py --verbose --show-stderr|g' bashScripts/run*.sh
 
 # === 4. Fix total samples for test mode ===
 if [ "$TEST_MODE" = "--test" ]; then

@@ -24,7 +24,7 @@ docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/d
 echo ""
 
 # === Step 4: Run tests for each method ===
-# Already tested: soft
+# Already tested and working: soft
 METHODS="fpfh icp geotransformer regtr hybridpoint pointreggpt"
 
 for METHOD in $METHODS; do
