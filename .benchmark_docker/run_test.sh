@@ -3,9 +3,16 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+# === Logging ===
+mkdir -p test_results
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+LOG_FILE="test_results/run_${TIMESTAMP}.log"
+exec > >(tee -a "$LOG_FILE" 2>&1)
+
 echo "=============================================="
 echo "  fsregistration Docker Test Runner"
 echo "=============================================="
+echo "Log file: $LOG_FILE"
 echo ""
 
 # === Step 1: Pull latest ===
