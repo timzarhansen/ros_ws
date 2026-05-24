@@ -27,7 +27,7 @@ echo ""
 
 # === Step 3: Build workspace ===
 echo "=== Step 3: docker build workspace ==="
-docker run --rm --user $(id -u):$(id -g) -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm  -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 echo ""
 
 # === Step 4: Run tests for each method ===
@@ -39,7 +39,6 @@ for METHOD in $METHODS; do
   echo "  Testing: $METHOD"
   echo "=============================================="
   docker run --rm \
-    --user $(id -u):$(id -g) \
     -v $(pwd):/home/benchmark/ros_ws \
     -v $(pwd)/dataFolder:/data:ro \
     -v $(pwd)/weights:/volume/weights:ro \
