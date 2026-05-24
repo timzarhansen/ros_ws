@@ -31,8 +31,8 @@ docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/d
 echo ""
 
 # === Step 4: Run tests for each method ===
-# Already tested and working: soft icp geotransformer
-METHODS="fpfh  regtr hybridpoint pointreggpt"
+# Already tested and working: soft icp geotransformer fpfh regtr
+METHODS="soft icp geotransformer fpfh regtr hybridpoint pointreggpt"
 
 for METHOD in $METHODS; do
   echo "=============================================="
@@ -42,7 +42,7 @@ for METHOD in $METHODS; do
     -v $(pwd):/home/benchmark/ros_ws \
     -v $(pwd)/dataFolder:/data:ro \
     -v $(pwd)/weights:/volume/weights:ro \
-    -v ./test_results/$METHOD:/volume/results \
+    -v ./test_results/:/volume/results \
     fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh $METHOD 2 --test
   echo ""
 done
