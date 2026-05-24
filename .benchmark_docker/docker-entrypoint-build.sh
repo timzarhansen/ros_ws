@@ -11,7 +11,7 @@ echo "=============================================="
 # === 2. Colcon build soft20 + fsregistration ===
 echo ">>> Building with colcon..."
 cd /home/benchmark/ros_ws
-sudo rm -r install/* build/* log/*
+sudo rm -r install/* build/* log/* 2>/dev/null || true
 colcon build --packages-select soft20 fsregistration cv_bridge
 echo ">>> Colcon build complete."
 
