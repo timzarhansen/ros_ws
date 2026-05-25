@@ -68,19 +68,17 @@ if [ "$METHOD" = "soft" ]; then
   echo ">>> PYTHONPATH=$PYTHONPATH"
 fi
 
-# === 2.7 Compile C++ wrappers for regtr_env and soft ===
-if [ "$METHOD" = "soft" ] || [ "$METHOD" = "regtr" ]; then
-  echo ">>> Compiling predator C++ wrappers..."
+# === 2.7 Compile C++ wrappers for all methods ===
+echo ">>> Compiling predator C++ wrappers..."
+bash -c '\
+  cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers \
+  && bash compile_wrappers.sh'
+if [ "$METHOD" = "regtr" ]; then
   bash -c '\
-    cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D/predator/cpp_wrappers \
-    && bash compile_wrappers.sh'
-  if [ "$METHOD" = "regtr" ]; then
-    bash -c '\
-    cd /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/src/models/backbone_kpconv/cpp_wrappers \
-    && bash compile_wrappers.sh'
-  fi
-  echo ">>> C++ wrappers compiled."
+  cd /home/benchmark/ros_ws/src/fsregistration/ml_registration/regtr/src/models/backbone_kpconv/cpp_wrappers \
+  && bash compile_wrappers.sh'
 fi
+echo ">>> C++ wrappers compiled."
 
 cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
