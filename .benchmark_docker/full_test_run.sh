@@ -5,7 +5,6 @@ git stash
 git pull
 git -C src/fsregistration stash
 sudo chmod -R 777 .
-cd ros_ws/
 bash .benchmark_docker/run_test.sh
 
 
