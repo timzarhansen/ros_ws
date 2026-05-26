@@ -245,3 +245,10 @@ docker run ... fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft
 
 ### Build fails on ARM64
 Ensure you're using a modern Docker version. The Dockerfile uses `$(uname -m)` for Miniforge download, which handles both architectures.
+
+
+
+### Human commands
+
+bash .benchmark_docker
+
