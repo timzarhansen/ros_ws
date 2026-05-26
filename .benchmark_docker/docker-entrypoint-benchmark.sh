@@ -4,6 +4,7 @@ set -eo pipefail
 METHOD="${1:-}"
 NUM_WORKERS="${2:-8}"
 TEST_MODE="${3:-}"
+SOFT_N="${4:-32}"
 
 if [ -z "$METHOD" ]; then
   echo "Usage: $0 <method> [num_workers] [--test]"
@@ -83,7 +84,12 @@ echo ">>> C++ wrappers compiled."
 cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
    # === 3. Fix worker count ===
-    sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
+     sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
+     
+     # === 3.1 Fix SOFT_N for soft method ===
+     if [ "$METHOD" = "soft" ] && [ "$SOFT_N" != "32" ]; then
+       sed -i "s|SOFT_N=.*|SOFT_N=${SOFT_N}|g" bashScripts/runSoft_batch.sh
+     fi
     
     # === 3.5 Always show verbose output for debugging ===
     sed -i 's|python3 bashScripts/run_parallel_batches.py|python3 bashScripts/run_parallel_batches.py --verbose --show-stderr|g' bashScripts/run*.sh

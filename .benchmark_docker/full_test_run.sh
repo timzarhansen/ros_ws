@@ -4,6 +4,7 @@ bash .benchmark_docker/cleanup_before_benchmark.sh
 git stash
 git pull
 git -C src/fsregistration stash
+git -C src/fsregistration pull origin main
 sudo chmod -R 777 .
 bash .benchmark_docker/run_test.sh
 

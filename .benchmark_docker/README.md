@@ -264,3 +264,11 @@ cd ros_ws/
 bash .benchmark_docker/run_test.sh
 
 
+nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 16 > fpfh.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_geotransformer.sh 16 > geotransformer.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 16 > hybridpoint.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_icp.sh 16 > icp.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 16 > pointreggpt.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_regtr.sh 16 > regtr.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 > soft.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 > soft.log 2>&1 &

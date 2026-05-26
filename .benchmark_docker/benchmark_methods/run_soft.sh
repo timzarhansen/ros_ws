@@ -7,8 +7,17 @@ cd "$(dirname "$0")/.."
 METHOD="soft"
 
 # === Parameters ===
-NUM_WORKERS="${1:-8}"
-TEST_MODE="${2:-}"
+NUM_WORKERS=8
+TEST_MODE=""
+SOFT_N=32
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --soft-N) SOFT_N="$2"; shift 2 ;;
+    --test)   TEST_MODE="--test"; shift ;;
+    *)        NUM_WORKERS="$1"; shift ;;
+  esac
+done
 
 # === Logging ===
 mkdir -p test_results
@@ -33,13 +42,13 @@ docker run --rm -v $(pwd):/home/benchmark/ros_ws fsbench:latest /usr/local/bin/d
 echo ""
 
 # === Step 3: Run benchmark ===
-echo "=== Step 3: Run benchmark (${METHOD}, workers=${NUM_WORKERS}) ==="
+echo "=== Step 3: Run benchmark (${METHOD}, workers=${NUM_WORKERS}, N=${SOFT_N}) ==="
 docker run --rm \
   -v $(pwd):/home/benchmark/ros_ws \
   -v $(pwd)/dataFolder:/data:ro \
   -v $(pwd)/weights:/volume/weights:ro \
   -v ./test_results/:/volume/results \
-  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh ${METHOD} ${NUM_WORKERS} ${TEST_MODE}
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh ${METHOD} ${NUM_WORKERS} ${TEST_MODE} ${SOFT_N}
 echo ""
 
 # === Step 4: Show results ===
