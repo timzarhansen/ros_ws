@@ -250,5 +250,17 @@ Ensure you're using a modern Docker version. The Dockerfile uses `$(uname -m)` f
 
 ### Human commands
 
-bash .benchmark_docker
+cd ros_ws/
+git stash
+git pull
+cd src/fsregistration
+git stash
+cd ..
+cd ..
+bash .benchmark_docker/cleanup_before_benchmark.sh
+cd ..
+sudo chmod -R 777 ros_ws/
+cd ros_ws/
+bash .benchmark_docker/run_test.sh
+
 
