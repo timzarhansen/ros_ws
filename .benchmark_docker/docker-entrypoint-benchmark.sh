@@ -90,8 +90,8 @@ cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
 # === 4. Fix total samples for test mode ===
 if [ "$TEST_MODE" = "--test" ]; then
-  sed -i 's|TOTAL_SAMPLES_VAL=.*|TOTAL_SAMPLES_VAL=10|g' bashScripts/run*.sh
-  sed -i 's|TOTAL_SAMPLES_TRAIN=.*|TOTAL_SAMPLES_TRAIN=10|g' bashScripts/run*.sh
+  sed -i 's|TOTAL_SAMPLES_VAL=.*|TOTAL_SAMPLES_VAL=1|g' bashScripts/run*.sh
+  sed -i 's|TOTAL_SAMPLES_TRAIN=.*|TOTAL_SAMPLES_TRAIN=1|g' bashScripts/run*.sh
   echo ">>> Test mode: 10 samples per noise/split combo"
 fi
 

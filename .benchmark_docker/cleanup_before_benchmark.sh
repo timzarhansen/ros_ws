@@ -14,7 +14,7 @@ mkdir -p src/fsregistration/pythonScripts/matchingProfiling3D/outputFiles
 
 # Clean test_results
 echo ">>> Cleaning .benchmark_docker/test_results..."
-rm -rf .benchmark_docker/test_results/*
-mkdir -p .benchmark_docker/test_results
+rm -rf test_results/*
+mkdir -p test_results
 
 echo ">>> Cleanup complete."

@@ -149,7 +149,8 @@ This script:
 1. `git pull --recurse-submodules`
 2. Builds the Docker image
 3. Builds the workspace
-4. Runs each of the 7 methods with `--test` flag (10 samples per noise/split)
+4. Runs each of the 7 methods with `--test` flag (1 registration per noise/split)
+   Noise levels: low_gauss, high_gauss, low_salt_pepper, high_salt_pepper, None, low, high (7 × 2 splits = 14 combos)
 
 Results saved to `./test_results/<method>/`.
 
@@ -168,13 +169,13 @@ Each method produces CSV files in `./benchmark_results/<method>/`:
 
 | Method | Output CSVs |
 |--------|------------|
-| soft | `outfile_soft_None_val.csv`, `outfile_soft_None_train.csv`, `outfile_soft_low_val.csv`, `outfile_soft_low_train.csv`, `outfile_soft_high_val.csv`, `outfile_soft_high_train.csv` |
-| fpfh | `outfile_fpfh_low_train.csv`, `outfile_fpfh_high_train.csv` |
-| icp | 6 CSVs (all noise/split combos) |
-| geotransformer | 6 CSVs (all noise/split combos) |
-| regtr | 6 CSVs (all noise/split combos) |
-| hybridpoint | `outfile_hybridpoint_high_train.csv` |
-| pointreggpt | `outfile_pointreggpt_high_train.csv` |
+| soft | 14 CSVs (all noise/split combos) |
+| fpfh | 14 CSVs (all noise/split combos) |
+| icp | 14 CSVs (all noise/split combos) |
+| geotransformer | 14 CSVs (all noise/split combos) |
+| regtr | 14 CSVs (all noise/split combos) |
+| hybridpoint | 14 CSVs (all noise/split combos) |
+| pointreggpt | 14 CSVs (all noise/split combos) |
 
 ## Two-Phase Design
 
