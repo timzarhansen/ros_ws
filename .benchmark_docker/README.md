@@ -259,11 +259,11 @@ sudo chmod -R 777 .
 bash .benchmark_docker/run_test.sh
 
 
-nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 16 > fpfh.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 15 > fpfh.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_geotransformer.sh 12 > geotransformer.log 2>&1 & # ran on nuc01
 nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 12 > hybridpoint.log 2>&1 & # ran on cubr-admin-02 
 nohup bash .benchmark_docker/benchmark_methods/run_icp.sh 12 > icp.log 2>&1 & # ran on mac
-nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 16 > pointreggpt.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 20 > pointreggpt.log 2>&1 & # ran on gpu server
 nohup bash .benchmark_docker/benchmark_methods/run_regtr.sh 16 > regtr.log 2>&1 &  # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 32 > soft32.log 2>&1 &
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 64 > soft64.log 2>&1 & # ran on gpu server
