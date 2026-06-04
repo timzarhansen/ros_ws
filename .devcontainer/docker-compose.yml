@@ -35,3 +35,5 @@ services:
       - ../otherPackages:/home/tim-external/otherPackages:cached,
       - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
 #      - /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:cached,
+      - /Users/timhansen/Documents/pi:/pi-agent
+      - /Users/timhansen/Documents/pi-config:/home/tim-external/.pi/agent

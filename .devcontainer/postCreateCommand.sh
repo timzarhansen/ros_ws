@@ -19,6 +19,29 @@ fi
 
 curl -fsSL https://opencode.ai/install | bash
 
+# Setup pi-agent
+if [ -d "/pi-agent" ]; then
+  echo "Setting up pi-agent..."
+  cd /pi-agent
+
+  if [ ! -d "packages/coding-agent/dist" ]; then
+    echo "Installing pi-agent dependencies..."
+    npm install --ignore-scripts
+    echo "Building pi-agent..."
+    npm run build
+    echo "✓ pi-agent built"
+  else
+    echo "✓ pi-agent already built"
+  fi
+
+  sudo npm install -g /pi-agent/packages/coding-agent
+  grep -q "pi-agent" /home/tim-external/.profile || echo 'export PATH="/pi-agent/packages/coding-agent/dist:$PATH"' >> /home/tim-external/.profile
+  echo "✓ pi-agent installed globally"
+else
+  echo "⚠ pi-agent not found at /pi-agent"
+  echo "  Mount /pi-agent on the host to use pi-agent in this container"
+fi
+
 # Create conda ML environment from environment.yml
 echo "=== Creating conda ML environment ==="
 /opt/miniforge3/bin/conda env create -f /home/tim-external/volumeROS/.devcontainer/environment.yml
