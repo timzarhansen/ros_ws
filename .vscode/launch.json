@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: boreasRegistrationFramework",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/boreasRegistrationFramework.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--method", "fs2d",
+                "--sequence", "0",
+                "--size_of_pixel", "0.01",
+                "/home/tim-external/dataFolder/radar_boreas"
+            ],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {}
+        },
+                {
+            "name": "Python: boreasRegistration setp by step",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/viewBoreasPairs.py",
+            "console": "integratedTerminal",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {}
+        }
+    ]
+}

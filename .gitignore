@@ -4,7 +4,8 @@ install/
 log/
 cache/
 kernels/
-
+.devcontainer/ssh
+.pi/plans
 # Virtual environment
 venv/
 
@@ -13,7 +14,7 @@ venv/
 
 # macOS
 .DS_Store
-src/.DS_Store
+**/.DS_Store
 
 # ROS2 colcon
 src/**/build/

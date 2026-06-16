@@ -4,17 +4,17 @@ services:
       context: ..
       dockerfile: .devcontainer/DockerfileBaseARM
     privileged: true
-    tmpfs:
-      - /dev/shm:size=4g
+    # tmpfs:
+      # - /dev/shm:size=4g
     environment:
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:UseSVE=0
-      - CLI_JAVA_OPTS=-XX:UseSVE=0
-      - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
-      - node.name=elasticsearch
-      - cluster.name=es-argilla-local
-      - discovery.type=single-node
-      - cluster.routing.allocation.disk.threshold_enabled=false
-      - xpack.security.enabled=false
+      # - ES_JAVA_OPTS=-Xms512m -Xmx512m -XX:UseSVE=0
+      # - CLI_JAVA_OPTS=-XX:UseSVE=0
+      # - JAVA_TOOL_OPTIONS=-XX:UseSVE=0
+      # - node.name=elasticsearch
+      # - cluster.name=es-argilla-local
+      # - discovery.type=single-node
+      # - cluster.routing.allocation.disk.threshold_enabled=false
+      # - xpack.security.enabled=false
       - DISPLAY=docker.for.mac.host.internal:0
       - ROS_DOMAIN_ID=161
       - PKG_CONFIG_PATH=
@@ -27,12 +27,12 @@ services:
         hard: -1
 
     volumes:
-      - ../cache/jazzy/build:/home/tim-external/ros_ws/build:cached,
-      - ../cache/jazzy/install:/home/tim-external/ros_ws/install:cached,
-      - ../cache/jazzy/log:/home/tim-external/ros_ws/log:cached,
-      - ../configFiles:/home/tim-external/ros_ws/configFiles:cached,
-      - ../src:/home/tim-external/ros_ws/src:cached,
-      - ../otherPackages:/home/tim-external/otherPackages:cached,
+#      - /Users/timhansen/Documents/ros_ws/cache/jazzy/build:/home/tim-external/ros_ws/build:cached,
+#      - /Users/timhansen/Documents/ros_ws/cache/jazzy/install:/home/tim-external/ros_ws/install:cached,
+#      - /Users/timhansen/Documents/ros_ws/cache/jazzy/log:/home/tim-external/ros_ws/log:cached,
+#      - /Users/timhansen/Documents/ros_ws/configFiles:/home/tim-external/ros_ws/configFiles:cached,
+#      - /Users/timhansen/Documents/ros_ws/src:/home/tim-external/ros_ws/src:cached,
+#      - /Users/timhansen/Documents/ros_ws/otherPackages:/home/tim-external/otherPackages:cached,
       - /Users/timhansen/Documents/dataFolder:/home/tim-external/dataFolder:cached,
 #      - /Users/timhansen/Documents/MATLAB/matlabTestEnvironment:/home/tim-external/matlab:cached,
       - /Users/timhansen/Documents/pi:/pi-agent

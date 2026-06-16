@@ -5,7 +5,7 @@ set -euo pipefail
 # Outputs METRIC lines for timing metrics
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="/home/tim-external/volumeROS"
+PROJECT_ROOT="/home/tim-external/ros_ws"
 BUILD_DIR="${PROJECT_ROOT}/build/fsregistration"
 TEST_BINARY="${PROJECT_ROOT}/cache/humble/build/test_full_registration_comparison"
 

@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "${default}",
+                "limitSymbolsToIncludedHeaders": false
+            },
+            "includePath": [
+                "/home/tim-external/ros_ws/install/waterlinked_a50/include/**",
+                "/home/tim-external/ros_ws/install/fsregistration/include/**",
+                "/home/tim-external/ros_ws/install/soft20/include/**",
+                "/home/tim-external/ros_ws/install/ros2_kitti_publishers/include/**",
+                "/home/tim-external/ros_ws/install/ping360_sonar_msgs/include/**",
+                "/home/tim-external/ros_ws/install/mocap4r2_msgs/include/**",
+                "/home/tim-external/ros_ws/install/micron_driver_ros/include/**",
+                "/home/tim-external/ros_ws/install/image_geometry/include/**",
+                "/home/tim-external/ros_ws/install/cv_bridge/include/**",
+                "/home/tim-external/ros_ws/install/commonbluerovmsg/include/**",
+                "/home/tim-external/ros_ws/install/asvcommonmsg/include/**",
+                "/opt/ros/jazzy/include/**",
+                "/home/tim-external/ros_ws/src/Tritech-Micron-Driver/include/**",
+                "/home/tim-external/ros_ws/src/UnderwaterSlam/include/**",
+                "/home/tim-external/ros_ws/src/fsregistration/include/**",
+                "/home/tim-external/ros_ws/src/ros2_kitti_publishers/include/**",
+                "/home/tim-external/ros_ws/src/soft20/include/**",
+                "/home/tim-external/ros_ws/src/vision_opencv/cv_bridge/include/**",
+                "/home/tim-external/ros_ws/src/vision_opencv/image_geometry/include/**",
+                "/home/tim-external/ros_ws/src/waterlinked_a50_dvl_ros2/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-arm64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++14",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

@@ -15,6 +15,9 @@ dependencies:
   - tqdm
   - matplotlib
   - ipython
+  - ipykernel
+  - ipywidgets
+  - nbformat
   - pyyaml
   - h5py
   - scikit-learn

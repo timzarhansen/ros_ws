@@ -3,9 +3,9 @@ set -e
 
 echo "=== SSH Setup for opencode ==="
 
-if [ -f "/home/tim-external/volumeROS/.devcontainer/ssh/id_ed25519" ]; then
-  cp /home/tim-external/volumeROS/.devcontainer/ssh/id_ed25519 ~/.ssh/id_ed25519
-  cp /home/tim-external/volumeROS/.devcontainer/ssh/id_ed25519.pub ~/.ssh/id_ed25519.pub
+if [ -f "/home/tim-external/ros_ws/.devcontainer/ssh/id_ed25519" ]; then
+  cp /home/tim-external/ros_ws/.devcontainer/ssh/id_ed25519 ~/.ssh/id_ed25519
+  cp /home/tim-external/ros_ws/.devcontainer/ssh/id_ed25519.pub ~/.ssh/id_ed25519.pub
   chmod 600 ~/.ssh/id_ed25519
   chmod 644 ~/.ssh/id_ed25519.pub
   echo "✓ SSH keys copied from workspace"

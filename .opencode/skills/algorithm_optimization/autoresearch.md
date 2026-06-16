@@ -15,16 +15,16 @@ The NEW method computes 2D image registration using spherical harmonic transform
 
 ## How to Run
 ```bash
-cd /home/tim-external/volumeROS
+cd /home/tim-external/ros_ws
 ./autoresearch.sh
 ```
 
 Outputs `METRIC name=number` lines that can be parsed automatically.
 
 ## Files in Scope
-- `/home/tim-external/volumeROS/src/fsregistration/src/softRegistrationClass.cpp` - Main registration implementation (PRIMARY TARGET)
-- `/home/tim-external/volumeROS/src/fsregistration/src/softCorrelationClass.cpp` - Correlation computation
-- `/home/tim-external/volumeROS/src/soft20/include/*.h` - Spherical harmonic transforms (FST_semi_memo, etc.)
+- `/home/tim-external/ros_ws/src/fsregistration/src/softRegistrationClass.cpp` - Main registration implementation (PRIMARY TARGET)
+- `/home/tim-external/ros_ws/src/fsregistration/src/softCorrelationClass.cpp` - Correlation computation
+- `/home/tim-external/ros_ws/src/soft20/include/*.h` - Spherical harmonic transforms (FST_semi_memo, etc.)
 
 ## Off Limits
 - OLD method implementation (`sofftRegistrationVoxel2DListOfPossibleRotations`, `registrationOfTwoVoxelsSO3`)
@@ -42,7 +42,7 @@ Outputs `METRIC name=number` lines that can be parsed automatically.
 5. **Exact numerical accuracy required**: Conservative approach - no approximations that affect precision
 
 ## Test Executable
-`/home/tim-external/volumeROS/cache/humble/build/fsregistration/test_full_registration_comparison`
+`/home/tim-external/ros_ws/cache/humble/build/fsregistration/test_full_registration_comparison`
 
 ## Baseline Performance (Initial NEW Method)
 - OLD method: ~2300 ms total
@@ -128,14 +128,14 @@ Outputs `METRIC name=number` lines that can be parsed automatically.
 
 ## Build Command
 ```bash
-cd /home/tim-external/volumeROS
+cd /home/tim-external/ros_ws
 colcon build --packages-select fsregistration
 ```
 
 ## Test Command
 ```bash
-cd /home/tim-external/volumeROS/cache/humble/build/fsregistration
-LD_LIBRARY_PATH=/home/tim-external/volumeROS/cache/humble/install/soft20/lib:$LD_LIBRARY_PATH ./test_full_registration_comparison
+cd /home/tim-external/ros_ws/cache/humble/build/fsregistration
+LD_LIBRARY_PATH=/home/tim-external/ros_ws/cache/humble/install/soft20/lib:$LD_LIBRARY_PATH ./test_full_registration_comparison
 ```
 
 ## Expected Performance Targets

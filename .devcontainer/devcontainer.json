@@ -4,12 +4,23 @@
   "remoteUser": "tim-external",
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
-  "workspaceFolder": "/home/tim-external/volumeROS",
+  "workspaceFolder": "/home/tim-external/ros_ws",
   "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
   "postStartCommand": "bash .devcontainer/ssh-setup.sh",
+  "overrideCommand": true,
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/tim-external/ros_ws,type=bind,consistency=cached"
+  ],
   "customizations": {
-    "jetbrains": {
-      "backend": "Clion"
-    }
+  "vscode": {
+    "extensions": [
+      "ms-iot.vscode-ros",
+      "ms-python.python",
+      "ms-vscode.cpptools",
+      "ms-vscode.cmake-tools",
+      "ms-python.vscode-pylance",
+      "ms-python.black-formatter"
+    ]
+  }
   }
 }

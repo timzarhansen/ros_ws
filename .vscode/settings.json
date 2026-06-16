@@ -1,0 +1,36 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/tim-external/ros_ws/install/waterlinked_a50/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/fsregistration/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/ping360_sonar/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/ping360_sonar_msgs/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/opencv_tests/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/mocap4r2_msgs/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/micron_driver_ros/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/image_geometry/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/cv_bridge/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/commonbluerovmsg/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/asvcommonmsg/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/asrl-pyboreas/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/tim-external/ros_ws/install/waterlinked_a50/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/fsregistration/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/fsregistration/lib/fsregistration",
+        "/home/tim-external/ros_ws/install/ping360_sonar/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/ping360_sonar_msgs/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/opencv_tests/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/mocap4r2_msgs/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/micron_driver_ros/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/image_geometry/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/cv_bridge/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/commonbluerovmsg/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/asvcommonmsg/lib/python3.12/site-packages",
+        "/home/tim-external/ros_ws/install/asrl-pyboreas/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "ROS2.distro": "jazzy",
+    "cmake.sourceDirectory": "${workspaceFolder}/src/fsregistration",
+    "cmake.preset": "default"
+}

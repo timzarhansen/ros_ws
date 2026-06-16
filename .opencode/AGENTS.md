@@ -10,6 +10,8 @@
 - Always create a plan before making changes
 - Break tasks into steps before execution
 - Do NOT delegate planning or research to subagents. You are responsible for gathering all necessary context yourself.
+- When finishing a plan, dont ask a question with the question tool in the end. Instead just say, you are ready for implementation, or you still have open questions.
+- Dont ask questions like "does this plan look right?" with the question tool. Instead ask: "are there any changes that you want? I am ready for implementation" As text. 
 
 ## Build Behavior
 - Only execute after plan is complete

@@ -6,16 +6,16 @@ Docker-based benchmarking for 3D registration methods. Two-phase design: build t
 
 ```bash
 # 1. Build image (~15 min)
-cd /path/to/volumeROS
+cd /path/to/ros_ws
 docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 # 2. Build workspace (first time only, ~10 min)
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v /path/to/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 
 # 3. Run a benchmark
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
   -v ./benchmark_results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 8
 
@@ -28,7 +28,7 @@ bash .benchmark_docker/run_test.sh
 ### 1. Clone the repo
 ```bash
 git clone <fsregistration-repo-url>
-cd volumeROS
+cd ros_ws
 ```
 
 ### 2. Build the image
@@ -39,7 +39,7 @@ docker build -f .benchmark_docker/Dockerfile -t fsbench:latest .
 
 ### 3. Build the workspace (first time only)
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v /path/to/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 This compiles soft20 + fsregistration with colcon, creates conda environments, builds pybind11, and compiles C++ wrappers. Build artifacts persist in `ros_ws/build/` and `ros_ws/install/`.
 
@@ -47,18 +47,17 @@ This compiles soft20 + fsregistration with colcon, creates conda environments, b
 
 ### 4. Prepare data directory
 ```
-/path/to/volumeROS/dataFolder/models/predator/data/indoor/  ← 3DMatch .pth point cloud files
+/path/to/ros_ws/dataFolder/3dmatch/models/predator/data/indoor/  ← 3DMatch .pth point cloud files
 ```
 
 ### 5. Prepare weights directory
 Create a `weights/` directory alongside `dataFolder/`:
 ```
-/path/to/volumeROS/weights/
-├── regtr-3dmatch-model-best.pth      ← RegTR model weights
-├── hybridpoint-3dmatch.tar           ← HybridPoint model weights
-└── predator-indoor.pth               ← Predator model weights
-```
-GeoTransformer weights (`geotransformer-3dmatch.pth.tar`) are already in the repo.
+/path/to/ros_ws/weights/
+├── ├── regtr/regtr-3dmatch.pth           ← RegTR model weights
+├── hybridpoint/hybridpoint-3dmatch.pth  ← HybridPoint model weights
+├── predator/predator-indoor.pth       ← Predator model weights
+└── geotransformer/geotransformer-3dmatch.pth  ← GeoTransformer model weights
 
 **Weight download links:**
 - **RegTR:** https://github.com/yewzijian/RegTR/releases
@@ -70,9 +69,9 @@ GeoTransformer weights (`geotransformer-3dmatch.pth.tar`) are already in the rep
 ### Command format
 ```bash
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./benchmark_results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh <method> [num_workers]
 ```
@@ -82,9 +81,9 @@ docker run --rm \
 **Machine 1:**
 ```bash
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft
 ```
@@ -92,16 +91,16 @@ docker run --rm \
 **Machine 2:**
 ```bash
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh fpfh
 
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh icp
 ```
@@ -109,30 +108,30 @@ docker run --rm \
 **Machine 3:**
 ```bash
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh geotransformer
 
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh regtr
 
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh hybridpoint
 
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
-  -v /path/to/volumeROS/weights:/volume/weights:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
+  -v /path/to/ros_ws/weights:/volume/weights:ro \
   -v ./results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh pointreggpt
 ```
@@ -157,8 +156,8 @@ Results saved to `./test_results/<method>/`.
 You can also run test mode for a single method:
 ```bash
 docker run --rm \
-  -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws \
-  -v /path/to/volumeROS/dataFolder:/data:ro \
+  -v /path/to/ros_ws:/home/benchmark/ros_ws \
+  -v /path/to/ros_ws/dataFolder:/data:ro \
   -v ./test_results:/volume/results \
   fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh soft 2 --test
 ```
@@ -181,7 +180,7 @@ Each method produces CSV files in `./benchmark_results/<method>/`:
 
 ### Phase 1: Build
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v /path/to/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 Does:
 1. Colcon build soft20 + fsregistration → `ros_ws/build/`, `ros_ws/install/`
@@ -231,7 +230,7 @@ No `--platform` flag needed — each build targets the host architecture.
 ### "soft20 not built" error
 Run the build phase first:
 ```bash
-docker run --rm -v /path/to/volumeROS/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+docker run --rm -v /path/to/ros_ws:/home/benchmark/ros_ws fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
 ```
 
 ### "Pretrained weights not found" warning
@@ -259,11 +258,11 @@ sudo chmod -R 777 .
 bash .benchmark_docker/run_test.sh
 
 
-nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 15 > fpfh.log 2>&1 & # ran on mac
-nohup bash .benchmark_docker/benchmark_methods/run_geotransformer.sh 12 > geotransformer.log 2>&1 & # ran on nuc01
-nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 12 > hybridpoint.log 2>&1 & # ran on cubr-admin-02 
+nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 4 > fpfh.log 2>&1 & # ran on mac
+nohup bash .benchmark_docker/benchmark_methods/run_geotransformer.sh 4 > geotransformer.log 2>&1 & # ran on nuc01
+nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 8 > hybridpoint.log 2>&1 & # ran on cubr-admin-02 
 nohup bash .benchmark_docker/benchmark_methods/run_icp.sh 12 > icp.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 20 > pointreggpt.log 2>&1 & # ran on gpu server
 nohup bash .benchmark_docker/benchmark_methods/run_regtr.sh 16 > regtr.log 2>&1 &  # ran on mac
-nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 32 > soft32.log 2>&1 &
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 8 --soft-N 32 > soft32.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 64 > soft64.log 2>&1 & # ran on gpu server
