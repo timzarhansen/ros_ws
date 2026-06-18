@@ -165,7 +165,7 @@ export PYTHONPATH=/home/benchmark/ros_ws/install/fsregistration/lib/fsregistrati
 
 cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
 
-cd predator/cpp_wrappers && bash compile_wrappers.sh >/dev/null 2>&1 && cd ../..
+(cd predator/cpp_wrappers && bash compile_wrappers.sh >/dev/null 2>&1)
 
 RESULTS_DIR="/volume/results/soft_param_bench"
 mkdir -p "$RESULTS_DIR"
@@ -207,7 +207,7 @@ for COMBO in "$@"; do
     echo "  [$COUNT/$TOTAL_COMBOS] $TAG"
     echo "=============================================="
 
-    if ! python3 bashScripts/run_parallel_batches.py \
+    if python3 bashScripts/run_parallel_batches.py \
         --config configFiles/predatorNothingBenchmark.yaml \
         --noise-level None \
         --data-type val \
