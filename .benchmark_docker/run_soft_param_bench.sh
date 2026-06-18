@@ -150,9 +150,8 @@ docker run --rm \
   --entrypoint /bin/bash \
   fsbench:latest \
   -c '
-set -euo pipefail
+set -eo pipefail
 
-AMENT_TRACE_SETUP_FILES="${AMENT_TRACE_SETUP_FILES:-}"
 . /opt/ros/jazzy/setup.bash
 . /home/benchmark/ros_ws/install/setup.bash
 source /opt/miniforge3/etc/profile.d/conda.sh
