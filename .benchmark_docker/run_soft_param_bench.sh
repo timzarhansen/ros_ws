@@ -152,6 +152,7 @@ docker run --rm \
   -c '
 set -euo pipefail
 
+AMENT_TRACE_SETUP_FILES="${AMENT_TRACE_SETUP_FILES:-}"
 . /opt/ros/jazzy/setup.bash
 . /home/benchmark/ros_ws/install/setup.bash
 source /opt/miniforge3/etc/profile.d/conda.sh
