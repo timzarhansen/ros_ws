@@ -2,30 +2,44 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: boreasRegistrationFramework",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/boreasRegistrationFramework.py",
             "console": "integratedTerminal",
             "args": [
-                "--method", "fs2d",
-                "--sequence", "0",
-                "--size_of_pixel", "0.01",
+                "--method",
+                "fs2d",
+                "--sequence",
+                "0",
+                "--size_of_pixel",
+                "0.01",
                 "/home/tim-external/dataFolder/radar_boreas"
             ],
             "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
-            "env": {}
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
         },
-                {
+        {
             "name": "Python: boreasRegistration setp by step",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/viewBoreasPairs.py",
             "console": "integratedTerminal",
-            "args": [
-            ],
+            "args": [],
             "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
-            "env": {}
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
         }
     ]
 }

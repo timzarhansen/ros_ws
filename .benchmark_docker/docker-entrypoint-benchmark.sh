@@ -4,7 +4,15 @@ set -eo pipefail
 METHOD="${1:-}"
 NUM_WORKERS="${2:-8}"
 TEST_MODE="${3:-}"
-SOFT_N="${4:-32}"
+
+# SOFT parameters come from environment variables (set by run_soft.sh)
+SOFT_N="${SOFT_N:-64}"
+SOFT_R_MIN="${SOFT_R_MIN:-8}"
+SOFT_R_MAX="${SOFT_R_MAX:-24}"
+SOFT_USE_CLAHE="${SOFT_USE_CLAHE:-0}"
+SOFT_LEVEL_ROTATION="${SOFT_LEVEL_ROTATION:-0.001}"
+SOFT_LEVEL_TRANSLATION="${SOFT_LEVEL_TRANSLATION:-0.001}"
+SOFT_NORMALIZATION="${SOFT_NORMALIZATION:-2}"
 
 if [ -z "$METHOD" ]; then
   echo "Usage: $0 <method> [num_workers] [--test]"
@@ -86,11 +94,6 @@ cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/matchingProfiling3D
    # === 3. Fix worker count ===
      sed -i "s|NUM_WORKERS=.*|NUM_WORKERS=${NUM_WORKERS}|g" bashScripts/run*.sh
      
-     # === 3.1 Fix SOFT_N for soft method ===
-     if [ "$METHOD" = "soft" ] && [ "$SOFT_N" != "32" ]; then
-       sed -i "s|SOFT_N=.*|SOFT_N=${SOFT_N}|g" bashScripts/runSoft_batch.sh
-     fi
-    
     # === 3.5 Always show verbose output for debugging ===
     sed -i 's|python3 bashScripts/run_parallel_batches.py|python3 bashScripts/run_parallel_batches.py --verbose --show-stderr|g' bashScripts/run*.sh
 

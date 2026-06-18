@@ -13,10 +13,12 @@ dependencies:
   - numpy<2
   - scipy
   - tqdm
+  - pandas
   - matplotlib
   - ipython
   - ipykernel
   - ipywidgets
+  - jupyterlab
   - nbformat
   - pyyaml
   - h5py

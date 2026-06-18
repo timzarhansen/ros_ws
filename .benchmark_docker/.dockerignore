@@ -3,7 +3,7 @@
 *.pyc
 __pycache__/
 cmake-build-debug/
-debug_results/
+plotting_results/
 *.csv
 outputFiles/
 *.ply

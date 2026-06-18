@@ -9,15 +9,37 @@ METHOD="soft"
 # === Parameters ===
 NUM_WORKERS=8
 TEST_MODE=""
-SOFT_N=32
+SOFT_N=64
+SOFT_USE_CLAHE=0
+SOFT_R_MIN=""
+SOFT_R_MAX=""
+SOFT_LEVEL_ROTATION=0.001
+SOFT_LEVEL_TRANSLATION=0.001
+SOFT_NORMALIZATION=2
+SOFT_R_MIN_EXPLICIT=false
+SOFT_R_MAX_EXPLICIT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --soft-N) SOFT_N="$2"; shift 2 ;;
-    --test)   TEST_MODE="--test"; shift ;;
-    *)        NUM_WORKERS="$1"; shift ;;
+    --soft-r-min) SOFT_R_MIN="$2"; SOFT_R_MIN_EXPLICIT=true; shift 2 ;;
+    --soft-r-max) SOFT_R_MAX="$2"; SOFT_R_MAX_EXPLICIT=true; shift 2 ;;
+    --soft-level-rotation) SOFT_LEVEL_ROTATION="$2"; shift 2 ;;
+    --soft-level-translation) SOFT_LEVEL_TRANSLATION="$2"; shift 2 ;;
+    --soft-normalization) SOFT_NORMALIZATION="$2"; shift 2 ;;
+    --soft-use-clahe) SOFT_USE_CLAHE="$2"; shift 2 ;;
+    --test) TEST_MODE="--test"; shift ;;
+    *) NUM_WORKERS="$1"; shift ;;
   esac
 done
+
+# Auto-derive r_min/r_max from N if not explicitly set
+if [ "$SOFT_R_MIN_EXPLICIT" != "true" ]; then
+    SOFT_R_MIN=$(( SOFT_N / 8 ))
+fi
+if [ "$SOFT_R_MAX_EXPLICIT" != "true" ]; then
+    SOFT_R_MAX=$(( SOFT_N / 2 - SOFT_N / 8 ))
+fi
 
 # === Logging ===
 mkdir -p test_results
@@ -43,12 +65,20 @@ echo ""
 
 # === Step 3: Run benchmark ===
 echo "=== Step 3: Run benchmark (${METHOD}, workers=${NUM_WORKERS}, N=${SOFT_N}) ==="
+echo "SOFT params: r_min=${SOFT_R_MIN}, r_max=${SOFT_R_MAX}, level_rot=${SOFT_LEVEL_ROTATION}, level_trans=${SOFT_LEVEL_TRANSLATION}, norm=${SOFT_NORMALIZATION}, clahe=${SOFT_USE_CLAHE}"
 docker run --rm \
+  -e SOFT_N="$SOFT_N" \
+  -e SOFT_R_MIN="$SOFT_R_MIN" \
+  -e SOFT_R_MAX="$SOFT_R_MAX" \
+  -e SOFT_USE_CLAHE="$SOFT_USE_CLAHE" \
+  -e SOFT_LEVEL_ROTATION="$SOFT_LEVEL_ROTATION" \
+  -e SOFT_LEVEL_TRANSLATION="$SOFT_LEVEL_TRANSLATION" \
+  -e SOFT_NORMALIZATION="$SOFT_NORMALIZATION" \
   -v $(pwd):/home/benchmark/ros_ws \
   -v $(pwd)/dataFolder:/data:ro \
   -v $(pwd)/weights:/volume/weights:ro \
   -v ./test_results/:/volume/results \
-  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh ${METHOD} ${NUM_WORKERS} ${TEST_MODE} ${SOFT_N}
+  fsbench:latest /usr/local/bin/docker-entrypoint-benchmark.sh ${METHOD} ${NUM_WORKERS} ${TEST_MODE}
 echo ""
 
 # === Step 4: Show results ===
