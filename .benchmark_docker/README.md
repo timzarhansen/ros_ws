@@ -264,8 +264,8 @@ nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 8 > hybridpoin
 nohup bash .benchmark_docker/benchmark_methods/run_icp.sh 12 > icp.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 20 > pointreggpt.log 2>&1 & # ran on gpu server
 nohup bash .benchmark_docker/benchmark_methods/run_regtr.sh 16 > regtr.log 2>&1 &  # ran on mac
-nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 8 --soft-N 32 > soft32.log 2>&1 & # ran on mac
-nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 64 > soft64.log 2>&1 & # ran on gpu server
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 14 --soft-N 32 > soft32.log 2>&1 & # ran on mac
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 14 --soft-N 64 > soft64.log 2>&1 & # ran on gpu server
 
 nohup bash .benchmark_docker/run_soft_param_bench.sh 12 --range 0 134 > param_bench_m1.log 2>&1 & # ran on mac (combos 0-134)
 nohup bash .benchmark_docker/run_soft_param_bench.sh 16 --range 135 269 > param_bench_m2.log 2>&1 & # ran on gpu server (combos 135-269)

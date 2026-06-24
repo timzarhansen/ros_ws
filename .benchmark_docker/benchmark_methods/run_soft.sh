@@ -7,10 +7,10 @@ cd "$(dirname "$0")/../.."
 METHOD="soft"
 
 # === Parameters ===
-NUM_WORKERS=8
+NUM_WORKERS=14
 TEST_MODE=""
 SOFT_N=64
-SOFT_USE_CLAHE=0
+SOFT_USE_CLAHE=1
 SOFT_R_MIN=""
 SOFT_R_MAX=""
 SOFT_LEVEL_ROTATION=0.001
