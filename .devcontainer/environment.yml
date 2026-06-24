@@ -23,6 +23,7 @@ dependencies:
   - pyyaml
   - h5py
   - scikit-learn
+  - k3d
   - open3d>=0.16.0
   - pip
   - pip:

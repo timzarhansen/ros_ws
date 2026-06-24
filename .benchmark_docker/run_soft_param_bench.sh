@@ -241,15 +241,6 @@ for COMBO in "$@"; do
         continue
     fi
 
-    SRC="outputFiles/soft/outfile_soft_N${N_VAL}_None_val.csv"
-    if [ -f "$SRC" ]; then
-        mv "$SRC" "$OUTFILE"
-        echo "  -> Saved: $(basename "$OUTFILE")"
-    else
-        echo "  ERROR: Output CSV not found at $SRC"
-        FAIL_COUNT=$((FAIL_COUNT + 1))
-    fi
-
     rm -f outputFiles/soft/batch_soft_None_val_*.csv
     echo "  OK"
 done

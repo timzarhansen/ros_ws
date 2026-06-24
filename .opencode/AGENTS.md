@@ -14,6 +14,8 @@
 - Dont ask questions like "does this plan look right?" or "shall i proceed with this plan" with the question tool. Instead ask: "are there any changes that you want? I am ready for implementation" As text without the question tool. I cant change to Build Mode inside the question tool, thats why i dont want that.
 
 ## Build Behavior
+- Before implementation, make sure everything is commited.
+- After implementation, create a commit.
 - Only execute after plan is complete
 - Prefer minimal diffs
 - Validate changes with tests if available
