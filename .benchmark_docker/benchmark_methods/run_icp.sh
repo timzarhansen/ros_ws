@@ -9,6 +9,7 @@ METHOD="icp"
 # === Parameters ===
 NUM_WORKERS="${1:-8}"
 TEST_MODE="${2:-}"
+NOISE_SUBSET=""
 
 # === Logging ===
 mkdir -p test_results
@@ -35,6 +36,7 @@ echo ""
 # === Step 3: Run benchmark ===
 echo "=== Step 3: Run benchmark (${METHOD}, workers=${NUM_WORKERS}) ==="
 docker run --rm \
+  -e NOISE_SUBSET="$NOISE_SUBSET" \
   -v $(pwd):/home/benchmark/ros_ws \
   -v $(pwd)/dataFolder:/data:ro \
   -v $(pwd)/weights:/volume/weights:ro \
