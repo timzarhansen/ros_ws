@@ -63,18 +63,20 @@ if [ -n "$TEST_MODE" ]; then
 fi
 
 # Parameter arrays
-CLAHE_VALUES=(0 1)
-NORM_VALUES=(0 1 2)
-ROT_VALUES=(0.01 0.001 0.0001)
-TRANS_VALUES=(0.1 0.01 0.001)
+CLAHE_VALUES=(0 1) # 0 1
+NORM_VALUES=(2) # 0 1 2
+ROT_VALUES=(0.001 0.0001) # 0.01 0.001 0.0001
+TRANS_VALUES=(0.001  0.0001) # 0.1 0.01 0.001
 # Band profiles: profile_name:r_min:r_max
 BAND_PROFILES=(
-  "low:4:16"
   "default:8:24"
-  "wide:4:28"
-  "high:16:28"
-  "narrow:12:20"
 )
+
+#   "low:4:16"
+#   "default:8:24"
+#   "wide:4:28"
+#   "high:16:28"
+#   "narrow:12:20"
 
 # === Build image (once) ===
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then

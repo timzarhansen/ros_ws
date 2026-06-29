@@ -6,6 +6,12 @@
 - If a task seems complex, break it down into sequential steps and execute them directly.
 - This rule applies to all modes (Plan, Build, Ask). Subagent usage is explicitly forbidden.
 
+## 🚫 STRICT GIT POLICY
+- Before making changes, make sure the current repo is comitted, to revert when needed.
+- Dont rewrite the git history
+- After finishing a full task, commit the changes with the info, it was done by opencode
+- Also display, that you what you comitted and how it was done in the end of the task.
+
 ## Planning Behavior
 - Always create a plan before making changes
 - Break tasks into steps before execution

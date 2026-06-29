@@ -17,6 +17,8 @@ services:
       # - xpack.security.enabled=false
       - DISPLAY=docker.for.mac.host.internal:0
       - ROS_DOMAIN_ID=161
+      - ROS_DISCOVERY_SERVER=127.0.0.1:11811
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/etc/ros2/fastdds.xml
       - PKG_CONFIG_PATH=
       - CMAKE_PREFIX_PATH=/opt/ros/jazzy
       - PYTHONUNBUFFERED=1
@@ -26,7 +28,11 @@ services:
         soft: -1
         hard: -1
 
+    ports:
+      - "11811:11811/udp"
+
     volumes:
+#      - ./.devcontainer/ros2/fastdds.xml:/etc/ros2/fastdds.xml:ro
 #      - /Users/timhansen/Documents/ros_ws/cache/jazzy/build:/home/tim-external/ros_ws/build:cached,
 #      - /Users/timhansen/Documents/ros_ws/cache/jazzy/install:/home/tim-external/ros_ws/install:cached,
 #      - /Users/timhansen/Documents/ros_ws/cache/jazzy/log:/home/tim-external/ros_ws/log:cached,

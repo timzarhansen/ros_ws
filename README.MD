@@ -87,6 +87,12 @@ xhost local:root
 ```
 configFiles/predatorNothing.yaml
 ```
+# macOS Docker Desktop: reaching ROS 2 from the LAN
+The container runs a Fast DDS discovery server on UDP 11811 (started by entrypoint).
+On the Mac: Docker Desktop → Settings → Resources → Network → enable "Allow incoming UDP ports" (11811).
+Robot / peer on the LAN: `ROS_DISCOVERY_SERVER=<mac-lan-ip>:11811` and `ROS_DOMAIN_ID=161`.
+Mac host tools: `export ROS_DISCOVERY_SERVER=localhost:11811`.
+
 # Running python file in background in ssh
 ```
 nohup python your_script.py > output.log 2>&1 &

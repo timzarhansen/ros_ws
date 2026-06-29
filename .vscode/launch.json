@@ -40,6 +40,18 @@
             "env": {
                 "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
             }
+        },
+                {
+            "name": "Python: 3D benchmark Testfile",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/matchingProfiling3D/debug3dRegistration.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/matchingProfiling3D",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
         }
     ]
 }

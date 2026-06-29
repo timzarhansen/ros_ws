@@ -26,4 +26,8 @@ export PYTHONPATH="$(compute_pythonpath /opt/ros/jazzy /home/tim-external/ros_ws
 # Add OpenCV 4.9 libraries to library path (needed for pybind modules)
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
+# Fast DDS discovery server for LAN reachability (macOS Docker Desktop)
+export ROS_DISCOVERY_SERVER=127.0.0.1:11811
+fastdds discovery -i 0 -l 0.0.0.0 -p 11811 &
+
 exec "$@"

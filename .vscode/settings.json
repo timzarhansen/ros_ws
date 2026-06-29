@@ -32,5 +32,7 @@
     ],
     "ROS2.distro": "jazzy",
     "cmake.sourceDirectory": "${workspaceFolder}/src/fsregistration",
-    "cmake.preset": "default"
+    "cmake.preset": "default",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.defaultPackageManager": "ms-python.python:pip"
 }

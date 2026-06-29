@@ -184,6 +184,7 @@ USER root
 
 # --- Entrypoint: sources ROS2 + workspace, dynamically computes PYTHONPATH ---
 COPY .devcontainer/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY .devcontainer/ros2/fastdds.xml /etc/ros2/fastdds.xml
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # --- Profile.d fallback: ensures new shells also source setup files ---
