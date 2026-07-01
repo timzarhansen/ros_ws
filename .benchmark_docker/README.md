@@ -281,13 +281,13 @@ nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --nois
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 64 --noise-subset None,low,high > soft64_m3.log 2>&1 & # ran on gpu server
 
 
-nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 0 1 > soft64.log 2>&1 &
+nohup bash .benchmark_docker/run_soft_param_bench.sh 12 --range 0 1 > soft64.log 2>&1 & # ran on nuc
 
-nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 2 3 > soft64.log 2>&1 &
+nohup bash .benchmark_docker/run_soft_param_bench.sh 12 --range 2 3 > soft64.log 2>&1 & # ran on admin nuc
 
-nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 4 5 > soft64.log 2>&1 &
+nohup bash .benchmark_docker/run_soft_param_bench.sh 10 --range 4 5 > soft64.log 2>&1 & # ran on mac
 
-nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 6 7 > soft64.log 2>&1 &
+nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 6 7 > soft64.log 2>&1 & # ran on GPU server
 
 
 

@@ -243,6 +243,8 @@ for COMBO in "$@"; do
         continue
     fi
 
+    mv "outputFiles/soft/outfile_soft_N${N_VAL}_None_val.csv" "outputFiles/soft/outfile_soft_${TAG}_None_val.csv"
+    echo "  Saved: outfile_soft_${TAG}_None_val.csv"
     rm -f outputFiles/soft/batch_soft_None_val_*.csv
     echo "  OK"
 done
