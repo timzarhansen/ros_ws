@@ -287,7 +287,7 @@ nohup bash .benchmark_docker/run_soft_param_bench.sh 12 --range 2 3 > soft64.log
 
 nohup bash .benchmark_docker/run_soft_param_bench.sh 10 --range 4 5 > soft64.log 2>&1 & # ran on mac
 
-nohup bash .benchmark_docker/run_soft_param_bench.sh 14 --range 6 7 > soft64.log 2>&1 & # ran on GPU server
+nohup bash .benchmark_docker/run_soft_param_bench.sh 20 --range 6 7 > soft64.log 2>&1 & # ran on GPU server
 
 
 

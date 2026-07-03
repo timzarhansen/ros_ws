@@ -42,6 +42,18 @@
             }
         },
                 {
+            "name": "Python: FS2D comparison 2D fourier translation comparison",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/compareFreqDomainRotation.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
+        },
+                {
             "name": "Python: 3D benchmark Testfile",
             "type": "python",
             "request": "launch",
