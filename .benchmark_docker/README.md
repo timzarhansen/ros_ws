@@ -276,7 +276,9 @@ nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 12 --soft-N 32 > soft
 
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 12 --soft-N 64 --noise-subset low_gauss,high_gauss > soft64_m1.log 2>&1 &   # ran on cubr-admin-02 
 
-nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --noise-subset None,low_salt_pepper,high_salt_pepper > soft64_m2.log 2>&1 & # ran on mac
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --noise-subset None,low_salt_pepper > soft64_m2.log 2>&1 & # ran on mac
+
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --noise-subset high_salt_pepper > soft64_m2.log 2>&1 &  # ran on nuc
 
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 16 --soft-N 64 --noise-subset low,high > soft64_m3.log 2>&1 & # ran on gpu server
 
