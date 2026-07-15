@@ -19,7 +19,7 @@ set -euo pipefail
 #
 #   # Specific params
 #   bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 8 --N 256 \
-#       --size_of_pixel 0.25 --sequences all
+#       --radius 140.0 --sequences all
 #
 #   # Quick test
 #   bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 2 --test
@@ -31,18 +31,42 @@ cd "$(dirname "$0")/../.."
 NUM_WORKERS=4
 TEST_MODE=""
 
-# Extra args for the entry point
+# FS2D defaults (from paramBenchMethods/boreasBenchmarkFS2DSweep.py)
+FS2D_N=256
+FS2D_RADIUS=140.0
+FS2D_MATCHING_STEP=3
+FS2D_POTENTIAL_FOR_NECESSARY_PEAK=0.01
+FS2D_LEVEL_POTENTIAL_ROTATION=0.001
+FS2D_USE_DIRECT=true
+FS2D_USE_CLACHE=false
+FS2D_USE_HAMMING=true
+FS2D_MULTIPLE_RADII=true
+FS2D_USE_GAUSS=false
+FS2D_NORMALIZATION=1
+FS2D_USE_WEIGHTED_PEAK_SCORE=true
+FS2D_USE_PHASE_CORRELATION=false
+
 EXTRA_ARGS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --test) TEST_MODE="--test"; shift ;;
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
-    --N) EXTRA_ARGS+=("--N" "$2"); shift 2 ;;
-    --radius) EXTRA_ARGS+=("--radius" "$2"); shift 2 ;;
-    --matching_step) EXTRA_ARGS+=("--matching_step" "$2"); shift 2 ;;
+    --N) FS2D_N="$2"; shift 2 ;;
+    --radius) FS2D_RADIUS="$2"; shift 2 ;;
+    --matching_step) FS2D_MATCHING_STEP="$2"; shift 2 ;;
     --start_frame) EXTRA_ARGS+=("--start_frame" "$2"); shift 2 ;;
     --max_frames) EXTRA_ARGS+=("--max_frames" "$2"); shift 2 ;;
+    --potential_for_necessary_peak) FS2D_POTENTIAL_FOR_NECESSARY_PEAK="$2"; shift 2 ;;
+    --level_potential_rotation) FS2D_LEVEL_POTENTIAL_ROTATION="$2"; shift 2 ;;
+    --use-direct) FS2D_USE_DIRECT="$2"; shift 2 ;;
+    --use-clahe) FS2D_USE_CLACHE="$2"; shift 2 ;;
+    --use-hamming) FS2D_USE_HAMMING="$2"; shift 2 ;;
+    --multiple-radii) FS2D_MULTIPLE_RADII="$2"; shift 2 ;;
+    --use-gauss) FS2D_USE_GAUSS="$2"; shift 2 ;;
+    --normalization) FS2D_NORMALIZATION="$2"; shift 2 ;;
+    --use-weighted-peak-score) FS2D_USE_WEIGHTED_PEAK_SCORE="$2"; shift 2 ;;
+    --use-phase-correlation) FS2D_USE_PHASE_CORRELATION="$2"; shift 2 ;;
     --method-config) EXTRA_ARGS+=("--method-config" "$2"); shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
     --output-dir) EXTRA_ARGS+=("--output-dir" "$2"); shift 2 ;;
@@ -58,7 +82,7 @@ DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/radar_boreas}"
 RESULTS_DIR="benchmark_results/boreas2d"
 mkdir -p "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-LOG_FILE="${RESULTS_DIR}/run_boreas2d_${TIMESTAMP}.log"
+LOG_FILE="${RESULTS_DIR}/run_boreas2d_${TIMESTAMP}_fs2d.log"
 exec > >(tee -a "$LOG_FILE" 2>&1)
 
 echo "=============================================="
@@ -70,7 +94,17 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
-echo "Extra args:  ${EXTRA_ARGS[*]:-none}"
+echo "N:           $FS2D_N"
+echo "Radius:      $FS2D_RADIUS"
+echo "Match step:  $FS2D_MATCHING_STEP"
+echo "FS2D params: use_clahe=$FS2D_USE_CLACHE use_hamming=$FS2D_USE_HAMMING"
+echo "             use_direct=$FS2D_USE_DIRECT use_gauss=$FS2D_USE_GAUSS"
+echo "             multiple_radii=$FS2D_MULTIPLE_RADII"
+echo "             potential_peak=$FS2D_POTENTIAL_FOR_NECESSARY_PEAK"
+echo "             level_rot=$FS2D_LEVEL_POTENTIAL_ROTATION"
+echo "             normalization=$FS2D_NORMALIZATION"
+echo "             weighted_peak=$FS2D_USE_WEIGHTED_PEAK_SCORE"
+echo "             phase_corr=$FS2D_USE_PHASE_CORRELATION"
 echo ""
 
 # === Step 1: Build image (if needed) ===
@@ -96,6 +130,8 @@ fi
 # === Step 3: Run benchmark ===
 echo "=== [3/3] Running Boreas 2D benchmark ==="
 
+METHOD_CONFIG="fs2d.potential_for_necessary_peak=$FS2D_POTENTIAL_FOR_NECESSARY_PEAK fs2d.level_potential_rotation=$FS2D_LEVEL_POTENTIAL_ROTATION fs2d.use_direct=$FS2D_USE_DIRECT fs2d.use_clahe=$FS2D_USE_CLACHE fs2d.use_hamming=$FS2D_USE_HAMMING fs2d.multiple_radii=$FS2D_MULTIPLE_RADII fs2d.use_gauss=$FS2D_USE_GAUSS fs2d.normalization=$FS2D_NORMALIZATION fs2d.use_weighted_peak_score=$FS2D_USE_WEIGHTED_PEAK_SCORE fs2d.use_phase_correlation=$FS2D_USE_PHASE_CORRELATION"
+
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \
   -v "$DATA_DIR:/data:ro" \
@@ -105,7 +141,11 @@ docker run --rm \
     --method fs2d \
     --num-workers "$NUM_WORKERS" \
     --output-dir /volume/results \
+    --N "$FS2D_N" \
+    --radius "$FS2D_RADIUS" \
+    --matching_step "$FS2D_MATCHING_STEP" \
     ${TEST_MODE:+--test} \
+    --method-config "$METHOD_CONFIG" \
     "${EXTRA_ARGS[@]}" \
     /data
 
