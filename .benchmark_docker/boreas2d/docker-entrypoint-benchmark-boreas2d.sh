@@ -65,6 +65,15 @@ if [ ! -d "$OTHER_DIR/LightGlue/lightglue" ]; then
     git clone --depth 1 https://github.com/cvg/LightGlue.git "$OTHER_DIR/LightGlue"
 fi
 
+# Patch kornia imports for compatibility with kornia >= 0.6 (drops kornia.utils.grid)
+echo ">>> Patching kornia imports in cloned method repos..."
+FIX_SCRIPT="/home/benchmark/ros_ws/src/fsregistration/pythonScripts/radarDataset/scripts/fix_kornia_imports.sh"
+if [ -f "$FIX_SCRIPT" ]; then
+    bash "$FIX_SCRIPT"
+else
+    echo "WARNING: fix_kornia_imports.sh not found — cloned repos may use incompatible kornia imports"
+fi
+
 # === 3. Set library paths ===
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # pybind_registration_2d lives in the fsregistration install
