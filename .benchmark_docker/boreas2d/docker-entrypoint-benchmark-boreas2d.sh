@@ -65,6 +65,9 @@ if [ ! -d "$OTHER_DIR/LightGlue/lightglue" ]; then
     git clone --depth 1 https://github.com/cvg/LightGlue.git "$OTHER_DIR/LightGlue"
 fi
 
+echo ">>> Installing LightGlue package..."
+pip install -e "$OTHER_DIR/LightGlue" --quiet
+
 # Patch kornia imports for compatibility with kornia >= 0.6 (drops kornia.utils.grid)
 echo ">>> Patching kornia imports in cloned method repos..."
 FIX_SCRIPT="/home/benchmark/ros_ws/src/fsregistration/pythonScripts/radarDataset/scripts/fix_kornia_imports.sh"
