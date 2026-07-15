@@ -60,7 +60,7 @@ cd /home/benchmark/ros_ws/src/fsregistration/pythonScripts/radarDataset
 METHOD="fs2d"
 SEQUENCES="all"
 N=128
-SIZE_OF_PIXEL=0.5
+RADIUS=140.0
 MATCHING_STEP=5
 START_FRAME=0
 MAX_FRAMES=""
@@ -76,7 +76,7 @@ while [[ $# -gt 0 ]]; do
     --method) METHOD="$2"; shift 2 ;;
     --sequences) SEQUENCES="$2"; shift 2 ;;
     --N) N="$2"; shift 2 ;;
-    --size_of_pixel) SIZE_OF_PIXEL="$2"; shift 2 ;;
+    --radius) RADIUS="$2"; shift 2 ;;
     --matching_step) MATCHING_STEP="$2"; shift 2 ;;
     --start_frame) START_FRAME="$2"; shift 2 ;;
     --max_frames) MAX_FRAMES="$2"; shift 2 ;;
@@ -101,7 +101,7 @@ echo "=============================================="
 echo "Method:       $METHOD"
 echo "Sequences:    $SEQUENCES"
 echo "N:            $N"
-echo "Size/pixel:   $SIZE_OF_PIXEL"
+echo "Radius:       $RADIUS"
 echo "Match step:   $MATCHING_STEP"
 echo "Start frame:  $START_FRAME"
 echo "Max frames:   ${MAX_FRAMES:-unlimited}"
@@ -116,7 +116,7 @@ python3 boreasBenchmarkParallel.py \
   --method "$METHOD" \
   --sequences "$SEQUENCES" \
   --N "$N" \
-  --size_of_pixel "$SIZE_OF_PIXEL" \
+  --radius "$RADIUS" \
   --matching_step "$MATCHING_STEP" \
   --start_frame "$START_FRAME" \
   ${MAX_FRAMES:+--max_frames "$MAX_FRAMES"} \

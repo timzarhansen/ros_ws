@@ -39,7 +39,7 @@ while [[ $# -gt 0 ]]; do
     --test) TEST_MODE="--test"; shift ;;
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) EXTRA_ARGS+=("--N" "$2"); shift 2 ;;
-    --size_of_pixel) EXTRA_ARGS+=("--size_of_pixel" "$2"); shift 2 ;;
+    --radius) EXTRA_ARGS+=("--radius" "$2"); shift 2 ;;
     --matching_step) EXTRA_ARGS+=("--matching_step" "$2"); shift 2 ;;
     --start_frame) EXTRA_ARGS+=("--start_frame" "$2"); shift 2 ;;
     --max_frames) EXTRA_ARGS+=("--max_frames" "$2"); shift 2 ;;

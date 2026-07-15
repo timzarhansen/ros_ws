@@ -296,7 +296,7 @@ nohup bash .benchmark_docker/run_soft_param_bench.sh 20 --range 6 7 > soft64.log
 
 Single `--test` flag validates config (10 frames, N=64, step=1):
 ```bash
-bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 2 --test
+bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 2 --test --data-dir /Users/timhansen/Documents/dataFolder/radar_boreas
 bash .benchmark_docker/boreas2d/run_boreas_sift.sh 2 --test
 ```
 
