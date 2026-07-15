@@ -42,7 +42,28 @@ fi
 conda activate "$ENV_NAME"
 
 # Install missing packages at runtime (no rebuild needed)
-python -c "import imreg_dft" 2>/dev/null || pip install imreg-dft
+python -c "import imreg_dft" 2>/dev/null || pip install --no-deps imreg-dft
+
+# Clone external method repos if missing (standalone git repos, not submodules)
+OTHER_DIR="/home/benchmark/ros_ws/src/fsregistration/pythonScripts/radarDataset/otherMethods"
+
+if [ ! -d "$OTHER_DIR/LoFTR/src" ]; then
+    echo ">>> Cloning LoFTR..."
+    rm -rf "$OTHER_DIR/LoFTR"
+    git clone --depth 1 https://github.com/zju3dv/LoFTR.git "$OTHER_DIR/LoFTR"
+fi
+
+if [ ! -d "$OTHER_DIR/EfficientLoFTR/src" ]; then
+    echo ">>> Cloning EfficientLoFTR..."
+    rm -rf "$OTHER_DIR/EfficientLoFTR"
+    git clone --depth 1 https://github.com/zju3dv/EfficientLoFTR.git "$OTHER_DIR/EfficientLoFTR"
+fi
+
+if [ ! -d "$OTHER_DIR/LightGlue/lightglue" ]; then
+    echo ">>> Cloning LightGlue..."
+    rm -rf "$OTHER_DIR/LightGlue"
+    git clone --depth 1 https://github.com/cvg/LightGlue.git "$OTHER_DIR/LightGlue"
+fi
 
 # === 3. Set library paths ===
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
