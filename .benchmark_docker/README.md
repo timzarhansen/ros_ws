@@ -276,7 +276,7 @@ nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 12 --soft-N 32 > soft
 
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 12 --soft-N 64 --noise-subset low_gauss,high_gauss > soft64_m1.log 2>&1 &   # ran on cubr-admin-02 
 
-nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --noise-subset None,low_salt_pepper > soft64_m2.log 2>&1 & # ran on mac
+nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 11 --soft-N 64 --noise-subset None,low_salt_pepper > soft64_m2.log 2>&1 & # ran on mac
 
 nohup bash .benchmark_docker/benchmark_methods/run_soft.sh 10 --soft-N 64 --noise-subset high_salt_pepper > soft64_m2.log 2>&1 &  # ran on nuc
 
@@ -292,5 +292,49 @@ nohup bash .benchmark_docker/run_soft_param_bench.sh 10 --range 4 5 > soft64.log
 nohup bash .benchmark_docker/run_soft_param_bench.sh 20 --range 6 7 > soft64.log 2>&1 & # ran on GPU server
 
 
+## Boreas 2D Benchmark
+
+Single `--test` flag validates config (10 frames, N=64, step=1):
+```bash
+bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 2 --test
+bash .benchmark_docker/boreas2d/run_boreas_sift.sh 2 --test
+```
+
+Split `--sequences` across machines for faster completion:
+```bash
+# Sequences 0-15 on machine 1, 16-30 on machine 2, 31-45 on machine 3
+bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 8 --sequences 0-15
+bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 8 --sequences 16-30
+bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 8 --sequences 31-45
+```
+
+### Method assignment (4 machines, 11 methods)
+
+**Machine 1 (mac / CPU-heavy):**
+```bash
+nohup bash .benchmark_docker/boreas2d/run_boreas_fs2d.sh 8 > boreas2d_fs2d.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_sift.sh 8 > boreas2d_sift.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_surf.sh 8 > boreas2d_surf.log 2>&1 &
+```
+
+**Machine 2 (nuc01 / similar):**
+```bash
+nohup bash .benchmark_docker/boreas2d/run_boreas_kaze.sh 8 > boreas2d_kaze.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_akaze.sh 8 > boreas2d_akaze.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_fourier_mellin.sh 8 > boreas2d_fourier_mellin.log 2>&1 &
+```
+
+**Machine 3 (mac / cubr-admin-02):**
+```bash
+nohup bash .benchmark_docker/boreas2d/run_boreas_icp.sh 8 > boreas2d_icp.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_ndt_p2d.sh 8 > boreas2d_ndt_p2d.log 2>&1 &
+```
+
+**Machine 4 (GPU server):**
+```bash
+nohup bash .benchmark_docker/boreas2d/run_boreas_loftr.sh 4 > boreas2d_loftr.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_eloftr.sh 4 > boreas2d_eloftr.log 2>&1 &
+nohup bash .benchmark_docker/boreas2d/run_boreas_lightglue.sh 4 > boreas2d_lightglue.log 2>&1 &
+```
 
 

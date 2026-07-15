@@ -84,6 +84,8 @@ while [[ $# -gt 0 ]]; do
     --output-dir) OUTPUT_DIR="$2"; shift 2 ;;
     --method-config) METHOD_CONFIG="$2"; shift 2 ;;
     --save-blended) SAVE_BLENDED="--save-blended"; shift ;;
+    --use-raw-pointcloud) USE_RAW_POINTCLOUD="--use-raw-pointcloud"; shift ;;
+    --raw-intensity-threshold) RAW_INTENSITY_THRESHOLD="$2"; shift 2 ;;
     --test) MAX_FRAMES="10"; MATCHING_STEP="1"; N="64"; shift ;;
     *) DATA_DIR="$1"; shift ;;
   esac
@@ -122,6 +124,8 @@ python3 boreasBenchmarkParallel.py \
   --output-dir "$OUTPUT_DIR" \
   ${METHOD_CONFIG:+--method-config "$METHOD_CONFIG"} \
   ${SAVE_BLENDED:+--save-blended} \
+  ${USE_RAW_POINTCLOUD:+--use-raw-pointcloud} \
+  ${RAW_INTENSITY_THRESHOLD:+--raw-intensity-threshold "$RAW_INTENSITY_THRESHOLD"} \
   "$DATA_DIR"
 
 EXIT_CODE=$?
