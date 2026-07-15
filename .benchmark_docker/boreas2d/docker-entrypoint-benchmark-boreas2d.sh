@@ -41,6 +41,9 @@ fi
 
 conda activate "$ENV_NAME"
 
+# Install missing packages at runtime (no rebuild needed)
+python -c "import imreg_dft" 2>/dev/null || pip install imreg-dft
+
 # === 3. Set library paths ===
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # pybind_registration_2d lives in the fsregistration install
