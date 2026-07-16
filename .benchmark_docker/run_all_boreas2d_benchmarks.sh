@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RESULTS_DIR="$SCRIPT_DIR/results"
 mkdir -p "$RESULTS_DIR"
 
-NUM_WORKERS=4
+NUM_WORKERS=10
 DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 
 BENCHMARKS=(
@@ -29,7 +29,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     echo "Script: $script"
     echo "Output: $output_file"
     echo "================================================"
-    if bash "$script" "$NUM_WORKERS" --test --data-dir "$DATA_DIR" > "$output_file" 2>&1; then
+    if bash "$script" "$NUM_WORKERS" --data-dir "$DATA_DIR" > "$output_file" 2>&1; then
         echo "  Exit code: 0" | tee -a "$output_file"
     else
         exit_code=$?

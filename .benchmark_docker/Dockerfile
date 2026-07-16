@@ -49,6 +49,7 @@ RUN groupadd --gid $USER_GID $USERNAME 2>/dev/null || true \
         libomp-dev \
         libsystemd-dev \
         locales \
+        bubblewrap \
     && locale-gen en_US.UTF-8 \
     && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
