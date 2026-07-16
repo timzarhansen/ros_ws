@@ -83,7 +83,6 @@ RESULTS_DIR="benchmark_results/boreas2d"
 mkdir -p "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="${RESULTS_DIR}/run_boreas2d_${TIMESTAMP}_fs2d.log"
-exec > >(tee -a "$LOG_FILE" 2>&1)
 
 echo "=============================================="
 echo "  Boreas 2D Benchmark — FS2D"
