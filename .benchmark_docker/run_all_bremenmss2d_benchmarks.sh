@@ -6,11 +6,26 @@ RESULTS_DIR="$SCRIPT_DIR/results"
 mkdir -p "$RESULTS_DIR"
 
 NUM_WORKERS=1
-DATA_DIR="/home/tim-external/dataFolder/Bremen-MSS-Processed"
+TEST_MODE=""
+DATA_DIR=""
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --test) TEST_MODE="--test"; shift ;;
+    --data-dir) DATA_DIR="$2"; shift 2 ;;
+    *) echo "Unknown option: $1"; exit 1 ;;
+  esac
+done
+
+if [ -z "$DATA_DIR" ]; then
+  echo "ERROR: --data-dir is required"
+  exit 1
+fi
 
 BENCHMARKS=(
     "fs2d"
     "sift"
+    "surf"
     "kaze"
     "akaze"
     "fourier_mellin"
@@ -29,7 +44,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     echo "Script: $script"
     echo "Output: $output_file"
     echo "================================================"
-    if bash "$script" "$NUM_WORKERS" --data-dir "$DATA_DIR" > "$output_file" 2>&1; then
+    if bash "$script" "$NUM_WORKERS" ${TEST_MODE:+"$TEST_MODE"} --data-dir "$DATA_DIR" > "$output_file" 2>&1; then
         echo "  Exit code: 0" | tee -a "$output_file"
     else
         exit_code=$?
