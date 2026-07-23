@@ -65,6 +65,7 @@ NUM_WORKERS=4
 OUTPUT_DIR="/volume/results"
 METHOD_CONFIG=""
 SAVE_BLENDED=""
+DATA_DIR=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -77,9 +78,11 @@ while [[ $# -gt 0 ]]; do
     --method-config) METHOD_CONFIG="$2"; shift 2 ;;
     --save-blended) SAVE_BLENDED="--save-blended"; shift ;;
     --test) MAX_FRAMES="5"; shift ;;
-    *) echo "Unknown option: $1"; exit 1 ;;
+    *) DATA_DIR="$1"; shift ;;
   esac
 done
+
+DATA_DIR="${DATA_DIR:-/data}"
 
 echo ""
 echo "=============================================="
@@ -91,7 +94,7 @@ echo "N:            $N"
 echo "Radius:       $RADIUS"
 echo "Workers:      $NUM_WORKERS"
 echo "Output dir:   $OUTPUT_DIR"
-echo "Data dir:     /data"
+echo "Data dir:     $DATA_DIR"
 echo "=============================================="
 echo ""
 
@@ -105,7 +108,7 @@ python3 bremenMssBenchmarkParallel.py \
   --output-dir "$OUTPUT_DIR" \
   ${METHOD_CONFIG:+--method-config "$METHOD_CONFIG"} \
   ${SAVE_BLENDED:+--save-blended} \
-  /data
+  "$DATA_DIR"
 
 EXIT_CODE=$?
 echo ""
