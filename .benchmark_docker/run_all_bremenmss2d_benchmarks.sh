@@ -25,7 +25,6 @@ fi
 BENCHMARKS=(
     "fs2d"
     "sift"
-    "surf"
     "kaze"
     "akaze"
     "fourier_mellin"
