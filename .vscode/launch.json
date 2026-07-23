@@ -54,6 +54,18 @@
             }
         },
                 {
+            "name": "Python: DFKI Dataset setp by step",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/viewBremenMssPairs.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
+        },
+                {
             "name": "Python: 3D benchmark Testfile",
             "type": "python",
             "request": "launch",
