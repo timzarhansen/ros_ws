@@ -260,7 +260,7 @@ bash .benchmark_docker/run_test.sh
 
 nohup bash .benchmark_docker/benchmark_methods/run_fpfh.sh 4 > fpfh.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_geotransformer.sh 4 > geotransformer.log 2>&1 & # ran on nuc01
-nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 8 > hybridpoint.log 2>&1 & # ran on cubr-admin-02 
+nohup bash .benchmark_docker/benchmark_methods/run_hybridpoint.sh 8 > hybridpoint.log 2>&1 & # ran on cubr-admin-02
 nohup bash .benchmark_docker/benchmark_methods/run_icp.sh 12 > icp.log 2>&1 & # ran on mac
 nohup bash .benchmark_docker/benchmark_methods/run_pointreggpt.sh 20 > pointreggpt.log 2>&1 & # ran on gpu server
 nohup bash .benchmark_docker/benchmark_methods/run_regtr.sh 16 > regtr.log 2>&1 &  # ran on mac
@@ -291,6 +291,61 @@ nohup bash .benchmark_docker/run_soft_param_bench.sh 10 --range 4 5 > soft64.log
 
 nohup bash .benchmark_docker/run_soft_param_bench.sh 20 --range 6 7 > soft64.log 2>&1 & # ran on GPU server
 
+
+## Bremen-MSS 2D Benchmark
+
+13 sequences (`sequence_1` – `sequence_13`), 2D sonar registration.
+
+Single `--test` flag validates config (5 frames per sequence):
+```bash
+bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_sift.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_kaze.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_akaze.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_fourier_mellin.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_icp.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_ndt_p2d.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_loftr.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_eloftr.sh 4 --test
+bash .benchmark_docker/bremenmss2d/run_bremenmss_lightglue.sh 4 --test
+```
+
+Split `--sequences` across machines for faster completion:
+```bash
+# Sequences 1-5 on machine 1, 6-9 on machine 2, 10-13 on machine 3
+bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 8 --sequences 1-5
+bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 8 --sequences 6-9
+bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 8 --sequences 10-13
+```
+
+### Method assignment (4 machines, 11 methods)
+
+**Machine 1 (mac / CPU-heavy):**
+```bash
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 8 > bremenmss2d_fs2d.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_sift.sh 8 > bremenmss2d_sift.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_surf.sh 8 > bremenmss2d_surf.log 2>&1 &
+```
+
+**Machine 2 (nuc01 / similar):**
+```bash
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_kaze.sh 8 > bremenmss2d_kaze.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_akaze.sh 8 > bremenmss2d_akaze.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_fourier_mellin.sh 8 > bremenmss2d_fourier_mellin.log 2>&1 &
+```
+
+**Machine 3 (mac / cubr-admin-02):**
+```bash
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_icp.sh 8 > bremenmss2d_icp.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_ndt_p2d.sh 8 > bremenmss2d_ndt_p2d.log 2>&1 &
+```
+
+**Machine 4 (GPU server):**
+```bash
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_loftr.sh 4 > bremenmss2d_loftr.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_eloftr.sh 4 > bremenmss2d_eloftr.log 2>&1 &
+nohup bash .benchmark_docker/bremenmss2d/run_bremenmss_lightglue.sh 4 > bremenmss2d_lightglue.log 2>&1 &
+```
 
 ## Boreas 2D Benchmark
 
