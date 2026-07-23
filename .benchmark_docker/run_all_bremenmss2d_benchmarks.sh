@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RESULTS_DIR="$SCRIPT_DIR/results"
 mkdir -p "$RESULTS_DIR"
 
-NUM_WORKERS=10
+NUM_WORKERS=1
 DATA_DIR="/home/tim-external/dataFolder/Bremen-MSS-Processed"
 
 BENCHMARKS=(

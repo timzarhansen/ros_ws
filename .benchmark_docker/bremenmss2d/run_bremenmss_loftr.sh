@@ -14,9 +14,8 @@ TEST_MODE=""
 # LoFTR defaults
 LOFTR_N=256
 LOFTR_RADIUS=22.5
-LOFTR_WEIGHT_PATH="/volume/weights/loftr/loftr.ckpt"
-LOFTR_RESOLUTION=4
-LOFTR_CONFIDENCE=0.5
+LOFTR_RANSAC_THRESHOLD=5.0
+LOFTR_RANSAC_CONFIDENCE=0.99
 
 EXTRA_ARGS=()
 
@@ -26,9 +25,8 @@ while [[ $# -gt 0 ]]; do
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) LOFTR_N="$2"; shift 2 ;;
     --radius) LOFTR_RADIUS="$2"; shift 2 ;;
-    --loftr-weight-path) LOFTR_WEIGHT_PATH="$2"; shift 2 ;;
-    --loftr-resolution) LOFTR_RESOLUTION="$2"; shift 2 ;;
-    --loftr-confidence) LOFTR_CONFIDENCE="$2"; shift 2 ;;
+    --loftr-ransac-threshold) LOFTR_RANSAC_THRESHOLD="$2"; shift 2 ;;
+    --loftr-ransac-confidence) LOFTR_RANSAC_CONFIDENCE="$2"; shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
     --output-dir) EXTRA_ARGS+=("--output-dir" "$2"); shift 2 ;;
     --data-dir) DATA_DIR="$2"; shift 2 ;;
@@ -54,8 +52,7 @@ echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
 echo "N:           $LOFTR_N"
 echo "Radius:      $LOFTR_RADIUS"
-echo "LoFTR params: resolution=$LOFTR_RESOLUTION confidence=$LOFTR_CONFIDENCE"
-echo "              weight_path=$LOFTR_WEIGHT_PATH"
+echo "LoFTR params: ransac_threshold=$LOFTR_RANSAC_THRESHOLD confidence=$LOFTR_RANSAC_CONFIDENCE"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -78,13 +75,12 @@ fi
 
 echo "=== [3/3] Running Bremen-MSS 2D benchmark ==="
 
-METHOD_CONFIG="loftr.loftr_resolution=$LOFTR_RESOLUTION loftr.loftr_confidence=$LOFTR_CONFIDENCE"
+METHOD_CONFIG="loftr.loftr_ransac_threshold=$LOFTR_RANSAC_THRESHOLD loftr.loftr_ransac_confidence=$LOFTR_RANSAC_CONFIDENCE"
 
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \
   -v "$DATA_DIR:/data:ro" \
   -v "$(pwd)/${RESULTS_DIR}:/volume/results" \
-  ${LOFTR_WEIGHT_PATH:+ -v "$(dirname "$LOFTR_WEIGHT_PATH"):/volume/weights/loftr:ro"} \
   fsbench:latest \
   bash /home/benchmark/ros_ws/.benchmark_docker/bremenmss2d/docker-entrypoint-benchmark-bremenmss2d.sh \
     --method loftr \

@@ -8,15 +8,13 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=4
+NUM_WORKERS=1
 TEST_MODE=""
 
 # Fourier-Mellin defaults
 FM_N=256
 FM_RADIUS=22.5
-FM_HIGH_PASS=10
-FM_ORDER=500
-FM_SCALE=false
+FM_HIGHPASS=false
 
 EXTRA_ARGS=()
 
@@ -26,9 +24,7 @@ while [[ $# -gt 0 ]]; do
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) FM_N="$2"; shift 2 ;;
     --radius) FM_RADIUS="$2"; shift 2 ;;
-    --fm-high-pass) FM_HIGH_PASS="$2"; shift 2 ;;
-    --fm-order) FM_ORDER="$2"; shift 2 ;;
-    --fm-scale) FM_SCALE="$2"; shift 2 ;;
+    --fm-highpass) FM_HIGHPASS="$2"; shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
     --output-dir) EXTRA_ARGS+=("--output-dir" "$2"); shift 2 ;;
     --data-dir) DATA_DIR="$2"; shift 2 ;;
@@ -54,7 +50,7 @@ echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
 echo "N:           $FM_N"
 echo "Radius:      $FM_RADIUS"
-echo "FM params:   high_pass=$FM_HIGH_PASS order=$FM_ORDER scale=$FM_SCALE"
+echo "FM params:   highpass=$FM_HIGHPASS"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -77,7 +73,7 @@ fi
 
 echo "=== [3/3] Running Bremen-MSS 2D benchmark ==="
 
-METHOD_CONFIG="fourier_mellin.fm_high_pass=$FM_HIGH_PASS fourier_mellin.fm_order=$FM_ORDER fourier_mellin.fm_scale=$FM_SCALE"
+METHOD_CONFIG="fourier_mellin.fm_highpass=$FM_HIGHPASS"
 
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \

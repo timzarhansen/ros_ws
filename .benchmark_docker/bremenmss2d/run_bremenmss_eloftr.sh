@@ -14,9 +14,9 @@ TEST_MODE=""
 # EfficientLoFTR defaults
 ELOFTR_N=256
 ELOFTR_RADIUS=22.5
-ELOFTR_WEIGHT_PATH="/volume/weights/eloftr/eloftr.ckpt"
-ELOFTR_RESOLUTION=4
-ELOFTR_CONFIDENCE=0.5
+ELOFTR_MODEL_TYPE=full
+ELOFTR_RANSAC_THRESHOLD=5.0
+ELOFTR_RANSAC_CONFIDENCE=0.99
 
 EXTRA_ARGS=()
 
@@ -26,9 +26,9 @@ while [[ $# -gt 0 ]]; do
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) ELOFTR_N="$2"; shift 2 ;;
     --radius) ELOFTR_RADIUS="$2"; shift 2 ;;
-    --eloftr-weight-path) ELOFTR_WEIGHT_PATH="$2"; shift 2 ;;
-    --eloftr-resolution) ELOFTR_RESOLUTION="$2"; shift 2 ;;
-    --eloftr-confidence) ELOFTR_CONFIDENCE="$2"; shift 2 ;;
+    --eloftr-model-type) ELOFTR_MODEL_TYPE="$2"; shift 2 ;;
+    --eloftr-ransac-threshold) ELOFTR_RANSAC_THRESHOLD="$2"; shift 2 ;;
+    --eloftr-ransac-confidence) ELOFTR_RANSAC_CONFIDENCE="$2"; shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
     --output-dir) EXTRA_ARGS+=("--output-dir" "$2"); shift 2 ;;
     --data-dir) DATA_DIR="$2"; shift 2 ;;
@@ -54,8 +54,8 @@ echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
 echo "N:           $ELOFTR_N"
 echo "Radius:      $ELOFTR_RADIUS"
-echo "Eff. LoFTR params: resolution=$ELOFTR_RESOLUTION confidence=$ELOFTR_CONFIDENCE"
-echo "                   weight_path=$ELOFTR_WEIGHT_PATH"
+echo "E-LoFTR params: model_type=$ELOFTR_MODEL_TYPE"
+echo "                ransac_threshold=$ELOFTR_RANSAC_THRESHOLD confidence=$ELOFTR_RANSAC_CONFIDENCE"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -78,13 +78,12 @@ fi
 
 echo "=== [3/3] Running Bremen-MSS 2D benchmark ==="
 
-METHOD_CONFIG="eloftr.eloftr_resolution=$ELOFTR_RESOLUTION eloftr.eloftr_confidence=$ELOFTR_CONFIDENCE"
+METHOD_CONFIG="eloftr.eloftr_model_type=$ELOFTR_MODEL_TYPE eloftr.eloftr_ransac_threshold=$ELOFTR_RANSAC_THRESHOLD eloftr.eloftr_ransac_confidence=$ELOFTR_RANSAC_CONFIDENCE"
 
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \
   -v "$DATA_DIR:/data:ro" \
   -v "$(pwd)/${RESULTS_DIR}:/volume/results" \
-  ${ELOFTR_WEIGHT_PATH:+ -v "$(dirname "$ELOFTR_WEIGHT_PATH"):/volume/weights/eloftr:ro"} \
   fsbench:latest \
   bash /home/benchmark/ros_ws/.benchmark_docker/bremenmss2d/docker-entrypoint-benchmark-bremenmss2d.sh \
     --method eloftr \

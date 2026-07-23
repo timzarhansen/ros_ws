@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=4
+NUM_WORKERS=1
 TEST_MODE=""
 
 # ICP defaults
