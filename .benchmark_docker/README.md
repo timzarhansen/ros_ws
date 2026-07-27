@@ -295,7 +295,7 @@ nohup bash .benchmark_docker/run_soft_param_bench.sh 20 --range 6 7 > soft64.log
 ## Bremen-MSS 2D Benchmark
 
 13 sequences (`sequence_1` – `sequence_13`), 2D sonar registration.
-
+ 
 Single `--test` flag validates config (5 frames per sequence):
 ```bash
 bash .benchmark_docker/bremenmss2d/run_bremenmss_fs2d.sh 4 --test
@@ -308,6 +308,9 @@ bash .benchmark_docker/bremenmss2d/run_bremenmss_ndt_p2d.sh 4 --test
 bash .benchmark_docker/bremenmss2d/run_bremenmss_loftr.sh 4 --test
 bash .benchmark_docker/bremenmss2d/run_bremenmss_eloftr.sh 4 --test
 bash .benchmark_docker/bremenmss2d/run_bremenmss_lightglue.sh 4 --test
+
+#Run all:
+bash .benchmark_docker/run_all_bremenmss2d_benchmarks.sh --test --data-dir /Users/timhansen/Documents/dataFolder/Bremen-MSS-Processed
 ```
 
 Split `--sequences` across machines for faster completion:
