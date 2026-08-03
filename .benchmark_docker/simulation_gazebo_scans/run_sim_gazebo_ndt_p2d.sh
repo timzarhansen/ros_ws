@@ -54,8 +54,8 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
-echo "N:           ${ ndt_p2d_N }"
-echo "Radius:      ${ ndt_p2d_RADIUS }"
+echo "N:           ${ndt_p2d_N}"
+echo "Radius:      ${ndt_p2d_RADIUS}"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -86,8 +86,8 @@ docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
     --method ndt_p2d \
     --num-workers "$NUM_WORKERS" \
     --output-dir /volume/results \
-    --N "${ ndt_p2d_N }" \
-    --radius "${ ndt_p2d_RADIUS }" \
+    --N "${ndt_p2d_N}" \
+    --radius "${ndt_p2d_RADIUS}" \
     ${TEST_MODE:+--test} \
     --method-config "$METHOD_CONFIG" \
     "${EXTRA_ARGS[@]}" \

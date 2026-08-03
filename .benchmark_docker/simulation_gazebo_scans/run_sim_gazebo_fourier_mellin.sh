@@ -54,8 +54,8 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
-echo "N:           ${ fourier_mellin_N }"
-echo "Radius:      ${ fourier_mellin_RADIUS }"
+echo "N:           ${fourier_mellin_N}"
+echo "Radius:      ${fourier_mellin_RADIUS}"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -86,8 +86,8 @@ docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
     --method fourier_mellin \
     --num-workers "$NUM_WORKERS" \
     --output-dir /volume/results \
-    --N "${ fourier_mellin_N }" \
-    --radius "${ fourier_mellin_RADIUS }" \
+    --N "${fourier_mellin_N}" \
+    --radius "${fourier_mellin_RADIUS}" \
     ${TEST_MODE:+--test} \
     --method-config "$METHOD_CONFIG" \
     "${EXTRA_ARGS[@]}" \

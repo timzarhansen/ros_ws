@@ -64,8 +64,8 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
-echo "N:           ${ kaze_N }"
-echo "Radius:      ${ kaze_RADIUS }"
+echo "N:           ${kaze_N}"
+echo "Radius:      ${kaze_RADIUS}"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then
@@ -96,8 +96,8 @@ docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
     --method kaze \
     --num-workers "$NUM_WORKERS" \
     --output-dir /volume/results \
-    --N "${ kaze_N }" \
-    --radius "${ kaze_RADIUS }" \
+    --N "${kaze_N}" \
+    --radius "${kaze_RADIUS}" \
     ${TEST_MODE:+--test} \
     --method-config "$METHOD_CONFIG" \
     "${EXTRA_ARGS[@]}" \
