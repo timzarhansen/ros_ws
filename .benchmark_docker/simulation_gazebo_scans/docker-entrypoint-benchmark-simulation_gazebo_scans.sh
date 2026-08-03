@@ -12,7 +12,7 @@ set -eo pipefail
 #     fsbench:latest \
 #     bash /home/benchmark/ros_ws/.benchmark_docker/simulation_gazebo_scans/\
 #         docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
-#       --method fs2d --num-workers 4 --N 256 --radius 15 \
+#       --method fs2d --num-workers 4 --N 256 --radius 15 --noise-level None \
 #       --output-dir /volume/results \
 #       /data
 #
@@ -101,6 +101,7 @@ OUTPUT_DIR="/volume/results"
 METHOD_CONFIG=""
 SAVE_BLENDED=""
 MAX_FRAMES=""
+NOISE_LEVEL="None"
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -108,6 +109,7 @@ while [[ $# -gt 0 ]]; do
     --sequences) SEQUENCES="$2"; shift 2 ;;
     --N) N="$2"; shift 2 ;;
     --radius) RADIUS="$2"; shift 2 ;;
+    --noise-level) NOISE_LEVEL="$2"; shift 2 ;;
     --num-workers) NUM_WORKERS="$2"; shift 2 ;;
     --max-frames) MAX_FRAMES="$2"; shift 2 ;;
     --output-dir) OUTPUT_DIR="$2"; shift 2 ;;
@@ -128,6 +130,7 @@ echo "Method:       $METHOD"
 echo "Sequences:    $SEQUENCES"
 echo "N:            $N"
 echo "Radius:       $RADIUS"
+echo "Noise level:  $NOISE_LEVEL"
 echo "Workers:      $NUM_WORKERS"
 echo "Max frames:   ${MAX_FRAMES:-unlimited}"
 echo "Output dir:   $OUTPUT_DIR"
@@ -141,6 +144,7 @@ python3 lidarSimBenchmarkParallel.py \
   --sequences "$SEQUENCES" \
   --N "$N" \
   --radius "$RADIUS" \
+  --noise-level "$NOISE_LEVEL" \
   --num-workers "$NUM_WORKERS" \
   --output-dir "$OUTPUT_DIR" \
   ${MAX_FRAMES:+--max-frames "$MAX_FRAMES"} \

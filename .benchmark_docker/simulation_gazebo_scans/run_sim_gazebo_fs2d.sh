@@ -23,6 +23,7 @@ cd "$(dirname "$0")/../.."
 # === Defaults ===
 NUM_WORKERS=1
 TEST_MODE=""
+NOISE_LEVEL="None"
 
 # FS2D defaults
 FS2D_N=256
@@ -43,6 +44,7 @@ EXTRA_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     --test) TEST_MODE="--test"; shift ;;
+    --noise-level) NOISE_LEVEL="$2"; shift 2 ;;
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) FS2D_N="$2"; shift 2 ;;
     --radius) FS2D_RADIUS="$2"; shift 2 ;;
@@ -64,7 +66,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # === Data dir ===
-DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/simulation_gazebo_scans}"
+DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/2D-Scan-Gazebo-Dataset}"
 
 # === Logging ===
 RESULTS_DIR="benchmark_results/simulation_gazebo_scans"
@@ -81,6 +83,7 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
+echo "Noise level:  $NOISE_LEVEL"
 echo "N:           $FS2D_N"
 echo "Radius:      $FS2D_RADIUS"
 echo "FS2D params: use_clahe=$FS2D_USE_CLACHE use_hamming=$FS2D_USE_HAMMING"
@@ -127,6 +130,7 @@ docker run --rm \
 docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
     --method fs2d \
     --num-workers "$NUM_WORKERS" \
+    --noise-level "$NOISE_LEVEL" \
     --output-dir /volume/results \
     --N "$FS2D_N" \
     --radius "$FS2D_RADIUS" \

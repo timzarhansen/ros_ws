@@ -10,6 +10,7 @@ cd "$(dirname "$0")/../.."
 # === Defaults ===
 NUM_WORKERS=1
 TEST_MODE=""
+NOISE_LEVEL="None"
 
 # kaze defaults
 kaze_N=256
@@ -29,6 +30,7 @@ EXTRA_ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     --test) TEST_MODE="--test"; shift ;;
+    --noise-level) NOISE_LEVEL="$2"; shift 2 ;;
     --sequences) EXTRA_ARGS+=("--sequences" "$2"); shift 2 ;;
     --N) kaze_N="$2"; shift 2 ;;
     --radius) kaze_RADIUS="$2"; shift 2 ;;
@@ -48,7 +50,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/simulation_gazebo_scans}"
+DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/2D-Scan-Gazebo-Dataset}"
 
 RESULTS_DIR="benchmark_results/simulation_gazebo_scans"
 mkdir -p "$RESULTS_DIR"
@@ -64,6 +66,7 @@ echo "Data dir:    $DATA_DIR"
 echo "Results dir: $RESULTS_DIR"
 echo "Log file:    $LOG_FILE"
 echo "Test mode:   ${TEST_MODE:-no}"
+echo "Noise level:  $NOISE_LEVEL"
 echo "N:           ${kaze_N}"
 echo "Radius:      ${kaze_RADIUS}"
 echo ""
@@ -95,6 +98,7 @@ docker run --rm \
 docker-entrypoint-benchmark-simulation_gazebo_scans.sh \
     --method kaze \
     --num-workers "$NUM_WORKERS" \
+    --noise-level "$NOISE_LEVEL" \
     --output-dir /volume/results \
     --N "${kaze_N}" \
     --radius "${kaze_RADIUS}" \

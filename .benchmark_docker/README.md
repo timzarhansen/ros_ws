@@ -493,5 +493,23 @@ datasets/
 └── …
 ```
 
+A single dataset directory can also be passed directly as `--data-dir` (the
+loader detects `metadata.yaml + poses.csv + scans/` at the top level).
+
+### Noise models
+
+Every method can be run with a noise model applied to the raw points
+**before** image/pointcloud generation (same scheme as the 3D profiling
+benchmark): `None`, `low`, `high`, `low_gauss`, `high_gauss`,
+`low_salt_pepper`, `high_salt_pepper` (gaussian std 0.01/0.05 m, salt/pepper
+1%/5% of points; low/high combine both). Pass `--noise-level <name>` to any
+`run_sim_gazebo_*.sh` script (default `None`). Noise results land in
+`seqXX_<method>_N*_p*_s*_<noise>/` subdirectories.
+
+`run_all_sim_gazebo_benchmarks.sh` loops over all methods × noise levels;
+methods, noise levels, grid size and scene radius are configurable at the
+top of that script (`BENCHMARKS`, `NOISE_LEVELS`, `DEFAULT_N`,
+`DEFAULT_RADIUS`).
+
 
 
