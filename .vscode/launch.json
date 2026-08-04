@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
@@ -58,6 +59,18 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/viewBremenMssPairs.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
+        },
+                        {
+            "name": "Python: Simulation Dataset setp by step",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/viewGazeboSimPairs.py",
             "console": "integratedTerminal",
             "args": [],
             "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",

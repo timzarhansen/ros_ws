@@ -310,7 +310,7 @@ bash .benchmark_docker/bremenmss2d/run_bremenmss_eloftr.sh 4 --test
 bash .benchmark_docker/bremenmss2d/run_bremenmss_lightglue.sh 4 --test
 
 #Run all:
-bash .benchmark_docker/run_all_bremenmss2d_benchmarks.sh --test --data-dir /Users/timhansen/Documents/dataFolder/Bremen-MSS-Processed
+bash .benchmark_docker/run_all_bremenmss2d_benchmarks.sh --data-dir /Users/timhansen/Documents/dataFolder/Bremen-MSS-Processed
 ```
 
 Split `--sequences` across machines for faster completion:
@@ -423,7 +423,7 @@ bash .benchmark_docker/simulation_gazebo_scans/run_sim_gazebo_eloftr.sh 4 --test
 bash .benchmark_docker/simulation_gazebo_scans/run_sim_gazebo_lightglue.sh 4 --test --data-dir /path/to/datasets/
 
 #Run all:
-bash .benchmark_docker/run_all_sim_gazebo_benchmarks.sh --test --data-dir /path/to/datasets/
+bash .benchmark_docker/run_all_sim_gazebo_benchmarks.sh --test --data-dir /Users/timhansen/Documents/dataFolder/2D-Scan-Gazebo-Dataset
 ```
 
 Split `--sequences` across dataset groups for faster completion (datasets

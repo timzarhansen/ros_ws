@@ -9,13 +9,13 @@ NUM_WORKERS=10
 DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 
 BENCHMARKS=(
-    "fs2d"
+    # "fs2d"
     "sift"
     "kaze"
     "akaze"
-    "fourier_mellin"
-    "icp"
-    "ndt_p2d"
+    # "fourier_mellin"
+    # "icp"
+    # "ndt_p2d"
     "loftr"
     "eloftr"
     "lightglue"
