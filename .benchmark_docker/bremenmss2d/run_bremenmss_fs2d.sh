@@ -103,11 +103,36 @@ else
 fi
 
 # === Step 2: Build workspace (if needed) ===
+# First-time setup = full build. On later runs, rebuild fsregistration only
+# when its sources are newer than the installed pybind module, so the module
+# stays current without wiping install/ or re-downloading weights every run.
+REBUILD_MSG=""
+if [ -d "install/soft20" ]; then
+  SOFILE=$(find install/fsregistration/lib/fsregistration -maxdepth 1 \
+           -name 'pybind_registration_2d*.so' -print -quit 2>/dev/null || true)
+  if [ -z "$SOFILE" ]; then
+    REBUILD_MSG="pybind module not built"
+  else
+    STALE_SRC=$(find src/fsregistration/src src/fsregistration/include src/fsregistration/find-peaks \
+                \( -name '*.cpp' -o -name '*.h' \) -newer "$SOFILE" -print -quit 2>/dev/null || true)
+    if [ -n "$STALE_SRC" ]; then
+      REBUILD_MSG="newer source: $STALE_SRC"
+    fi
+  fi
+fi
+
 if [ ! -d "install/soft20" ]; then
   echo "=== [2/3] Building workspace ==="
   docker run --rm \
     -v "$(pwd):/home/benchmark/ros_ws" \
     fsbench:latest /usr/local/bin/docker-entrypoint-build.sh
+  echo ""
+elif [ -n "$REBUILD_MSG" ]; then
+  echo "=== [2/3] Rebuilding fsregistration ($REBUILD_MSG) ==="
+  docker run --rm \
+    -v "$(pwd):/home/benchmark/ros_ws" \
+    fsbench:latest bash -c \
+      '. /opt/ros/jazzy/setup.bash && cd /home/benchmark/ros_ws && colcon build --packages-select fsregistration'
   echo ""
 else
   echo "=== Workspace already built (install/soft20 exists) ==="
