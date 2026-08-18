@@ -17,6 +17,7 @@ SOFT_LEVEL_ROTATION=0.0001
 SOFT_LEVEL_TRANSLATION=0.0001
 SOFT_NORMALIZATION=2
 NOISE_SUBSET=""
+DATA_SUBSET=""
 SOFT_R_MIN_EXPLICIT=false
 SOFT_R_MAX_EXPLICIT=false
 
@@ -30,6 +31,7 @@ while [[ $# -gt 0 ]]; do
     --soft-normalization) SOFT_NORMALIZATION="$2"; shift 2 ;;
     --soft-use-clahe) SOFT_USE_CLAHE="$2"; shift 2 ;;
     --noise-subset) NOISE_SUBSET="$2"; shift 2 ;;
+    --data-subset) DATA_SUBSET="$2"; shift 2 ;;
     --test) TEST_MODE="--test"; shift ;;
     *) NUM_WORKERS="$1"; shift ;;
   esac
@@ -67,7 +69,7 @@ echo ""
 
 # === Step 3: Run benchmark ===
 echo "=== Step 3: Run benchmark (${METHOD}, workers=${NUM_WORKERS}, N=${SOFT_N}) ==="
-echo "SOFT params: r_min=${SOFT_R_MIN}, r_max=${SOFT_R_MAX}, level_rot=${SOFT_LEVEL_ROTATION}, level_trans=${SOFT_LEVEL_TRANSLATION}, norm=${SOFT_NORMALIZATION}, clahe=${SOFT_USE_CLAHE}${NOISE_SUBSET:+, noise_subset=${NOISE_SUBSET}}"
+echo "SOFT params: r_min=${SOFT_R_MIN}, r_max=${SOFT_R_MAX}, level_rot=${SOFT_LEVEL_ROTATION}, level_trans=${SOFT_LEVEL_TRANSLATION}, norm=${SOFT_NORMALIZATION}, clahe=${SOFT_USE_CLAHE}${NOISE_SUBSET:+, noise_subset=${NOISE_SUBSET}}${DATA_SUBSET:+, data_subset=${DATA_SUBSET}}"
 docker run --rm \
   -e SOFT_N="$SOFT_N" \
   -e SOFT_R_MIN="$SOFT_R_MIN" \
@@ -77,6 +79,7 @@ docker run --rm \
   -e SOFT_LEVEL_TRANSLATION="$SOFT_LEVEL_TRANSLATION" \
   -e SOFT_NORMALIZATION="$SOFT_NORMALIZATION" \
   -e NOISE_SUBSET="$NOISE_SUBSET" \
+  -e DATA_SUBSET="$DATA_SUBSET" \
   -v $(pwd):/home/benchmark/ros_ws \
   -v $(pwd)/dataFolder:/data:ro \
   -v $(pwd)/weights:/volume/weights:ro \
