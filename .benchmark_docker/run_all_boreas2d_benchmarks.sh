@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RESULTS_DIR="$SCRIPT_DIR/results"
 mkdir -p "$RESULTS_DIR"
 
-NUM_WORKERS=10
+NUM_WORKERS=8
 DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 
 BENCHMARKS=(
