@@ -29,9 +29,7 @@
 [submodule "src/mocap_msgs"]
 	path = src/mocap_msgs
 	url = https://github.com/MOCAP4ROS2-Project/mocap_msgs.git
-[submodule "src/ros2_kitti_publishers"]
-	path = src/ros2_kitti_publishers
-	url = https://github.com/umtclskn/ros2_kitti_publishers
+
 [submodule "src/commonBlueROVMSG"]
 	path = src/commonBlueROVMSG
 	url = https://github.com/timzarhansen/commonBlueROVMSG
