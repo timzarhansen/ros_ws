@@ -23,13 +23,13 @@ if [ -z "$DATA_DIR" ]; then
 fi
 
 BENCHMARKS=(
-    # "fs2d"
+    "fs2d"
     "sift"
     "kaze"
     "akaze"
     "fourier_mellin"
-    # "icp"
-    # "ndt_p2d"
+    "icp"
+    "ndt_p2d"
     "loftr"
     "eloftr"
     "lightglue"
