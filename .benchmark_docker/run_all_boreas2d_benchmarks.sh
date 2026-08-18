@@ -5,11 +5,11 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RESULTS_DIR="$SCRIPT_DIR/results"
 mkdir -p "$RESULTS_DIR"
 
-NUM_WORKERS=8
+NUM_WORKERS=10
 DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 
 BENCHMARKS=(
-    "fs2d"
+    # "fs2d"
     "sift"
     "kaze"
     "akaze"
