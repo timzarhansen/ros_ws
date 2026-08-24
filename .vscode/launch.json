@@ -89,6 +89,18 @@
             "env": {
                 "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
             }
+        },
+        {
+            "name": "Comparison Boreas Pairs",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset/comparisonBoreasPais.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/fsregistration/pythonScripts/radarDataset",
+            "env": {
+                "LD_LIBRARY_PATH": "/usr/local/lib:${env:LD_LIBRARY_PATH}"
+            }
         }
     ]
 }
