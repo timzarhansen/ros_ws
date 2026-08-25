@@ -22,6 +22,7 @@ NDT_TRANSFORMATION_EPSILON=0.01
 NDT_SCALE=1.0
 NDT_THRESHOLD_PCT=5.0
 NDT_Z_SCALE=0.1
+NDT_DOWNSAMPLE_VOXEL=1.0
 NDT_USE_RAW_POINTCLOUD=true
 NDT_RAW_INTENSITY_THRESHOLD=0.3
 
@@ -42,6 +43,7 @@ while [[ $# -gt 0 ]]; do
     --ndt-transformation-epsilon) NDT_TRANSFORMATION_EPSILON="$2"; shift 2 ;;
     --ndt-scale) NDT_SCALE="$2"; shift 2 ;;
     --ndt-threshold-pct) NDT_THRESHOLD_PCT="$2"; shift 2 ;;
+    --ndt-downsample-voxel) NDT_DOWNSAMPLE_VOXEL="$2"; shift 2 ;;
     --ndt-z-scale) NDT_Z_SCALE="$2"; shift 2 ;;
     --use-raw-pointcloud) NDT_USE_RAW_POINTCLOUD="$2"; shift 2 ;;
     --raw-intensity-threshold) NDT_RAW_INTENSITY_THRESHOLD="$2"; shift 2 ;;
@@ -74,6 +76,7 @@ echo "Match step:  $NDT_MATCHING_STEP"
 echo "NDT params:  voxel_size=$NDT_VOXEL_SIZE step_size=$NDT_STEP_SIZE"
 echo "             max_iter=$NDT_MAX_ITERATION eps=$NDT_TRANSFORMATION_EPSILON"
 echo "             scale=$NDT_SCALE threshold_pct=$NDT_THRESHOLD_PCT z_scale=$NDT_Z_SCALE"
+echo "             downsample=$NDT_DOWNSAMPLE_VOXEL"
 echo "Raw PC:      $NDT_USE_RAW_POINTCLOUD (threshold=$NDT_RAW_INTENSITY_THRESHOLD)"
 echo ""
 
@@ -97,7 +100,7 @@ fi
 
 echo "=== [3/3] Running Boreas 2D benchmark ==="
 
-METHOD_CONFIG="ndt_p2d.ndt_voxel_size=$NDT_VOXEL_SIZE ndt_p2d.ndt_step_size=$NDT_STEP_SIZE ndt_p2d.ndt_max_iteration=$NDT_MAX_ITERATION ndt_p2d.ndt_transformation_epsilon=$NDT_TRANSFORMATION_EPSILON ndt_p2d.ndt_scale=$NDT_SCALE ndt_p2d.ndt_threshold_pct=$NDT_THRESHOLD_PCT ndt_p2d.ndt_z_scale=$NDT_Z_SCALE"
+METHOD_CONFIG="ndt_p2d.ndt_voxel_size=$NDT_VOXEL_SIZE ndt_p2d.ndt_step_size=$NDT_STEP_SIZE ndt_p2d.ndt_max_iteration=$NDT_MAX_ITERATION ndt_p2d.ndt_transformation_epsilon=$NDT_TRANSFORMATION_EPSILON ndt_p2d.ndt_scale=$NDT_SCALE ndt_p2d.ndt_threshold_pct=$NDT_THRESHOLD_PCT ndt_p2d.ndt_z_scale=$NDT_Z_SCALE ndt_p2d.ndt_downsample_voxel=$NDT_DOWNSAMPLE_VOXEL"
 
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \
