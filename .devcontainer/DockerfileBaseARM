@@ -170,7 +170,8 @@ ENV SHELL=/bin/bash
 ENV PATH=/opt/ros/$ROS_DISTRO/bin:$PATH
 
 # --- Colcon defaults ---
-RUN  cat > /home/$USERNAME/.colcon_defaults.yaml << 'EOF'
+RUN  mkdir -p /home/$USERNAME/.colcon \
+    && cat > /home/$USERNAME/.colcon/defaults.yaml << 'EOF'
 build:
   cmake-args:
     - -DCMAKE_BUILD_TYPE=Release

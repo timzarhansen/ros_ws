@@ -108,7 +108,7 @@ WORKDIR /home/$USERNAME
 
 # === Colcon defaults ===
 RUN mkdir -p /home/$USERNAME/.colcon \
-    && cat > /home/$USERNAME/.colcon_defaults.yaml << 'EOF'
+    && cat > /home/$USERNAME/.colcon/defaults.yaml << 'EOF'
 build:
   cmake-args:
     - -DCMAKE_BUILD_TYPE=Release
