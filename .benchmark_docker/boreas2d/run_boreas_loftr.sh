@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=4
+NUM_WORKERS=2
 TEST_MODE=""
 
 # LoFTR defaults (from paramBenchMethods/boreasBenchmarkLoFTRSweep.py)

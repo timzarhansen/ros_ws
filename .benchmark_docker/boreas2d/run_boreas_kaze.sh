@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=4
+NUM_WORKERS=10
 TEST_MODE=""
 
 # KAZE defaults (from paramBenchMethods/boreasBenchmarkKAZESweep.py)

@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=4
+NUM_WORKERS=6
 TEST_MODE=""
 
 # NDT defaults (from paramBenchMethods/boreasBenchmarkNDTSweep.py)
