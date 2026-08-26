@@ -29,13 +29,15 @@ NOISE_LEVEL="None"
 FS2D_N=256
 FS2D_RADIUS=15.0
 FS2D_POTENTIAL_FOR_NECESSARY_PEAK=0.01
-FS2D_LEVEL_POTENTIAL_ROTATION=0.001
+FS2D_LEVEL_POTENTIAL_ROTATION=0.0
 FS2D_USE_DIRECT=true
 FS2D_USE_CLACHE=false
 FS2D_USE_HAMMING=true
 FS2D_MULTIPLE_RADII=true
 FS2D_USE_GAUSS=false
-FS2D_NORMALIZATION=1
+FS2D_NORMALIZATION=0
+FS2D_R_MIN=20.0
+FS2D_R_MAX=120.0
 FS2D_USE_WEIGHTED_PEAK_SCORE=true
 FS2D_USE_PHASE_CORRELATION=false
 
@@ -56,6 +58,8 @@ while [[ $# -gt 0 ]]; do
     --multiple-radii) FS2D_MULTIPLE_RADII="$2"; shift 2 ;;
     --use-gauss) FS2D_USE_GAUSS="$2"; shift 2 ;;
     --normalization) FS2D_NORMALIZATION="$2"; shift 2 ;;
+    --r-min) FS2D_R_MIN="$2"; shift 2 ;;
+    --r-max) FS2D_R_MAX="$2"; shift 2 ;;
     --use-weighted-peak-score) FS2D_USE_WEIGHTED_PEAK_SCORE="$2"; shift 2 ;;
     --use-phase-correlation) FS2D_USE_PHASE_CORRELATION="$2"; shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
@@ -92,6 +96,7 @@ echo "             multiple_radii=$FS2D_MULTIPLE_RADII"
 echo "             potential_peak=$FS2D_POTENTIAL_FOR_NECESSARY_PEAK"
 echo "             level_rot=$FS2D_LEVEL_POTENTIAL_ROTATION"
 echo "             normalization=$FS2D_NORMALIZATION"
+echo "             r_min=$FS2D_R_MIN r_max=$FS2D_R_MAX"
 echo "             weighted_peak=$FS2D_USE_WEIGHTED_PEAK_SCORE"
 echo "             phase_corr=$FS2D_USE_PHASE_CORRELATION"
 echo ""
@@ -144,7 +149,7 @@ fi
 # === Step 3: Run benchmark ===
 echo "=== [3/3] Running Lidar Simulation 2D benchmark ==="
 
-METHOD_CONFIG="fs2d.potential_for_necessary_peak=$FS2D_POTENTIAL_FOR_NECESSARY_PEAK fs2d.level_potential_rotation=$FS2D_LEVEL_POTENTIAL_ROTATION fs2d.use_direct=$FS2D_USE_DIRECT fs2d.use_clahe=$FS2D_USE_CLACHE fs2d.use_hamming=$FS2D_USE_HAMMING fs2d.multiple_radii=$FS2D_MULTIPLE_RADII fs2d.use_gauss=$FS2D_USE_GAUSS fs2d.normalization=$FS2D_NORMALIZATION fs2d.use_weighted_peak_score=$FS2D_USE_WEIGHTED_PEAK_SCORE fs2d.use_phase_correlation=$FS2D_USE_PHASE_CORRELATION"
+METHOD_CONFIG="fs2d.potential_for_necessary_peak=$FS2D_POTENTIAL_FOR_NECESSARY_PEAK fs2d.level_potential_rotation=$FS2D_LEVEL_POTENTIAL_ROTATION fs2d.use_direct=$FS2D_USE_DIRECT fs2d.use_clahe=$FS2D_USE_CLACHE fs2d.use_hamming=$FS2D_USE_HAMMING fs2d.multiple_radii=$FS2D_MULTIPLE_RADII fs2d.use_gauss=$FS2D_USE_GAUSS fs2d.normalization=$FS2D_NORMALIZATION fs2d.use_weighted_peak_score=$FS2D_USE_WEIGHTED_PEAK_SCORE fs2d.use_phase_correlation=$FS2D_USE_PHASE_CORRELATION fs2d.r_min=$FS2D_R_MIN fs2d.r_max=$FS2D_R_MAX"
 
 docker run --rm \
   -v "$(pwd):/home/benchmark/ros_ws" \

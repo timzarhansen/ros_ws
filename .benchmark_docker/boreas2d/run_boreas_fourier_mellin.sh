@@ -30,6 +30,8 @@ while [[ $# -gt 0 ]]; do
     --max_frames) EXTRA_ARGS+=("--max_frames" "$2"); shift 2 ;;
     --fm-highpass) FM_HIGHPASS="$2"; shift 2 ;;
     --save-blended) EXTRA_ARGS+=("--save-blended"); shift ;;
+    --apply-rand-rot) EXTRA_ARGS+=("--apply-rand-rot"); shift ;;
+    --rand-rot-seed) EXTRA_ARGS+=("--rand-rot-seed" "$2"); shift 2 ;;
     --output-dir) EXTRA_ARGS+=("--output-dir" "$2"); shift 2 ;;
     --data-dir) DATA_DIR="$2"; shift 2 ;;
     *) NUM_WORKERS="$1"; shift ;;
