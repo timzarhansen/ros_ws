@@ -12,7 +12,7 @@ GLOBAL_WORKERS="${1:-}"
 DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 
 BENCHMARKS=(
-    # "fs2d"
+    "fs2d"
     "sift"
     "kaze"
     "akaze"

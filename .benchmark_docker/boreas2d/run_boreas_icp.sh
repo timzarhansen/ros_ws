@@ -28,7 +28,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=6
+NUM_WORKERS=12
 TEST_MODE=""
 
 # ICP defaults (from paramBenchMethods/boreasBenchmarkICPSweep.py)

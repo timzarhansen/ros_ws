@@ -28,7 +28,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 # === Defaults ===
-NUM_WORKERS=8
+NUM_WORKERS=12
 TEST_MODE=""
 
 # FS2D defaults (from paramBenchMethods/boreasBenchmarkFS2DSweep.py)
