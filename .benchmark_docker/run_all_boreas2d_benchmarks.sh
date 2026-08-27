@@ -21,6 +21,13 @@ set -euo pipefail
 #                        GT-corrected) applied to the CURRENT scan of every
 #                        pair in EVERY benchmark. Default: off.
 #   --rand-rot-seed N    RNG seed for the random rotation. Default: 42.
+#   --rand-rot-min N     Minimum rotation magnitude in degrees (>= 0).
+#                        Default: 0.0. Only used with --rand-rot on.
+#   --rand-rot-max N     Maximum rotation magnitude in degrees. The rotation
+#                        direction (sign) is random, so values span both
+#                        directions, e.g. --rand-rot-min 30 --rand-rot-max 60
+#                        yields rotations in [-60,-30] U [+30,+60] deg.
+#                        Default: 180.0. Only used with --rand-rot on.
 #   --matching-step N    Override the matching step (register every Nth frame,
 #                        pairs formed from frame 0) for ALL benchmarks.
 #                        Default: each method's own default.
@@ -30,7 +37,8 @@ set -euo pipefail
 # Examples:
 #   bash run_all_boreas2d_benchmarks.sh boreas_norot
 #   bash run_all_boreas2d_benchmarks.sh boreas_rot_8w --rand-rot on --workers 8
-#   bash run_all_boreas2d_benchmarks.sh kitti --matching-step 5 \
+#   bash run_all_boreas2d_benchmarks.sh band_30_60 --rand-rot on \
+#       --rand-rot-min 30 --rand-rot-max 60 \
 #       --data-dir /home/tim-external/dataFolder/radar_boreas
 # ============================================================================
 
@@ -49,6 +57,9 @@ Options:
   --rand-rot on|off    Random azimuth rotation (U[0,360) deg, bin-level, GT-corrected).
                        Default: off
   --rand-rot-seed N    RNG seed for the random rotation. Default: 42
+  --rand-rot-min N     Min rotation magnitude in degrees (>= 0). Default: 0.0
+  --rand-rot-max N     Max rotation magnitude in degrees; direction (sign) is
+                       random, e.g. 30/60 => [-60,-30] U [30,60] deg. Default: 180.0
   --matching-step N    Override matching step (register every Nth frame) for
                        all benchmarks (default: per-method)
   --data-dir PATH      Boreas radar dataset folder
@@ -72,6 +83,8 @@ DATA_DIR="/Users/timhansen/Documents/dataFolder/radar_boreas"
 GLOBAL_WORKERS=""
 RAND_ROT_ENABLED=false
 RAND_ROT_SEED=42
+RAND_ROT_MIN=0.0
+RAND_ROT_MAX=180.0
 MATCHING_STEP=""
 
 while [[ $# -gt 0 ]]; do
@@ -79,6 +92,8 @@ while [[ $# -gt 0 ]]; do
         --workers) GLOBAL_WORKERS="$2"; shift 2 ;;
         --rand-rot) RAND_ROT_ENABLED="$2"; shift 2 ;;
         --rand-rot-seed) RAND_ROT_SEED="$2"; shift 2 ;;
+        --rand-rot-min) RAND_ROT_MIN="$2"; shift 2 ;;
+        --rand-rot-max) RAND_ROT_MAX="$2"; shift 2 ;;
         --matching-step) MATCHING_STEP="$2"; shift 2 ;;
         --data-dir) DATA_DIR="$2"; shift 2 ;;
         -h|--help) usage; exit 0 ;;
@@ -130,7 +145,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     echo "Script: $script"
     echo "Output: $output_file"
     echo "Workers: ${GLOBAL_WORKERS:-per-method default}"
-    echo "Random rot: ${RAND_ROT_ENABLED} (seed $RAND_ROT_SEED)"
+    echo "Random rot: ${RAND_ROT_ENABLED} (seed $RAND_ROT_SEED, band ${RAND_ROT_MIN}..${RAND_ROT_MAX} deg)"
     echo "Matching step: ${MATCHING_STEP:-per-method default}"
     echo "Output dir: $RESULTS_DIR"
     echo "================================================"
@@ -139,6 +154,7 @@ for benchmark in "${BENCHMARKS[@]}"; do
     rand_args=()
     if [ "$RAND_ROT_ENABLED" = "true" ]; then
         rand_args+=(--apply-rand-rot --rand-rot-seed "$RAND_ROT_SEED")
+        rand_args+=(--rand-rot-min "$RAND_ROT_MIN" --rand-rot-max "$RAND_ROT_MAX")
     fi
     step_args=()
     [ -n "$MATCHING_STEP" ] && step_args+=(--matching_step "$MATCHING_STEP")

@@ -106,6 +106,8 @@ METHOD_CONFIG=""
 SAVE_BLENDED=""
 APPLY_RAND_ROT=""
 RAND_ROT_SEED="42"
+RAND_ROT_MIN=""
+RAND_ROT_MAX=""
 
 DATA_DIR=""
 
@@ -124,6 +126,8 @@ while [[ $# -gt 0 ]]; do
     --save-blended) SAVE_BLENDED="--save-blended"; shift ;;
     --apply-rand-rot) APPLY_RAND_ROT="--apply-rand-rot"; shift ;;
     --rand-rot-seed) RAND_ROT_SEED="$2"; shift 2 ;;
+    --rand-rot-min) RAND_ROT_MIN="$2"; shift 2 ;;
+    --rand-rot-max) RAND_ROT_MAX="$2"; shift 2 ;;
     --use-raw-pointcloud) USE_RAW_POINTCLOUD="--use-raw-pointcloud"; shift ;;
     --raw-intensity-threshold) RAW_INTENSITY_THRESHOLD="$2"; shift 2 ;;
     --test) MAX_FRAMES="10"; MATCHING_STEP="1"; N="64"; shift ;;
@@ -167,6 +171,8 @@ python3 boreasBenchmarkParallel.py \
   ${USE_RAW_POINTCLOUD:+--use-raw-pointcloud} \
   ${RAW_INTENSITY_THRESHOLD:+--raw-intensity-threshold "$RAW_INTENSITY_THRESHOLD"} \
   ${APPLY_RAND_ROT:+$APPLY_RAND_ROT --rand-rot-seed "$RAND_ROT_SEED"} \
+  ${RAND_ROT_MIN:+--rand-rot-min "$RAND_ROT_MIN"} \
+  ${RAND_ROT_MAX:+--rand-rot-max "$RAND_ROT_MAX"} \
   "$DATA_DIR"
 
 EXIT_CODE=$?
