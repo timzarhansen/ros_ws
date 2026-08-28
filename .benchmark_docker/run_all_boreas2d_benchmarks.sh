@@ -271,6 +271,7 @@ if [ -n "$RAW_OUTPUTDIR" ]; then
 fi
 RESULTS_DIR="$ROOT_DIR/benchmark_results${OUTPUTDIR:+/$OUTPUTDIR}"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 # Relative to the repo root so the per-method scripts' docker mount
 # "$(pwd)/$RESULTS_DIR:/volume/results" resolves correctly.
 export RESULTS_DIR_OVERRIDE="benchmark_results${OUTPUTDIR:+/$OUTPUTDIR}"

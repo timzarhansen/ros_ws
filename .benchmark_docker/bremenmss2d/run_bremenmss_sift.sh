@@ -50,6 +50,7 @@ DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/Bremen-MSS-Processed}"
 
 RESULTS_DIR="benchmark_results/bremenmss2d"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="${RESULTS_DIR}/run_bremenmss2d_${TIMESTAMP}_sift.log"
 

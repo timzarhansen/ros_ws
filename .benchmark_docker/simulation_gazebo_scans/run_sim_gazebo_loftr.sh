@@ -42,6 +42,7 @@ DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/2D-Scan-Gazebo-Dataset}"
 
 RESULTS_DIR="benchmark_results/simulation_gazebo_scans"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="${RESULTS_DIR}/run_sim_gazebo_${TIMESTAMP}_loftr.log"
 

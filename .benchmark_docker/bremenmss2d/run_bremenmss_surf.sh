@@ -50,6 +50,7 @@ DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/Bremen-MSS-Processed}"
 
 RESULTS_DIR="benchmark_results/bremenmss2d"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="${RESULTS_DIR}/run_bremenmss2d_${TIMESTAMP}_surf.log"
 
@@ -67,7 +68,7 @@ echo "Radius:      $SURF_RADIUS"
 echo "SURF params: hessian=$SURF_HESSIAN_THRESHOLD n_octaves=$SURF_N_OCTAVES"
 echo "             n_octave_layers=$SURF_N_OCTAVE_LAYERS extended=$SURF_EXTENDED"
 echo "             upright=$SURF_UPRIGHT ratio_threshold=$SURF_RATIO_THRESHOLD"
-echo "             ransac_threshold=$SURF_RANSAC_THRESHOLD confidence=$SURF_RANSAC_CONFIDENCE
+echo "             ransac_threshold=$SURF_RANSAC_THRESHOLD confidence=$SURF_RANSAC_CONFIDENCE"
 echo ""
 
 if ! docker image inspect fsbench:latest >/dev/null 2>&1; then

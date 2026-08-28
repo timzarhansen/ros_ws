@@ -62,6 +62,7 @@ DATA_DIR="${DATA_DIR:-/home/tim-external/dataFolder/radar_boreas}"
 
 RESULTS_DIR="${RESULTS_DIR_OVERRIDE:-benchmark_results/boreas2d}"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="${RESULTS_DIR}/run_boreas2d_${TIMESTAMP}_akaze.log"
 

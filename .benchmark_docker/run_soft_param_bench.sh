@@ -41,6 +41,7 @@ fi
 # === Logging ===
 RESULTS_DIR="test_results/soft_param_bench"
 mkdir -p "$RESULTS_DIR"
+chmod 777 "$RESULTS_DIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="test_results/run_param_bench_${TIMESTAMP}.log"
 exec > >(tee -a "$LOG_FILE" 2>&1)

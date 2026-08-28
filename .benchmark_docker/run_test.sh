@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 
 # === Logging ===
 mkdir -p test_results
+chmod 777 test_results
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_FILE="test_results/run_${TIMESTAMP}.log"
 exec > >(tee -a "$LOG_FILE" 2>&1)
