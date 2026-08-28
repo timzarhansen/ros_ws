@@ -144,7 +144,7 @@ OUTPUT_PATH=""
 OUTDIR_FLAG_SEEN=false
 EXTRA_ARGS=()
 
-BENCHMARKS=(fs2d sift kaze akaze fourier_mellin icp ndt_p2d loftr eloftr lightglue surf)
+BENCHMARKS=(fs2d sift kaze akaze fourier_mellin icp ndt_p2d loftr eloftr lightglue)
 
 # ============================================================================
 # Arg parsing
